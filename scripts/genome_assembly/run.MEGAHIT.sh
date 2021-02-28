@@ -38,7 +38,8 @@ echo ${pathR2}
 #########################################################################
 
 if [ ${cluster} = "pbil" ]; then
-    echo "#SBATCH --job-name=mh" >  ${pathScripts}/bsub_script_megahit
+    echo "#!/bin/bash" >  ${pathScripts}/bsub_script_megahit
+    echo "#SBATCH --job-name=mh" >>  ${pathScripts}/bsub_script_megahit
     echo "#SBATCH --output=${pathScripts}/std_output_MEGAHIT.txt" >>  ${pathScripts}/bsub_script_megahit
     echo "#SBATCH --error=${pathScripts}/std_error_MEGAHIT.txt" >> ${pathScripts}/bsub_script_megahit
     echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_megahit
