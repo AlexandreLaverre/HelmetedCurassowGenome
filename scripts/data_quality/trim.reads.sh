@@ -1,0 +1,24 @@
+#!/bin/bash
+
+export sp=$1
+export sample=$2
+export cluster=$3
+
+###############################################################
+
+if [ ${cluster} = "cloud" ]; then
+    export path=/mnt/IPLOSS
+fi
+
+export pathWGS=${path}/data/WGS/${sp}
+
+###############################################################
+
+echo ${sample}
+
+export pathR1=${pathWGS}/${sample}_R1_001.fastq.gz
+export pathR2=${pathWGS}/${sample}_R2_001.fastq.gz
+
+cutadapt --minimum-length 50 --trim-n -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT -o ${pathWGS}/${sample}_R1_001_trimmed.fastq.gz -p ${pathWGS}/${sample}_R2_001_trimmed.fastq.gz ${pathR1} ${pathR2} 
+
+###############################################################
