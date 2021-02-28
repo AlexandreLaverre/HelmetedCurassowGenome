@@ -9,7 +9,7 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/HelmetedCurassowGenome
+    export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
 export pathData=${path}/data/WGS
@@ -51,6 +51,11 @@ if [ ${cluster} = "pbil" ]; then
     
     sbatch ${pathScripts}/bsub_script_megahit
 fi
-            
-    
+
+#########################################################################
+
+if [ ${cluster} = "cloud" ]; then
+    megahit -1 ${pathR1} -2 ${pathR2} -t 8 --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults} --tmp-dir ${pathResults}/tmp
+fi
+
 #########################################################################
