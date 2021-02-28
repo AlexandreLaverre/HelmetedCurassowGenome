@@ -13,7 +13,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathData=${path}/data/WGS
-export pathResults=${path}/results/genome_assembly/MEGAHIT
+export pathResults=${path}/results/genome_assembly
 export pathScripts=${path}/scripts/genome_assembly
 
 ## megahit: MEGAHIT v1.2.9
@@ -47,7 +47,7 @@ if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --cpus-per-task=8" >> ${pathScripts}/bsub_script_megahit
     echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_megahit
 
-    echo "megahit -1 ${pathR1} -2 ${pathR2} -t 8 --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults} --tmp-dir ${pathResults}/tmp" >> ${pathScripts}/bsub_script_megahit
+    echo "megahit -1 ${pathR1} -2 ${pathR2} -t 8 --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults}/MEGAHIT --tmp-dir ${pathResults}/tmp" >> ${pathScripts}/bsub_script_megahit
     
     sbatch ${pathScripts}/bsub_script_megahit
 fi
@@ -55,7 +55,7 @@ fi
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    megahit -1 ${pathR1} -2 ${pathR2} -t 8 --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults} --tmp-dir ${pathResults}/tmp
+    megahit -1 ${pathR1} -2 ${pathR2} -t 8 --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults}/MEGAHIT --tmp-dir ${pathResults}/tmp
 fi
 
 #########################################################################
