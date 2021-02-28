@@ -1,11 +1,14 @@
 #!/bin/bash
 
-export sp="HelmetedCurassow"
+export cluster=$1
 
 #########################################################################
 
-export path=/beegfs/data/necsulea/IPLOSS
-export pathWGS=${path}/data/WGS/${sp}
+if [ ${cluster} = "pbil" ]; then
+    export path=/beegfs/data/necsulea/HelmetedCurassowGenome
+fi
+
+export pathWGS=${path}/data/WGS
 export pathScripts=${path}/scripts/data_quality
 
 #########################################################################

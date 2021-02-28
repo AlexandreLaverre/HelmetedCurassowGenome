@@ -7,10 +7,15 @@ export cluster=$3
 ###############################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/IPLOSS
+    export path=/mnt/HelmetedCurassowGenome
 fi
 
-export pathWGS=${path}/data/WGS/${sp}
+
+if [ ${cluster} = "pbil" ]; then
+    export path=/beegfs/data/necsulea/HelmetedCurassowGenome
+fi
+
+export pathWGS=${path}/data/WGS
 
 ###############################################################
 
