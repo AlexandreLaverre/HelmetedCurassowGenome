@@ -43,7 +43,7 @@ if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --time=24:00:00" >>  ${pathScripts}/bsub_script_test_SOAPdenovo
     echo "#SBATCH --mem=20G" >>  ${pathScripts}/bsub_script_test_SOAPdenovo
     
-    echo "SOAPdenovo-127mer all -s ${pathScripts}/configFile_SOAPdenovo_${cluster} -o ${pathResults}/kmer${kmer} -p 8 -a 20 -K ${kmer}" >>  ${pathScripts}/bsub_script_test_SOAPdenovo
+    echo "SOAPdenovo-63mer all -s ${pathScripts}/configFile_SOAPdenovo_${cluster} -o ${pathResults}/kmer${kmer} -p 8 -a 20 -K ${kmer}" >>  ${pathScripts}/bsub_script_test_SOAPdenovo
     
     sbatch ${pathScripts}/bsub_script_test_SOAPdenovo
 fi
@@ -51,7 +51,7 @@ fi
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    SOAPdenovo-127mer all -s ${pathScripts}/configFile_SOAPdenovo_${cluster} -o ${pathResults}/kmer${kmer} -p 12 -a 120 -K ${kmer}
+    SOAPdenovo-63mer all -s ${pathScripts}/configFile_SOAPdenovo_${cluster} -o ${pathResults}/kmer${kmer} -p 12 -a 120 -K ${kmer}
 fi
 
 #########################################################################
