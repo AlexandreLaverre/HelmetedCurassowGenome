@@ -23,6 +23,14 @@ export pathScripts=${path}/scripts/genome_assembly
 
 #########################################################################
 
+if [ -e ${pathResults}/kmer${kmer} ]; then
+    echo "path output"
+else
+    mkdir ${pathResults}/kmer${kmer}
+fi
+
+#########################################################################
+
 if [ ${cluster} = "pbil" ]; then
     
     echo "#!/bin/bash " > ${pathScripts}/bsub_script_test_SOAPdenovo
@@ -38,7 +46,6 @@ if [ ${cluster} = "pbil" ]; then
     echo "soapdenovo2-127mer all -s ${pathScripts}/configFile_SOAPdenovo_${cluster} -o ${pathResults}/kmer${kmer} -p 8 -a 20 -K ${kmer}" >>  ${pathScripts}/bsub_script_test_SOAPdenovo
     
     sbatch ${pathScripts}/bsub_script_test_SOAPdenovo
-    
 fi
 
 #########################################################################
