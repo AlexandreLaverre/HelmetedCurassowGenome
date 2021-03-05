@@ -10,7 +10,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathGenomes=${path}/data/genome_sequences
-export pathScripts=${path}/scripts/whole_genome_alignments
+export pathScripts=${path}/scripts/ragout_assembly
 
 #########################################################################
 
