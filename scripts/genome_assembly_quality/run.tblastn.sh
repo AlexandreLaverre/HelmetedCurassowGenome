@@ -2,60 +2,36 @@
 
 ########################################################################
 
-export sp="Chicken"
-
-export method=$1	# ie : SOAPdenovo ABYSS MEGAHIT IDBA Discovar
-export kmer=$2		# ie : 50, 79...
-export genomeprefix=$3  # ie : HelmetedCurassow ...
-export user=$4		# ie : necsulea or alaverre
-export cluster=$5	# ie : pbil or cloud
-export threads=$6	# ie : number of threads
+export method=$1
+export refsp=$2
+export cluster=$3 
+export threads=$4
 
 #########################################################################
 
 if [ ${cluster} = "pbil" ]; then
-    export path=/beegfs/data/${user}/IPLOSS
+    export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    if [ ${user} = "necsulea" ]; then
-	export path=/mnt/IPLOSS; else
-	export path=/mnt/
-fi
+    export path=/mnt/HelmetedCurassowGenome
 fi
 
-export pathProteinSequences=${path}/data/protein_sequences/${sp}
-export pathResults=${path}/results/genome_assembly_tests/${method}/${genomeprefix} 
+export pathProteinSequences=${path}/data/protein_sequences/${refsp}
+export pathGenomeAssembly=${path}/results/genome_assembly/${method}
+export pathResults=${path}/results/genome_assembly_quality/${method}
 export pathScripts=${path}/scripts/genome_assembly
 
-export ensrelease=98
+export ensrelease=103
 
 #########################################################################
 
-if [ ${method} = "SOAPdenovo" ]; then
-    export pathAssembly=${pathResults}/kmer${kmer}.scafSeq
-    export suffix=kmer${kmer}.scafSeq
-fi
-
-if [ ${method} = "ABYSS" ]; then
-    export pathAssembly=${pathResults}/kmer${kmer}-scaffolds.fa
-    export suffix=kmer${kmer}-scaffolds
-fi
-
 if [ ${method} = "MEGAHIT" ]; then
-    export pathAssembly=${pathResults}/final.contigs.fa
-    export suffix=final.contigs.fa
+    export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
+    export suffix=final.contigs
 fi
 
-if [ ${method} = "IDBA" ]; then
-    export pathAssembly=${pathResults}/scaffold.fa
-    export suffix=scaffold.fa
-fi
-
-if [ ${method} = "Discovar" ]; then
-    export pathAssembly=${pathResults}/a.final/a.fasta
-    export suffix=a.fasta
-fi
+#########################################################################
 
 ## first make blastdb
 
