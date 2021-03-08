@@ -46,7 +46,7 @@ fi
 if [ -e ${pathResults}/AllPeptides${ensrelease}_vs_${suffix}.tblastn.out ]; then
     echo "already done"
 else
-    tblastn -num_threads ${threads} -query ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa -db ${pathResults}/${suffix} -out ${pathResults}/AllPeptides${ensrelease}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt "6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps"
+    tblastn -num_threads ${threads} -query ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa -db ${pathResults}/${suffix} -out ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt "6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps"
 fi
 
 #########################################################################

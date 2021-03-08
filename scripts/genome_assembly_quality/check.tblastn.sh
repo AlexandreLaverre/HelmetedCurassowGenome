@@ -5,7 +5,6 @@
 export method=$1
 export refsp=$2
 export cluster=$3 
-export threads=$4
 
 #########################################################################
 
@@ -33,7 +32,7 @@ fi
 
 #########################################################################
 
-export last=`tail -n 1 ${pathResults}/AllPeptides${ensrelease}_vs_${suffix}.tblastn.out | cut -f 1`
+export last=`tail -n 1 ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out | cut -f 1`
 export tot=`grep -c ">" ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa `
 export index=`grep ">" ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa | grep -n ${last} | cut -f 1 -d ':'`
 
