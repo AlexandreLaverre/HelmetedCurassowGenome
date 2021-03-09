@@ -32,6 +32,8 @@ fi
 
 #########################################################################
 
-perl ${pathScripts}/analyze.tblastn.statistics.pl --pathProteins=${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa pathTBlastNResults=${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out --minPCIdentity=${minPCIdentity} --maxEValue=${maxEValue} --pathOutput=${pathResults}/AlignmentStatistics_${refsp}_AllPeptides${ensrelease}_vs_${suffix}.txt
-
+for minpcid in 50 60 70 80
+do
+    perl ${pathScripts}/analyze.tblastn.statistics.pl --pathProteins=${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa --pathTBlastNResults=${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out --minPCIdentity=${minpcid} --maxEValue=0.001 --pathOutput=${pathResults}/AlignmentStatistics_${refsp}_AllPeptides${ensrelease}_vs_${suffix}_minPCIdentity${minpcid}.txt
+done
 #########################################################################
