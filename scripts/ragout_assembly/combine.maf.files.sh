@@ -14,7 +14,8 @@ export pathHAL=${path}/results/genome_assembly/MEGAHIT_RAGOUT
 
 #########################################################################
 
-export firstfile="ls ${pathHALParts} | head -n 1"
+export firstfile=`ls ${pathHALParts} | head -n 1`
+echo ${firstfile}
 
 cp ${pathHALParts}/${firstfile} ${pathHAL}/${prefix}.maf
 
