@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export cluster=$1
+export prefix=$1
+export cluster=$2
 
 #########################################################################
 
@@ -8,10 +9,19 @@ if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
+export pathHALParts=${path}/results/genome_assembly/MEGAHIT_RAGOUT/mafs_by_chr
 export pathHAL=${path}/results/genome_assembly/MEGAHIT_RAGOUT
 
 #########################################################################
 
-hal2mafMP.py ${pathHAL}/alignment.hal ${pathHAL}/mafs_by_chr/alignment.maf --numProc 12 --splitBySequence 
+export firstfile="ls ${pathHALParts} | head -n 1"
+
+cp ${pathHALParts}/${firstfile} ${pathHAL}/${prefix}.maf
+
+for file in `ls ${pathHALParts} | grep maf | grep -v ${firstfile} `
+do
+    echo ${file}
+    grep -v "#" ${pathHALParts}/${file} | sed '1d' >> ${pathHAL}/${prefix}.maf
+done
 
 #########################################################################
