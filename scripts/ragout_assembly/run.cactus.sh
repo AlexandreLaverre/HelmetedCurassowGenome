@@ -37,6 +37,6 @@ echo "Pauxi_pauxi ${pathAssembly}/final.contigs.clean.fa"  >> ${pathResults}/seq
 
 #########################################################################
 
-docker run -v ${path}:/mnt/mydatalocal/HelmetedCurassowGenome --rm -t quay.io/comparative-genomics-toolkit/cactus:v1.3.0 cactus --maxServiceJobs 4 --maxCores 12 --maxMemory 50G --maxDisk 600G --defaultDisk 20G --defaultMemory 5G --defaultCores 4  --binariesMode local --workDir ${pathResults}/ ${pathResults}/jobStore ${pathResults}/seqFile ${pathResults}/alignment.hal
+docker run -v ${path}:/mnt/mydatalocal/HelmetedCurassowGenome --rm -t quay.io/comparative-genomics-toolkit/cactus:v1.3.0 cactus --binariesMode local --workDir ${pathResults}/ ${pathResults}/jobStore ${pathResults}/seqFile ${pathResults}/alignment.hal
 
 #########################################################################
