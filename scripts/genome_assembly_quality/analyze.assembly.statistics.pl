@@ -372,7 +372,7 @@ sub printHelp{
     my $parvalues=$_[1];
     
     print "\n";
-    print "This script extracts genome assembly statistics, when a reference genome exists.\n";
+    print "This script extracts genome assembly statistics.\n";
     print "\n";
     
     print "Options:\n";
