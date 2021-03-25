@@ -1,0 +1,16 @@
+# reference and target genome names (required)
+.references = Penelope_pileata,Gallus_gallus,Anas_platyrhynchos_platyrhynchos
+.target = Pauxi_pauxi
+
+# phylogenetic tree
+.tree = (Anas_platyrhynchos_platyrhynchos, ((Penelope_pileata, Pauxi_pauxi), Gallus_gallus));
+
+# synteny blocks scale (optional)
+.blocks = large
+
+# MAF input
+.maf = /mnt/mydatalocal/HelmetedCurassowGenome/results/genome_assembly/MEGAHIT_RAGOUT/alignment.maf
+Pauxi_pauxi.fasta = /mnt/mydatalocal/HelmetedCurassowGenome/results/genome_assembly/MEGAHIT/final.contigs.clean.fa
+Penelope_pileata.fasta = /mnt/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Penelope_pileata/genome_sm_clean.fa
+Gallus_gallus.fasta = /mnt/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Gallus_gallus/genome_sm_clean.fa
+Anas_platyrhynchos_platyrhynchos.fasta = /mnt/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Anas_platyrhynchos_platyrhynchos/genome_sm_clean.fa
