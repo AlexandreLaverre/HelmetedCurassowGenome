@@ -466,7 +466,7 @@ print $output "N50:".$n50."\n";
 foreach my $chr (keys %assembly){
     my $seq=$assembly{$chr};
     my $size=length $seq;
-    print $chr.":".$size."\n";
+    print $output $chr.":".$size."\n";
 }
 print "Done.\n";
 
