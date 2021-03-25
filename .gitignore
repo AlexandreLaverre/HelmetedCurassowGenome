@@ -2,4 +2,5 @@ scripts/backup
 scripts/old_assembler
 results
 datas/*
+data
 
