@@ -33,6 +33,13 @@ fi
 
 #########################################################################
 
+if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+    export pathAssembly=${pathGenomeAssembly}/genome_sequence.fa
+    export suffix=genome_sequence
+fi
+
+#########################################################################
+
 ## first make blastdb
 
 if [ -e ${pathResults}/${suffix}.nhr ]; then
