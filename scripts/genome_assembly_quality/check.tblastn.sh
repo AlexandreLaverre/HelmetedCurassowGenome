@@ -32,6 +32,13 @@ fi
 
 #########################################################################
 
+if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+    export pathAssembly=${pathGenomeAssembly}/genome_sequence.fa
+    export suffix=genome_sequence
+fi
+
+#########################################################################
+
 export last=`tail -n 1 ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out | cut -f 1`
 export tot=`grep -c ">" ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa `
 export index=`grep ">" ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa | grep -n ${last} | cut -f 1 -d ':'`
