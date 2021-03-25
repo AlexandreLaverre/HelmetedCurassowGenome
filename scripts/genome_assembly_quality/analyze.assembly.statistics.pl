@@ -390,17 +390,11 @@ sub printHelp{
 
 my %parameters;
 $parameters{"pathAssembly"}="NA";
-$parameters{"pathReferenceGenome"}="NA";
-$parameters{"pathBlatResults"}="NA";
-$parameters{"minPCIdentity"}="NA";
-$parameters{"maxEValue"}="NA";
-# $parameters{"pathRepeatMasker"}="NA";
-$parameters{"pathOutputBreakpoints"}="NA";
 $parameters{"pathOutputStatistics"}="NA";
 
 ## "pathRepeatMasker", 
 
-my @defaultpars=("pathAssembly", "pathReferenceGenome", "pathBlatResults", "minPCIdentity", "maxEValue", "pathOutputBreakpoints", "pathOutputStatistics");
+my @defaultpars=("pathAssembly",  "pathOutputStatistics");
 my %defaultvalues;
 
 foreach my $par (keys %parameters){
@@ -445,21 +439,6 @@ print "\n";
 ##############################################################
 ##############################################################
 
-print "Reading reference genome...\n";
-
-my %refgenome;
-
-readFasta($parameters{"pathReferenceGenome"}, \%refgenome);
-
-my $nbchr=keys %refgenome;
-my $totlength=computeTotalSequenceLength(\%refgenome);
-
-print "There are ".$nbchr." chromosomes and a total of ".$totlength." nucleotides.\n";
-
-print "Done.\n";
-
-##############################################################
-
 print "Reading assembled sequences...\n";
 
 my %assembly;
@@ -477,63 +456,18 @@ print "Done.\n";
 
 ##############################################################
 
-print "Reading Blat results...\n";
-
-my $minpcid=$parameters{"minPCIdentity"}+0.0;
-my $maxeval=$parameters{"maxEValue"}+0.0;
-
-print "minimum % identity: " .$minpcid."\n";
-print "max e-value: ".$maxeval."\n";
-
-my %blatres;
-
-readBlatResults($parameters{"pathBlatResults"}, $minpcid, $maxeval, \%blatres);
- 
-print "Done.\n";
-
-##############################################################
-
-print "Ordering Blat results by scaffold...\n";
-
-my %orderedblat;
-
-orderBlatResultsScaffold(\%blatres, \%orderedblat);
- 
-print "Done.\n";
- 
-##############################################################
-
-print "Counting breakpoints...\n";
-my $nbbreak=countBreakpointsScaffold(\%orderedblat, $parameters{"pathOutputBreakpoints"});
-
-print "Done.\n";
-
-##############################################################
-
-print "Computing chromosome coverage...\n";
-
-my %chrblocks;
-makeChrBlocks(\%blatres, \%chrblocks);
-
-my %chrcov;
-computeChromosomeCoverage(\%chrblocks, \%chrcov);
-
-my $totcov=0;
-foreach my $chr (keys %chrcov){
-    $totcov+=$chrcov{$chr};
-}
-
-print "Total coverage: ".$totcov."\n";
-print "Done.\n";
-
-##############################################################
-
 print "Writing output...\n";
 open(my $output, ">".$parameters{"pathOutputStatistics"});
 
-print $output "AssemblySize\tNbSequences\tN50\tGenomeCoverage\tNbBreakpoints\n";
-print $output $asslen."\t".$nbc."\t".$n50."\t".$totcov."\t".$nbbreak."\n";
+print $output "AssemblySize:".$asslen."\n";
+print $output "NbSequences:".$nbc."\n";
+print $output "N50:".$n50."\n";
 
+foreach my $chr (keys %assembly){
+    my $seq=$assembly{$chr};
+    my $size=length $seq;
+    print $chr.":".$size."\n";
+}
 print "Done.\n";
 
 ##############################################################

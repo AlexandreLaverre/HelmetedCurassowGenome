@@ -2,66 +2,35 @@
 
 ########################################################################
 
-export sp="Chicken"
-
-export method=$1	# ie : SOAPdenovo ABYSS MEGAHIT IDBA Discovar
-export kmer=$2		# ie : 50, 79...
-export genomeprefix=$3  # ie : HelmetedCurassow ...
-export user=$4		# ie : necsulea or alaverre
-export cluster=$5	# ie : pbil or cloud
+export method=$1	# MEGAHIT or MEGAHIT_RAGOUT
+export cluster=$2	# pbil or cloud
 
 #########################################################################
 
 if [ ${cluster} = "pbil" ]; then
-    export path=/beegfs/data/${user}/IPLOSS
+    export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    if [ ${user} = "necsulea" ]; then
-	export path=/mnt/IPLOSS; else
-	export path=/mnt/
-fi
+    export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathGenome=${path}/data/genome_sequences/${sp}
-export pathResults=${path}/results/genome_assembly_tests/${method}/${genomeprefix}
-export pathScripts=${path}/scripts/genome_assembly
+export pathResults=${path}/results/genome_assembly/${method}
+export pathScripts=${path}/scripts/genome_assembly_quality
 
 #########################################################################
-
-if [ ${method} = "SOAPdenovo" ]; then
-    export pathAssembly=${pathResults}/kmer${kmer}.scafSeq
-    export suffix=kmer${kmer}.scafSeq
-fi
-
-if [ ${method} = "ABYSS" ]; then
-    export pathAssembly=${pathResults}/kmer${kmer}-scaffolds.fa
-    export suffix=kmer${kmer}-scaffolds
-fi
-
-if [ ${method} = "Discovar" ]; then
-    export pathAssembly=${pathResults}/a.final/a.fasta
-    export suffix=final.assembly
-fi
-
-if [ ${method} = "IDBA" ]; then
-    export pathAssembly=${pathResults}/scaffold.fa
-    export suffix=scaffolds
-fi
 
 if [ ${method} = "MEGAHIT" ]; then
     export pathAssembly=${pathResults}/final.contigs.fa
-    export suffix=final.contigs
 fi
 
-if [ ${method} = "Velvet" ]; then
-    export pathAssembly=${pathResults}/_${kmer}/contigs.fa
-    export suffix=kmer${kmer}.contigs
+if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+    export pathAssembly=${pathResults}/genome_sequence.fa
 fi
 
 
 #########################################################################
 
-perl ${pathScripts}/analyze.assembly.statistics.pl --pathAssembly=${pathAssembly} --pathReferenceGenome=${pathGenome}/${genomeprefix}.fa --pathBlatResults=${pathResults}/${suffix}.blat_vs_${genomeprefix}.out --minPCIdentity=99 --maxEValue=0.001 --pathOutputBreakpoints=${pathResults}/${suffix}.vs.${genomeprefix}.breakpoints --pathOutputStatistics=${pathResults}/${suffix}.assembly.stats.out
+perl ${pathScripts}/analyze.assembly.statistics.pl --pathAssembly=${pathAssembly} --pathOutputStatistics=${pathResults}/assembly.stats.out
 
 #########################################################################
