@@ -403,6 +403,10 @@ print "Extracting best hits...\n";
 my %besthits;
 extractBestHits(\%stats, \%besthits);
 
+my $nb=keys %besthits;
+
+print "There are ".$nb." proteins with best hits.\n";
+
 print "Done.\n";
 
 ##############################################################
@@ -431,6 +435,8 @@ foreach my $prot (keys %besthits){
 	    } else{
 		$refchrcorresp{$refchr}{$tgchr}=1;
 	    }
+	} else{
+	    $refchrcorresp{$refchr}={$tgchr=>1};
 	}
 
 	if(exists $contigcorresp{$tgchr}){
@@ -439,9 +445,20 @@ foreach my $prot (keys %besthits){
 	    } else{
 		$contigcorresp{$tgchr}{$refchr}=1;
 	    }
+	} else{
+	    $contigcorresp{$tgchr}={$refchr=>1};
 	}
     }
 }
+
+my $nbref=keys %refchrcorresp;
+
+print "Found potential correspondence for ".$nbref." chromosomes in reference species.\n";
+
+
+my $nbtg=keys %contigcorresp;
+
+print "Found potential correspondence for ".$nbref." contigs/scaffolds.\n";
     
 print "Done.\n";
 
@@ -474,6 +491,10 @@ foreach my $chr (keys %refchrcorresp){
     }
 }
 
+my $nbhr=keys %besthitsref;
+
+print "Found best hits for ".$nbhr." chromosomes in reference species.\n";
+
 my %besthitstg;
 
 foreach my $contig (keys %contigcorresp){
@@ -499,6 +520,12 @@ foreach my $contig (keys %contigcorresp){
     }
 }
 
+
+my $nbht=keys %besthitstg;
+
+print "Found best hits for ".$nbhr." contigs/scaffolds in target species.\n";
+
+
 print "Done.\n";
 
 ##############################################################
@@ -507,51 +534,27 @@ print "Writing output...\n";
 
 open(my $output, ">".$parameters{"pathOutput"});
 
-print $output "Contig/Scaffold\nBestHit\tIsReciprocal\n";
+print $output "Contig/Scaffold\tBestHit\tNbSupportingProteins\tTargetBestHit\tNbSupportingProteinsTarget\n";
 
 foreach my $contig (keys %besthitstg){
     my $chr=$besthitstg{$contig};
+    my $nbsupp=$contigcorresp{$contig}{$chr};
 
-    my $rbh="no";
+    my $rbh="NA";
+    my $nbsupptg="NA";
 
-    if(exists $besthitsref{$chr} && $besthitsref{$chr} eq $contig){
-	$rbh="yes";
+    if(exists $besthitsref{$chr}){
+	$rbh=$besthitsref{$chr};
+	$nbsupptg=$refchrcorresp{$chr}{$rbh}
     }
 
-    print $output $contig."\t".$chr."\t".$rbh."\n";
+    print $output $contig."\t".$chr."\t".$nbsupp."\t".$rbh."\t".$nbsupptg."\n";
     
 }
 
 close($output);
 
-##############################################################
-
-
-# print $output "ProteinID\tGeneID\tReferenceChr\tReferenceStart\tReferenceEnd\tReferenceStrand\tContig\tStrand\tTotalLength\tAlignedLength\n";
-
-# foreach my $prot (keys %besthits){
-#     my $gene=$coords{$prot}{"gene"};
-#     my $refchr=$coords{$prot}{"chr"};
-#     my $refstart=$coords{$prot}{"start"};
-#     my $refend=$coords{$prot}{"end"};
-#     my $refstrand=$coords{$prot}{"strand"};
-
-#     my $bh=$besthits{$prot};
-#     my $alnlen=$stats{$prot}{$bh}{"totlength"};
-    
-#     my @t=split(":",$bh);
-#     my $tgchr=$t[0];
-#     my $tgstrand=$t[1];
-
-#     my $totlen=length $proteins{$prot};
-    
-#     print $output $prot."\t".$gene."\t".$refchr."\t".$refstart."\t".$refend."\t".$refstrand."\t".$tgchr."\t".$tgstrand."\t".$totlen."\t".$alnlen."\n";
-
-# } 
-
-# close($output);
-
-# print "Done.\n";
+print "Done.\n";
 
 ##############################################################
-##############################################################
+
