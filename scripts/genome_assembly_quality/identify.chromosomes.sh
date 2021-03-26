@@ -40,9 +40,6 @@ fi
 
 #########################################################################
 
-for minpcid in 50 
-do
-    perl ${pathScripts}/analyze.synteny.pl --pathGeneCoordinates=${pathAnnotations}/GeneCoordinates_Ensembl${ensrelease}.txt --pathProteins=${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa --pathTBlastNResults=${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out --minPCIdentity=${minpcid} --maxEValue=0.001 --pathOutput=${pathResults}/SyntenyAnalysis_${refsp}_AllPeptides${ensrelease}_vs_${suffix}_minPCIdentity${minpcid}.txt
-done
+perl ${pathScripts}/identify.chromosomes.pl --pathGeneCoordinates=${pathAnnotations}/GeneCoordinates_Ensembl${ensrelease}.txt --pathProteins=${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa --pathTBlastNResults=${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out --minPCIdentity=50 --maxEValue=0.001 --pathOutput=${pathResults}/ChromosomeCorrespondence_${refsp}.txt
 
 #########################################################################

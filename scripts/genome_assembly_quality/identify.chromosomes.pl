@@ -368,7 +368,6 @@ print "Done.\n";
 
 ##############################################################
 
-
 print "Reading and analyzing tblastn results...\n";
 
 my $minpcid=$parameters{"minPCIdentity"}+0.0;
@@ -408,38 +407,151 @@ print "Done.\n";
 
 ##############################################################
 
+print "Extracting chromosome correspondence...\n";
+print "We use only proteins aligned on at least 50% of their length.\n";
+
+my %refchrcorresp;
+my %contigcorresp;
+
+foreach my $prot (keys %besthits){
+    my $bh=$besthits{$prot};
+    my $alnlen=$stats{$prot}{$bh}{"totlength"};
+    my $totlen=length $proteins{$prot};
+    
+    my $frlen=($alnlen+0.0)/($totlen+0.0);
+
+    if($frlen>=0.5){
+	my $refchr=$coords{$prot}{"chr"};
+	my @t=split(":",$bh);
+	my $tgchr=$t[0];
+
+	if(exists $refchrcorresp{$refchr}){
+	    if(exists $refchrcorresp{$refchr}{$tgchr}){
+		$refchrcorresp{$refchr}{$tgchr}++;
+	    } else{
+		$refchrcorresp{$refchr}{$tgchr}=1;
+	    }
+	}
+
+	if(exists $contigcorresp{$tgchr}){
+	    if(exists $contigcorresp{$tgchr}{$refchr}){
+		$contigcorresp{$tgchr}{$refchr}++;
+	    } else{
+		$contigcorresp{$tgchr}{$refchr}=1;
+	    }
+	}
+    }
+}
+    
+print "Done.\n";
+
+##############################################################
+
+print "Extracting best hits for chromosomes...\n";
+
+my %besthitsref;
+
+foreach my $chr (keys %refchrcorresp){
+    my %nbhits;
+
+    foreach my $contig (keys %{$refchrcorresp{$chr}}){
+	my $nb=$refchrcorresp{$chr}{$contig};
+
+	if(exists $nbhits{$nb}){
+	    push(@{$nbhits{$nb}}, $contig);
+	} else{
+	    $nbhits{$nb}=[$contig];
+	}
+    }
+
+    my @allnb=keys %nbhits;
+    my $maxnb=max @allnb;
+    my $nbb=@{$nbhits{$maxnb}};
+
+    if($nbb==1){
+	my $bh=${$nbhits{$maxnb}}[0];
+	$besthitsref{$chr}=$bh;
+    }
+}
+
+my %besthitstg;
+
+foreach my $contig (keys %contigcorresp){
+    my %nbhits;
+
+    foreach my $chr (keys %{$contigcorresp{$contig}}){
+	my $nb=$contigcorresp{$contig}{$chr};
+
+	if(exists $nbhits{$nb}){
+	    push(@{$nbhits{$nb}}, $chr);
+	} else{
+	    $nbhits{$nb}=[$chr];
+	}
+    }
+
+    my @allnb=keys %nbhits;
+    my $maxnb=max @allnb;
+    my $nbb=@{$nbhits{$maxnb}};
+
+    if($nbb==1){
+	my $bh=${$nbhits{$maxnb}}[0];
+	$besthitstg{$contig}=$bh;
+    }
+}
+
+print "Done.\n";
+
+##############################################################
+
 print "Writing output...\n";
 
 open(my $output, ">".$parameters{"pathOutput"});
 
-my %min50prot=0;
-my %min50genes=0;
+print $output "Contig/Scaffold\nBestHit\tIsReciprocal\n";
 
-print $output "ProteinID\tGeneID\tReferenceChr\tReferenceStart\tReferenceEnd\tReferenceStrand\tContig\tStrand\tTotalLength\tAlignedLength\n";
+foreach my $contig (keys %besthitstg){
+    my $chr=$besthitstg{$contig};
 
-foreach my $prot (keys %besthits){
-    my $gene=$coords{$prot}{"gene"};
-    my $refchr=$coords{$prot}{"chr"};
-    my $refstart=$coords{$prot}{"start"};
-    my $refend=$coords{$prot}{"end"};
-    my $refstrand=$coords{$prot}{"strand"};
+    my $rbh="no";
 
-    my $bh=$besthits{$prot};
-    my $alnlen=$stats{$prot}{$bh}{"totlength"};
+    if(exists $besthitsref{$chr} && $besthitsref{$chr} eq $contig){
+	$rbh="yes";
+    }
+
+    print $output $contig."\t".$chr."\t".$rbh."\n";
     
-    my @t=split(":",$bh);
-    my $tgchr=$t[0];
-    my $tgstrand=$t[1];
-
-    my $totlen=length $proteins{$prot};
-    
-    print $output $prot."\t".$gene."\t".$refchr."\t".$refstart."\t".$refend."\t".$refstrand."\t".$tgchr."\t".$tgstrand."\t".$totlen."\t".$alnlen."\n";
-
-} 
+}
 
 close($output);
 
-print "Done.\n";
+##############################################################
+
+
+# print $output "ProteinID\tGeneID\tReferenceChr\tReferenceStart\tReferenceEnd\tReferenceStrand\tContig\tStrand\tTotalLength\tAlignedLength\n";
+
+# foreach my $prot (keys %besthits){
+#     my $gene=$coords{$prot}{"gene"};
+#     my $refchr=$coords{$prot}{"chr"};
+#     my $refstart=$coords{$prot}{"start"};
+#     my $refend=$coords{$prot}{"end"};
+#     my $refstrand=$coords{$prot}{"strand"};
+
+#     my $bh=$besthits{$prot};
+#     my $alnlen=$stats{$prot}{$bh}{"totlength"};
+    
+#     my @t=split(":",$bh);
+#     my $tgchr=$t[0];
+#     my $tgstrand=$t[1];
+
+#     my $totlen=length $proteins{$prot};
+    
+#     print $output $prot."\t".$gene."\t".$refchr."\t".$refstart."\t".$refend."\t".$refstrand."\t".$tgchr."\t".$tgstrand."\t".$totlen."\t".$alnlen."\n";
+
+# } 
+
+# close($output);
+
+# print "Done.\n";
 
 ##############################################################
 ##############################################################
