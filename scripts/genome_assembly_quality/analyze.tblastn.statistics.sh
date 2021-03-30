@@ -32,6 +32,14 @@ fi
 
 #########################################################################
 
+if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+    export pathAssembly=${pathGenomeAssembly}/genome_sequence.fa
+    export suffix=genome_sequence
+fi
+
+#########################################################################
+
+
 for minpcid in 50 60 70 80
 do
     perl ${pathScripts}/analyze.tblastn.statistics.pl --pathProteins=${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa --pathTBlastNResults=${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out --minPCIdentity=${minpcid} --maxEValue=0.001 --pathOutput=${pathResults}/AlignmentStatistics_${refsp}_AllPeptides${ensrelease}_vs_${suffix}_minPCIdentity${minpcid}.txt
