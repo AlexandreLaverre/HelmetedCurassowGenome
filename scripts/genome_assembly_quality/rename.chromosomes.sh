@@ -19,8 +19,6 @@ fi
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
 export pathScripts=${path}/scripts/genome_assembly_quality
 
-export ensrelease=103
-
 #########################################################################
 
 if [ ${method} = "MEGAHIT" ]; then
