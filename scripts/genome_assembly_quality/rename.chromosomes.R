@@ -34,6 +34,6 @@ stats$NewName[which(stats$Type=="Contig")]=paste("Contig", 1:length(which(stats$
 
 ## output
 
-write.table(stats[,c("ID", "NewName")], file=paste(pathResults, "sequence_names.txt"), sep="\t", row.names=F, col.names=F, quote=F)
+write.table(stats[,c("ID", "NewName")], file=paste(pathResults, "sequence_names.txt",sep=""), sep="\t", row.names=F, col.names=F, quote=F)
 
 ##############################################################
