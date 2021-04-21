@@ -17,7 +17,7 @@ fi
 
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathResults=${path}/results/repeats/${method}
+export pathResults=${path}/results/repeats/${method}/RepeatModeler
 export pathScripts=${path}/scripts/repeat_annotation
 
 #########################################################################
