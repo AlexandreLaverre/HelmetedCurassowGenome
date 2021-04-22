@@ -18,6 +18,7 @@ fi
 
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
+export pathRepeatModeler=${path}/results/repeats/${method}/RepeatModeler
 export pathResults=${path}/results/repeats/${method}/RepeatMasker/${lib}
 export pathScripts=${path}/scripts/repeat_annotation
 
@@ -37,6 +38,12 @@ fi
 
 if [ ${lib} = "Dfam" ]; then
     RepeatMasker -e rmblast -pa 8 -s -dir ${pathResults} -gff ${pathAssembly}
+fi
+
+#########################################################################
+
+if [ ${lib} = "RepeatModeler" ]; then
+    RepeatMasker -e rmblast -pa 8 -s -dir ${pathResults} -gff ${pathAssembly} -lib ${pathRepeatModeler}/repeat_modeler_db-families.fa
 fi
 
 #########################################################################
