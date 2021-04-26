@@ -298,7 +298,7 @@ foreach my $chr (keys %allrepeats){
 }
 
 close($output);
-
+close($outputbed);
 print "Done.\n";
 
 ##############################################################
