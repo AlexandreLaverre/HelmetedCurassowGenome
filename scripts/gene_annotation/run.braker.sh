@@ -3,6 +3,7 @@
 ########################################################################
 
 export method=$1
+export cluster=$2
 
 #########################################################################
 
@@ -13,7 +14,6 @@ fi
 if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
-
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
 export pathResults=${path}/results/genome_assembly_quality/${method}
