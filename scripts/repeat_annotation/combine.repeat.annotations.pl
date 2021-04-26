@@ -183,10 +183,11 @@ my %parameters;
 $parameters{"pathAnnotation1"}="NA";
 $parameters{"pathAnnotation2"}="NA";
 $parameters{"pathOutput"}="NA";
+$parameters{"pathOutputBED"}="NA";
 
 ## "pathRepeatMasker", 
 
-my @defaultpars=("pathAnnotation1", "pathAnnotation2", "pathOutput");
+my @defaultpars=("pathAnnotation1", "pathAnnotation2", "pathOutput", "pathOutputBED");
 my %defaultvalues;
 
 foreach my $par (keys %parameters){
@@ -262,6 +263,7 @@ print "Done.\n";
 print "Writing output...\n";
 
 open(my $output, ">".$parameters{"pathOutput"});
+open(my $outputbed, ">".$parameters{"pathOutputBED"});
 
 print $output "Chr\tStart\tEnd\tStrand\tRepeatName\tClass/Family\tSource\n";
 
@@ -282,10 +284,12 @@ foreach my $chr (keys %allrepeats){
 	if(!exists $already{$id}){
 	    if(exists $id1{$id}){
 		print $output $chr."\t".$start."\t".$end."\t".$strand."\t".$name."\t".$classfam."\tDfam\n";
+		print $outputbed $chr."\t".($start-1)."\t".$end."\n"; ## 0-based, end not included
 		$already{$id}=1;
 	    } else{
 		if((!exists $overlap21{$id}) && $classfam ne "Unknown"){
 		    print $output $chr."\t".$start."\t".$end."\t".$strand."\t".$name."\t".$classfam."\tRepeatModeler\n";
+		    print $outputbed $chr."\t".($start-1)."\t".$end."\n"; ## 0-based, end not included
 		    $already{$id}=1;
 		}
 	    }

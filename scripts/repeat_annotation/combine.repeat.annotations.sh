@@ -34,9 +34,7 @@ fi
 
 #########################################################################
 
-perl ${pathScripts}/combine.repeat.annotations.pl --pathAnnotation1=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation2=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/CombinedRepeatAnnotations.txt
-
-cut -f 1-3 ${pathRepeatMasker}/CombinedRepeatAnnotations.txt | sed '1d' > ${pathRepeatMasker}/CombinedRepeatAnnotations.bed
+perl ${pathScripts}/combine.repeat.annotations.pl --pathAnnotation1=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation2=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/CombinedRepeatAnnotations.txt --pathOutputBED=${pathRepeatMasker}/CombinedRepeatAnnotations.bed
 
 #########################################################################
 
