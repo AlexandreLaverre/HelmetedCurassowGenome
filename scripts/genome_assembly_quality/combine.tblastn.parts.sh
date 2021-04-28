@@ -5,7 +5,6 @@
 export method=$1
 export refsp=$2
 export cluster=$3
-export nthreads=$4
 
 #########################################################################
 
@@ -40,27 +39,14 @@ fi
 
 #########################################################################
 
-if [ ${nthreads} = "parts" ]; then
-    for i in {0..100};
-    do
-	if [ -e ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa ]; then
-	    export last=`tail -n 1 ${pathResults}/tblastn_parts/${refsp}_AllPeptides${ensrelease}_vs_${suffix}_part${i}.tblastn.out | cut -f 1`
-	    export tot=`grep -c ">" ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa `
-	    export index=`grep ">" ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa | grep -n ${last} | cut -f 1 -d ':'`
-	    
-	    export ratio=$(($index * 100 / $tot))
+for i in {0..100}
+do
+    if [ -e ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa ]; then
+	
+	cat ${pathResults}/tblastn_parts/${refsp}_AllPeptides${ensrelease}_vs_${suffix}_part${i}.tblastn.out >> ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out 
+	
+    fi
     
-	    echo "part "${i}" index "${index}" out of "${tot}" "${ratio}"% done";
-	fi
+done
 
-    done
-else
-    export last=`tail -n 1 ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out | cut -f 1`
-    export tot=`grep -c ">" ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa `
-    export index=`grep ">" ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa | grep -n ${last} | cut -f 1 -d ':'`
-    
-    export ratio=$(($index * 100 / $tot))
-    
-    echo "index "${index}" out of "${tot}" "${ratio}"% done";
-fi
 #########################################################################
