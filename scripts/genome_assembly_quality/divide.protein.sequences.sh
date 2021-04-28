@@ -32,7 +32,7 @@ fi
 
 ###################################################################################
 
-perl ${pathScripts}/divide.sequences.pl --pathFastaInput=${pathProteinSequences}/AllPeptides_Ensembl${release}.fa --nbParts=${nbparts} --prefixOutput=${pathSequences}/fasta_parts/AllPeptides_Ensembl${release}
+perl ${pathScripts}/divide.sequences.pl --pathFastaInput=${pathProteinSequences}/AllPeptides_Ensembl${release}.fa --nbParts=${nbparts} --prefixOutput=${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${release}
 
 ###################################################################################
 
