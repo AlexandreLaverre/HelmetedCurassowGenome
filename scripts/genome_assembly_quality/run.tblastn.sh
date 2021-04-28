@@ -20,7 +20,6 @@ fi
 export pathProteinSequences=${path}/data/protein_sequences/${refsp}
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
 export pathResults=${path}/results/genome_assembly_quality/${method}
-export pathScripts=${path}/scripts/genome_assembly
 
 export ensrelease=103
 
