@@ -3,7 +3,8 @@
 ########################################################################
 
 export method=$1
-export cluster=$2
+export lib=$2
+export cluster=$3
 
 #########################################################################
 
@@ -16,8 +17,8 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathResults=${path}/results/genome_assembly_quality/${method}
-export pathProteins=${path}/data/protein_sequences/Ensembl103_bird_species
+export pathResults=${path}/results/genome_annotation/${method}/BRAKER_${lib}
+export pathProteins=${path}/data/protein_sequences/${lib}
 export pathScripts=${path}/scripts/genome_assembly_quality
 
 #########################################################################
@@ -36,6 +37,12 @@ fi
 
 #########################################################################
 
-braker.pl --genome=${pathAssembly} --prot_seq=${pathProteins}/AllProteins.fa --cores=24
+braker.pl --genome=${pathAssembly} --prot_seq=${pathProteins}/AllProteins.fa --cores=24 --epmode --softmasking
+
+if [ -e ${pathResults} ]; then
+    echo "output dir already there"
+else
+    mkdir -p ${pathResults}
+fi
 
 #########################################################################
