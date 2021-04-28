@@ -37,7 +37,7 @@ fi
 
 #########################################################################
 
-braker.pl --genome=${pathAssembly} --prot_seq=${pathProteins}/AllProteins.fa --cores=24 --epmode --softmasking
+braker.pl --genome=${pathAssembly} --prot_seq=${pathProteins}/AllProteins.fa --cores=1 --epmode --softmasking
 
 if [ -e ${pathResults} ]; then
     echo "output dir already there"
