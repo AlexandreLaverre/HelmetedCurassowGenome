@@ -5,6 +5,7 @@
 export method=$1
 export lib=$2
 export cluster=$3
+export cores=$4
 
 #########################################################################
 
@@ -37,7 +38,7 @@ fi
 
 #########################################################################
 
-braker.pl --genome=${pathAssembly} --prot_seq=${pathProteins}/AllProteins.fa --cores=1 --epmode --softmasking
+braker.pl --genome=${pathAssembly} --prot_seq=${pathProteins}/AllProteins.fa --cores=${cores} --epmode --softmasking
 
 if [ -e ${pathResults} ]; then
     echo "output dir already there"
