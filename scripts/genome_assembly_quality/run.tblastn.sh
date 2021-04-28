@@ -49,10 +49,27 @@ fi
 
 #########################################################################
 
-if [ -e ${pathResults}/AllPeptides${ensrelease}_vs_${suffix}.tblastn.out ]; then
-    echo "already done"
+if [ ${threads} = "parts" ]; then
+
+    if [ -e ${pathResults}/tblastn_parts ]; then
+	echo "output parts already there"
+    else
+	mkdir ${pathResults}/tblastn_parts
+    fi
+    
+    for i in {1..100}
+    do
+	if [ -e ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa ]; then
+	    tblastn -num_threads 1 -query ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa -db ${pathResults}/${suffix} -out ${pathResults}/tblastn_parts/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt "6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps" & 
+	fi
+    done
 else
-    tblastn -num_threads ${threads} -query ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa -db ${pathResults}/${suffix} -out ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt "6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps"
+    
+    if [ -e ${pathResults}/AllPeptides${ensrelease}_vs_${suffix}.tblastn.out ]; then
+	echo "already done"
+    else
+	tblastn -num_threads ${threads} -query ${pathProteinSequences}/AllPeptides_Ensembl${ensrelease}.fa -db ${pathResults}/${suffix} -out ${pathResults}/${refsp}_AllPeptides${ensrelease}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt "6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps"
+    fi
 fi
 
 #########################################################################
