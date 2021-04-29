@@ -60,7 +60,7 @@ for(ref in c("Chicken", "Duck")){
   sel.chr=names(nb.genes.ref)[which(nb.genes.ref>=50)]
  
   chr.legend=intersect(c(as.character(1:33), "Z", "W"), sel.chr)
-  n=length(sel.chr)
+  n=length(chr.legend)
   qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
   col.vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
   names(col.vector)=chr.legend
