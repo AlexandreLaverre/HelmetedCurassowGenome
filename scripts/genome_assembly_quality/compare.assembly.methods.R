@@ -26,6 +26,14 @@ for(method in c("MEGAHIT", "MEGAHIT_RAGOUT")){
   this.chr.stats=this.chr.stats[order(this.chr.stats$Size, decreasing=T),]
 
   chr.stats[[method]]=this.chr.stats
+
+  ## plot histogram of chromosome sizes
+
+  pdf(file=paste(pathFigures, "ChromosomeSizes_",method,".pdf", sep=""), width=6, height=5.5)
+
+  hist(this.chr.stats$Size, xlab="contig/scaffold size", main=method)
+  
+  dev.off()
 }
 
 #########################################################################
@@ -45,5 +53,8 @@ barplot(this.chr.stats$Size[1:50]/1e3, xlab="", ylab="contig/scaffold size (kb)"
 mtext("50 largest contigs/scaffolds", line=1, side=1)
 
 dev.off()
+
+#########################################################################
+
 
 #########################################################################
