@@ -63,6 +63,7 @@ for(ref in c("Chicken", "Duck")){
   n=length(chr.legend)
   qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
   col.vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+  col.vector=sample(col.vector, n)
   names(col.vector)=chr.legend
 
   nb.chr=length(chr.legend)
