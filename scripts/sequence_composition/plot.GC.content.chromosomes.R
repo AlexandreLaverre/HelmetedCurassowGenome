@@ -20,6 +20,19 @@ for(method in c("MEGAHIT", "MEGAHIT_RAGOUT")){
   hist(gc$GC, xlab="contig/scaffold GC content", main=method)
   
   dev.off()
+
+
+  ## GC content vs chromosome size
+
+  gc=gc[order(gc$Size, decreasing=T),]
+      
+  pdf(file=paste(pathFigures, "GCContent_ContigSize_",method,".pdf", sep=""), width=6, height=5.5)
+  
+  plot(gc$Size[1:32]/1e6,gc$GC[1:32], ylab="contig/scaffold GC content", xlab="contig/scaffold size (Mb)", main=method, pch=20)
+  
+  dev.off()
+
+  
 }
 
 #########################################################################
