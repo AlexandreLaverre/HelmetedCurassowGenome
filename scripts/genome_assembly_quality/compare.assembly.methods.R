@@ -31,7 +31,7 @@ for(method in c("MEGAHIT", "MEGAHIT_RAGOUT")){
 
   pdf(file=paste(pathFigures, "ChromosomeSizes_",method,".pdf", sep=""), width=6, height=5.5)
 
-  hist(log10(this.chr.stats$Size), xlab="contig/scaffold size (log10)", main=method)
+  hist(log10(this.chr.stats$Size), xlab="contig/scaffold size (log10)", main=method, breaks=50)
   
   dev.off()
 }
