@@ -124,6 +124,7 @@ sub computeTBlastNStatistics{
 
     foreach my $prot (keys %{$tblastn}){
 	my %hashhits;
+	my %coords;
 
 	my $nbh=@{$tblastn->{$prot}{"chr"}};
 
@@ -137,6 +138,17 @@ sub computeTBlastNStatistics{
 	    my $qend=${$tblastn->{$prot}{"qend"}}[$i];
 	    my $dbstart=${$tblastn->{$prot}{"dbstart"}}[$i];
 	    my $dbend=${$tblastn->{$prot}{"dbend"}}[$i];
+
+	    if(exists $coords{$id}){
+		if($dbstart<$coords{$id}{"start"}){
+		    $coords{$id}{"start"}=$dbstart;
+		}
+		if($dbend>$coords{$id}{"end"}){
+		    $coords{$id}{"end"}=$dbend;
+		}
+	    } else{
+		$coords{$id}={"start"=>$dbstart, "end"=>$dbend};
+	    }
 
 	    if(exists $hashhits{$id}){
 		if(exists $hashhits{$id}{$qstart}){
@@ -188,12 +200,15 @@ sub computeTBlastNStatistics{
 		$totlen+=($endblocks[$i]-$startblocks[$i]+1);
 	    }
 
+	    my $startpos=$coords{$id}{"start"};
+	    my $endpos=$coords{$id}{"end"};
+
 	    if(exists $stats->{$prot}){
-		$stats->{$prot}{$id}={"totlength"=>$totlen};
+		$stats->{$prot}{$id}={"totlength"=>$totlen, "start"=>$startpos, "end"=>$endpos};
 	    } else{
-		$stats->{$prot}={$id=>{"totlength"=>$totlen}};
+		$stats->{$prot}={$id=>{"totlength"=>$totlen, "start"=>$startpos, "end"=>$endpos}};
 	    }
-	}
+}
     }
 }
 
@@ -331,7 +346,7 @@ open(my $output, ">".$parameters{"pathOutput"});
 my %min50prot=0;
 my %min50genes=0;
 
-print $output "ProteinID\tGeneID\tTotalLength\tContig\tStrand\tAlignedLength\n";
+print $output "ProteinID\tGeneID\tTotalLength\tContig\tStrand\tStart\tEnd\tAlignedLength\n";
 
 foreach my $prot (keys %stats){
 
@@ -382,7 +397,14 @@ foreach my $prot (keys %stats){
 	my $nb=@{$hashlength{$len}{"chr"}};
 	
 	for(my $k=0; $k<$nb; $k++){
-	    print $output $prot."\t".$gene."\t".$totlen."\t".${$hashlength{$len}{"chr"}}[$k]."\t".${$hashlength{$len}{"strand"}}[$k]."\t".$len."\n";
+	    my $chr=${$hashlength{$len}{"chr"}}[$k];
+	    my $strand=${$hashlength{$len}{"strand"}}[$k];
+	    my $id=$chr.":".$strand;
+
+	    my $start=$stats{$prot}{$id}{"start"};
+	    my $end=$stats{$prot}{$id}{"end"};
+	    
+	    print $output $prot."\t".$gene."\t".$totlen."\t".$chr."\t".$strand."\t".$start."\t".$end."\t".$len."\n";
 	}
     }
 } 
