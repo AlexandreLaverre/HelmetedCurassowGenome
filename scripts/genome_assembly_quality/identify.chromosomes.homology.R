@@ -94,8 +94,8 @@ for(ref in c("Chicken", "Duck")){
     points(this.aln$TgPos, rep(ypos[contig], nrow(this.aln)), pch=20, col=col.vector[this.aln$RefChr], cex=1.1)
   }
 
-  legend("bottomleft", horiz=T, legend=chr.legend[1:mean.nb.chr], pch=20, col=col.vector[1:16], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2)
-  legend("bottomleft", horiz=T, legend=chr.legend[(mean.nb.chr+1):nb.chr], pch=20, col=col.vector[17:32], inset=c(0, -0.05), bty="n",xpd=NA, cex=0.9, pt.cex=2)
+  legend("bottomleft", horiz=T, legend=chr.legend[1:mean.nb.chr], pch=20, col=col.vector[1:mean.nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2)
+  legend("bottomleft", horiz=T, legend=chr.legend[(mean.nb.chr+1):nb.chr], pch=20, col=col.vector[(mean.nb.chr+1):nb.chr], inset=c(0, -0.05), bty="n",xpd=NA, cex=0.9, pt.cex=2)
   
                  
   dev.off()
