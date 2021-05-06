@@ -15,6 +15,8 @@ export pathResults=${path}/results/genome_annotation/${method}/${brakerset}
 
 ##########################################################################
 
+ulimit -n 50000
+
 orthofinder -f ${pathResults}/OrthoFinder -t 30 
 
 ##########################################################################
