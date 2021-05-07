@@ -11,6 +11,10 @@ minpcid=60
 
 ####################################################################
 
+col.set=c("black", "gray30", "gray60", "red", "indianred", "darkred", "darkgoldenrod", "yellow", "orange", "darkorange", "darkseagreen", "darkturquoise", "deeppink", "violet", "goldenrod4", "darkslategray", "darkslateblue", "khaki2", "green", "hotpink", "lightblue1", "yellow3", "lightsalmon", "mediumpurple1", "lightseagreen", "navajowhite2", "lightsteelblue2", "steelblue", "saddlebrown","peru", "turquoise4", "yellowgreen")
+
+####################################################################
+
 library(RColorBrewer)
 
 ####################################################################
@@ -61,9 +65,10 @@ for(ref in c("Chicken", "Duck")){
  
   chr.legend=intersect(c(as.character(1:33), "Z", "W"), sel.chr)
   n=length(chr.legend)
-  qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-  col.vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-  col.vector=sample(col.vector, n)
+  ## qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+  ## col.vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+  ## col.vector=sample(col.vector, n)
+  col.vector=col.set[1:length(chr.legend)]
   names(col.vector)=chr.legend
 
   nb.chr=length(chr.legend)
