@@ -44,11 +44,9 @@ rownames(freqaa)=species
 
 ################################################################################
 
+## COA, all proteins
+
 afc <- dudi.coa(freqaa, scann = FALSE, nf = 5)
-
-################################################################################
-
-## premier plan factoriel
 
 pdf(paste(pathFigures, "COA_AminoAcidComposition_BRAKER2.pdf",sep=""), width=6, height=6)
 
@@ -70,9 +68,99 @@ dev.off()
 ## length distribution
 
 pdf(paste(pathFigures, "ProteinLength_BRAKER2.pdf",sep=""), width=4, height=11)
-par(mar=c(1,3.1, 2.1, 1.1))
 
-boxplot(protlen, horizontal=T)
+par(mar=c(4,8.1, 2.1, 1.1))
+par(mgp=c(3, 0.5, 0))
+par(cex.axis=0.85)
+boxplot(protlen, horizontal=T, names=rep("", length(protlen)), outline=F, xlim=c(0.5, length(protlen)+0.5), xaxs="i")
+mtext(names(protlen), side=2, at=1:length(protlen), las=2, line=1, cex=0.5, font=3)
+
+mtext("protein length", side=1, line=2, cex=0.95)
+
+dev.off()
+
+################################################################################
+
+filtered.prot=list()
+freqaa.filtered=list()
+minlen=100
+
+for(sp in species){
+  print(sp)
+
+  nbstop=unlist(lapply(proteins[[sp]], function(x) length(which(x=="*"))))
+  len=protlen[[sp]]
+
+  ok=which(len>=minlen & nbstop==0)
+  filtered.prot[[sp]]=proteins[[sp]][ok]
+  freqaa.filtered[[sp]]=as.numeric(table(factor(unlist(filtered.prot[[sp]]), levels=a())))
+}
+
+freqaa.filtered=t(as.data.frame(freqaa.filtered))
+colnames(freqaa.filtered)=a()
+rownames(freqaa.filtered)=species
+
+################################################################################
+
+## COA, filtered proteins
+
+afc.filtered <- dudi.coa(freqaa.filtered, scann = FALSE, nf = 5)
+
+pdf(paste(pathFigures, "COA_AminoAcidComposition_BRAKER2_MinLength100_NoStop.pdf",sep=""), width=6, height=6)
+
+par(mar=c(4.5, 5.1, 2.1, 1.1))
+plot(afc.filtered$li[,1],afc.filtered$li[,2], pch = 19, main = "correspondence analysis, first factorial map", xlab = "", ylab ="",las = 1)
+
+mtext(paste0("F1 (", round(100*afc.filtered$eig[1]/sum(afc.filtered$eig)), "% explained variance)"), side=1, line=3)
+mtext(paste0("F2 (", round(100*afc.filtered$eig[2]/sum(afc.filtered$eig)), "% explained variance)"), side=2, line=3.5)
+
+smallx=diff(range(afc.filtered$li[,1]))/100
+smally=diff(range(afc.filtered$li[,2]))/100
+
+text(labels=rownames(afc.filtered$li)[50], x=afc.filtered$li[50,1]+smallx, y=afc.filtered$li[50,2]+smally, adj=0)
+
+dev.off()
+
+################################################################################
+
+orthogroups=read.table(paste(pathAnnot, assembly, "/", method, "/OrthoFinder/OrthoFinder/Results_May06_2/Orthogroups/Orthogroups.tsv", sep=""), h=T, stringsAsFactors=F, sep="\t", quote="\"")
+
+inortho=apply(orthogroups, 2, function(x) unlist(lapply(x, function(y) unlist(strsplit(y, split=", ")))))
+
+## take proteins in orthogroups
+
+ortho.prot=list()
+freqaa.ortho=list()
+
+for(sp in species){
+  print(sp)
+
+  ok=intersect(names(proteins[[sp]]), inortho[[sp]])
+  ortho.prot[[sp]]=proteins[[sp]][ok]
+  freqaa.ortho[[sp]]=as.numeric(table(factor(unlist(ortho.prot[[sp]]), levels=a())))
+}
+
+freqaa.ortho=t(as.data.frame(freqaa.ortho))
+colnames(freqaa.ortho)=a()
+rownames(freqaa.ortho)=species
+
+################################################################################
+## COA, ortho proteins
+
+afc.ortho <- dudi.coa(freqaa.ortho, scann = FALSE, nf = 5)
+
+pdf(paste(pathFigures, "COA_AminoAcidComposition_BRAKER2_InOrthogroups.pdf",sep=""), width=6, height=6)
+
+par(mar=c(4.5, 5.1, 2.1, 1.1))
+plot(afc.ortho$li[,1],afc.ortho$li[,2], pch = 19, main = "correspondence analysis, first factorial map", xlab = "", ylab ="",las = 1)
+
+mtext(paste0("F1 (", round(100*afc.ortho$eig[1]/sum(afc.ortho$eig)), "% explained variance)"), side=1, line=3)
+mtext(paste0("F2 (", round(100*afc.ortho$eig[2]/sum(afc.ortho$eig)), "% explained variance)"), side=2, line=3.5)
+
+smallx=diff(range(afc.ortho$li[,1]))/100
+smally=diff(range(afc.ortho$li[,2]))/100
+
+text(labels=rownames(afc.ortho$li)[50], x=afc.ortho$li[50,1]+smallx, y=afc.ortho$li[50,2]+smally, adj=0)
 
 dev.off()
 
