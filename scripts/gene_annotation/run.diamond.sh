@@ -28,6 +28,6 @@ done
 
 ##########################################################################
 
-diamond makedb --threads 24 --evalue 0.001  --max-target-seqs 20  --in ${pathResults}/braker.faa --db ${pathProteins}/B10K_NCBI/Penelope_pileata --out ${pathResults}/diamond_results/Penelope_pileata.diamond.blastp.out --outfmt 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps
+diamond blastp --threads 24 --evalue 0.001  --max-target-seqs 20  --in ${pathResults}/braker.faa --db ${pathProteins}/B10K_NCBI/Penelope_pileata --out ${pathResults}/diamond_results/Penelope_pileata.diamond.blastp.out --outfmt 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps
 
 ##########################################################################
