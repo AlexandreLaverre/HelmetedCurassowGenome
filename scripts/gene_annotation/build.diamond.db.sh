@@ -13,9 +13,6 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathProteins=${path}/data/protein_sequences
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}/${genome}.fa
-export pathResults=${path}/results/genome_annotation/${method}/${brakerset}
-der
 
 ##########################################################################
 
