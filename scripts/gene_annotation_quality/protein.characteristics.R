@@ -165,3 +165,38 @@ text(labels=rownames(afc.ortho$li)[50], x=afc.ortho$li[50,1]+smallx, y=afc.ortho
 dev.off()
 
 ################################################################################
+
+## multi-exonic genes
+
+multiex=readLines(paste(pathAnnot, assembly, "/", method, "/multiexonic_genes_proteins.txt", sep=""))
+
+all.filters=intersect(multiex, inortho[["Pauxi_pauxi"]]) ## multiexonic, orthogroups
+all.filters=intersect(all.filters, names(filtered.prot[["Pauxi_pauxi"]])) ## min length, no stop
+
+freqaa.allfilters=freqaa.ortho
+freqaa.allfilters["Pauxi_pauxi",]=as.numeric(table(factor(unlist(proteins[["Pauxi_pauxi"]][all.filters]), levels=a())))
+
+## COA, all filters
+
+afc.allfilters <- dudi.coa(freqaa.allfilters, scann = FALSE, nf = 5)
+
+pdf(paste(pathFigures, "COA_AminoAcidComposition_BRAKER2_MinLength100_NoStop_InOrthogroups_Multiexonic.pdf",sep=""), width=6, height=6)
+
+par(mar=c(4.5, 5.1, 2.1, 1.1))
+plot(afc.allfilters$li[,1],afc.allfilters$li[,2], pch = 19, main = "correspondence analysis, first factorial map", xlab = "", ylab ="",las = 1)
+
+mtext(paste0("F1 (", round(100*afc.allfilters$eig[1]/sum(afc.allfilters$eig)), "% explained variance)"), side=1, line=3)
+mtext(paste0("F2 (", round(100*afc.allfilters$eig[2]/sum(afc.allfilters$eig)), "% explained variance)"), side=2, line=3.5)
+
+smallx=diff(range(afc.allfilters$li[,1]))/100
+smally=diff(range(afc.allfilters$li[,2]))/100
+
+text(labels=rownames(afc.allfilters$li)[50], x=afc.allfilters$li[50,1]+smallx, y=afc.allfilters$li[50,2]+smally, adj=0)
+
+dev.off()
+
+################################################################################
+
+propaa.allfilters=freqaa.allfilters/apply(freqaa.allfilters,1,sum)
+
+################################################################################
