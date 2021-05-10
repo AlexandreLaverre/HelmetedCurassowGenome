@@ -44,6 +44,8 @@ ln -s ${pathProteins}/B10K_NCBI/GCA_013396635.1_ASM1339663v1_protein.faa ${pathR
 
 ## add hocco
 
-gffread -S -y ${pathResults}/OrthoFinder/Pauxi_pauxi.fa -g ${pathGenomeAssembly} ${pathResults}/braker.gtf
+gffread -S -y ${pathResults}/braker.faa -g ${pathGenomeAssembly} ${pathResults}/braker.gtf
+
+ln -s ${pathResults}/braker.faa ${pathResults}/OrthoFinder/Pauxi_pauxi.fa
 
 ##########################################################################
