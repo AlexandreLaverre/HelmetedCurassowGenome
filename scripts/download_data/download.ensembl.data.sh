@@ -18,7 +18,9 @@ do
     export sp=`echo ${prefix} | cut -f 1 -d '.'`
     export lowersp=`echo "$sp" | awk '{print tolower($0)}'`
 
-    echo ${file} ${prefix} ${sp} ${lowersp}	   
+    echo ${file} ${prefix} ${sp} ${lowersp}
+
+    wget http://ftp.ensembl.org/pub/release-103/gff3/${lowersp}/${sp}.${prefix}.gff3.gz
 done
 
 ##########################################################################
