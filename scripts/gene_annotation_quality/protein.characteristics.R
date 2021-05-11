@@ -200,3 +200,31 @@ dev.off()
 propaa.allfilters=freqaa.allfilters/apply(freqaa.allfilters,1,sum)
 
 ################################################################################
+
+## proteins with good diamond blastp hits
+
+diamondhits=readLines(paste(pathAnnot, assembly, "/", method, "/diamond_results/proteins_with_hits_minid40_minquerycov25_minsubjectcov25.txt", sep=""))
+
+freqaa.diamond=freqaa.ortho
+freqaa.diamond["Pauxi_pauxi",]=as.numeric(table(factor(unlist(proteins[["Pauxi_pauxi"]][diamondhits]), levels=a())))
+
+## COA, all filters
+
+afc.diamond <- dudi.coa(freqaa.diamond, scann = FALSE, nf = 5)
+
+pdf(paste(pathFigures, "COA_AminoAcidComposition_BRAKER2_DiamondHits_MinCoverage25_MinPCID40.pdf",sep=""), width=6, height=6)
+
+par(mar=c(4.5, 5.1, 2.1, 1.1))
+plot(afc.diamond$li[,1],afc.diamond$li[,2], pch = 19, main = "correspondence analysis, first factorial map", xlab = "", ylab ="",las = 1)
+
+mtext(paste0("F1 (", round(100*afc.diamond$eig[1]/sum(afc.diamond$eig)), "% explained variance)"), side=1, line=3)
+mtext(paste0("F2 (", round(100*afc.diamond$eig[2]/sum(afc.diamond$eig)), "% explained variance)"), side=2, line=3.5)
+
+smallx=diff(range(afc.diamond$li[,1]))/100
+smally=diff(range(afc.diamond$li[,2]))/100
+
+text(labels=rownames(afc.diamond$li)[50], x=afc.diamond$li[50,1]+smallx, y=afc.diamond$li[50,2]+smally, adj=0)
+
+dev.off()
+
+################################################################################
