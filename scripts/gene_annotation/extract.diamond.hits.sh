@@ -21,6 +21,6 @@ export pathResults=${path}/results/genome_annotation/${method}/${brakerset}
 
 ##########################################################################
 
-cut -f 1  ${pathResults}/diamond_results/*_minid${minid}_minquerycov${minquerycov}_minsubjectcov${minsubjectcov}.diamond.blastp.out | sort -u > proteins_with_hits_minid${minid}_minquerycov${minquerycov}_minsubjectcov${minsubjectcov}.txt
+cut -f 1  ${pathResults}/diamond_results/*_minid${minid}_minquerycov${minquerycov}_minsubjectcov${minsubjectcov}.diamond.blastp.out | sort -u > ${pathResults}/diamond_results/proteins_with_hits_minid${minid}_minquerycov${minquerycov}_minsubjectcov${minsubjectcov}.txt
 
 ##########################################################################
