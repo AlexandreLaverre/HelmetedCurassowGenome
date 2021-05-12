@@ -20,7 +20,6 @@ fi
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
 export pathResults=${path}/results/genome_annotation/${method}/BRAKER_${lib}
 export pathProteins=${path}/data/protein_sequences/${lib}
-export pathScripts=${path}/scripts/genome_assembly_quality
 
 #########################################################################
 
