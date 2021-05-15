@@ -1,0 +1,54 @@
+#!/bin/bash
+
+export assembly=$1
+export cluster=$2
+
+#########################################################################
+
+if [ ${cluster} = "pbil" ]; then
+    export path=/beegfs/data/${USER}/HelmetedCurassowGenome
+fi
+
+if [ ${cluster} = "cloud" ]; then
+    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/mnt/mydatalocal/Tools
+fi
+
+export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
+export pathGenomes=${path}/data/genome_sequences/${source}
+export pathAnnotations=${path}/data/genome_annotations/${source}
+export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa
+
+#########################################################################
+
+if [ -e ${pathResults}/combined ]; then
+    echo "results dir already there"
+else
+    mkdir -p ${pathResults}/combined
+fi
+
+#########################################################################
+
+echo "#!/bin/bash " > script_combine_GeMoMa
+echo -n "java -jar ${pathTools}/GeMoMa/GeMoMa-1.7.1.jar CLI GAF " >> script_combine_GeMoMa
+
+#########################################################################
+
+for sp in `ls ${pathResults} | grep -v combined`
+do
+    if [ -e ${pathResults}/${sp}/final_annotation.gff ]; then
+	echo -n "p=${sp} g=${pathResults}/${sp}/final_annotation.gff ">> script_combine_GeMoMa
+    fi
+done
+
+#########################################################################
+
+echo  "outdir=${pathResults}/combined " >> script_combine_GeMoMa
+
+#########################################################################
+
+chmod a+x script_combine_GeMoMa
+
+./script_combine_GeMoMa
+
+#########################################################################
