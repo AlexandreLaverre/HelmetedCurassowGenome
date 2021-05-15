@@ -52,9 +52,9 @@ export annotfile=`ls ${pathAnnotations} | grep ${ref} | grep gff`
 #########################################################################
 
 if [ -e ${pathResults}/final_annotation.gff ]; then
-    eho "already done"
+    echo "already done"
 else
-    java -jar /mnt/mydatalocal/Tools/GeMoMa/GeMoMa-1.7.1.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 
+    java -jar ${pathTools}/GeMoMa/GeMoMa-1.7.1.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 
 fi
 
 #########################################################################
