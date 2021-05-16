@@ -49,6 +49,7 @@ freqaa[["GeMoMa"]]=as.numeric(table(factor(unlist(proteins[["GeMoMa"]]), levels=
 freqaa=t(as.data.frame(freqaa))
 colnames(freqaa)=a()
 rownames(freqaa)=names(proteins)
+rownames(freqaa)[which(rownames(freqaa)=="Pauxi_pauxi")]="BRAKER2"
 
 ################################################################################
 
