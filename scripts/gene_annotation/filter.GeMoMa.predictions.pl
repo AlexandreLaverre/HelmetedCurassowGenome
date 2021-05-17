@@ -200,6 +200,41 @@ sub computePropStop{
 
 #################################################################################
 
+sub readOverlapRepeats{
+    my $pathin=$_[0];
+    my $propoverlap=$_[1];
+
+    open(my $input, $pathin);
+
+    my $line=<$input>;
+    chomp $line;
+    my %header;
+
+    my @s=split("\t", $line);
+    for(my $i=0; $i<@s; $i++){
+	$header{$s[$i]}=$i;
+    }
+
+    $line=<$input>;
+
+    while($line){
+	chomp $line;
+	my @s=split("\t", $line);
+	my $tx=$s[$header{"TranscriptID"}];
+	my $txlen=$s[$header{"TranscriptLength"}]+0.0;
+	my $replen=$s[$header{"RepeatOverlapLength"}]+0.0;
+	my $proprep=($replen+0.0)/($txlen+0.0);
+
+	$propoverlap->{$tx}=$proprep;
+	
+	$line=<$input>;
+    }
+
+    close($input);
+}
+
+#################################################################################
+
 sub printHelp{
 
     my $parnames=$_[0];
@@ -226,11 +261,13 @@ my %parameters;
 $parameters{"pathAnnotGTF"}="NA";
 $parameters{"pathProteins"}="NA";
 $parameters{"minProteinLength"}="NA";
+$parameters{"pathOverlapRepeats"}="NA";
+$parameters{"maxFractionRepeats"}="NA";
 $parameters{"source"}="NA";
 $parameters{"pathOutputGTF"}="NA";
 $parameters{"pathOutputFasta"}="NA";
 
-my @defaultpars=("pathAnnotGTF", "pathProteins", "minProteinLength",  "source",  "pathOutputGTF", "pathOutputFasta");
+my @defaultpars=("pathAnnotGTF", "pathProteins", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta");
 
 
 my %defaultvalues;
@@ -299,14 +336,35 @@ print "Done.\n";
 
 ##############################################################
 
+print "Reading overlap with repeats...\n";
+
+my %overlaprepeats;
+
+readOverlapRepeats($parameters{"pathOverlapRepeats"}, \%overlaprepeats);
+
+my $nbtx=keys %overlaprepeats;
+
+print "Found overlap repeats data for ".$nbtx." transcripts.\n";
+
+print "Done.\n";
+
+##############################################################
+
 print "Filtering transcripts...\n";
 
 my @alltranscripts=keys %transcripts;
 
 my $minlen=$parameters{"minProteinLength"}+0;
 
+print "minimum length ".$minlen."\n";
+
+my $maxrep=$parameters{"maxFractionRepeats"}+0.0;
+
+print "maximum fraction repeats: ".$maxrep."\n";
+
 my $nbtooshort=0;
 my $nbwithstop=0;
+my $nbwithrep=0;
 
 foreach my $tx (@alltranscripts){
     if(!exists $proteins{$tx}){
@@ -326,12 +384,25 @@ foreach my $tx (@alltranscripts){
 	if($propstop>0){
 	    $nbwithstop++;
 	    delete $transcripts{$tx};
+	} else{
+	    if(!exists $overlaprepeats{$tx}){
+		print "Weird! cannot find overlap repeats for ".$tx."\n";
+		exit(1);
+	    }
+	    
+	    my $proprep=$overlaprepeats{$tx};
+
+	    if($proprep>$maxrep){
+		$nbwithrep++;
+		delete $transcripts{$tx};
+	    }
 	}
     }
 }
 
 print "Deleted ".$nbtooshort." transcripts that were too short.\n";
 print "Deleted ".$nbwithstop." transcripts with stop/X codons.\n";
+print "Deleted ".$nbwithrep." transcripts with repeats.\n";
 
 print "Done.\n";
 
@@ -344,6 +415,7 @@ open(my $output, ">".$parameters{"pathOutputGTF"});
 writeGTF(\%transcripts, $parameters{"source"}, $output);
  
 close($output);
+
 print "Done.\n";
 
 ##############################################################
