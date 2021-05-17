@@ -1,8 +1,9 @@
 #!/bin/bash
 
 export cluster=$1
-export method="MEGAHIT_RAGOUT"
-export brakerset="BRAKER_Ensembl103_multithread"
+export annot=$2
+
+export assembly="MEGAHIT_RAGOUT"
 
 ##########################################################################
 
@@ -11,7 +12,7 @@ if [ ${cluster} = "cloud" ]; then
     export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
 fi
 
-export pathResults=${path}/results/genome_annotation/${method}/${brakerset}
+export pathResults=${path}/results/genome_annotation/${assembly}/${annot}
 
 ##########################################################################
 
