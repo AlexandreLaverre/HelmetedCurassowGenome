@@ -9,6 +9,7 @@ sub readGTF{
     my $exons=$_[1];
     my $genestx=$_[2];
     my $txexons=$_[3];
+    my $txlength=$_[4];
 
     open(my $input, $pathin);
     
@@ -56,6 +57,12 @@ sub readGTF{
 	    }
 	    else{
 		$txexons->{$txid}={$exonid=>1};
+	    }
+
+	    if(exists $txlength->{$txid}){
+		$txlength->{$txid}+=($end-$start+1);
+	    } else{
+		$txlength->{$txid}=($end-$start+1);
 	    }
 	}
 	
@@ -270,9 +277,7 @@ sub makeBlocks{
     my %hashpos;
 
     my $nb=@{$intervals->{"start"}};
-    $blocks->{"start"}=[];
-    $blocks->{"end"}=[];
-
+  
     for(my $i=0; $i<$nb; $i++){
 	my $start=${$intervals->{"start"}}[$i];
 	my $end=${$intervals->{"end"}}[$i];
@@ -398,8 +403,9 @@ print "Reading annotations...\n";
 my %exons;
 my %genestx;
 my %txexons;
+my %txlen;
 
-readGTF($parameters{"pathAnnotGTF"}, \%exons, \%genestx, \%txexons);
+readGTF($parameters{"pathAnnotGTF"}, \%exons, \%genestx, \%txexons, \%txlen);
 
 my $nbex=keys %exons;
 my $nbg=keys %genestx;
@@ -437,14 +443,13 @@ print "Done.\n";
 
 print "Computing overlap with repeats...\n";
 
-
 my %overlapboth;
 
 computeOverlap(\%orderedexons, \%orderedrepeats, "any", \%overlapboth);
 
 my $nbov=keys %overlapboth;
 
-print "Found ".$nbov." exons with repeat coverage on any strand.\n";
+print "Found ".$nbov." exons with repeat coverage.\n";
    
 print "Done.\n";
 
@@ -452,34 +457,35 @@ print "Done.\n";
 
 print "Writing output...\n";
 
-
 ## any strand
 
 open(my $output, ">".$parameters{"pathOutput"});
 
-print $output "GeneID\tTranscriptID\tExonID\tChr\tStart\tEnd\tStrand\n";
+print $output "GeneID\tTranscriptID\tTranscriptLength\tRepeatOverlapLength\n";
 
-foreach my $txid (keys %txexons){
-    foreach my $exonid (keys %{$txexons{$txid}}){
-	my %blocks;
+foreach my $geneid (keys %genestx){
+    foreach my $txid (keys %{$genestx{$geneid}}){
+	my $thislen=$txlen{$txid};
 	
-	my $geneid=join(";", keys %{$exons{$exonid}{"genes"}});
-	my $chr=$exons{$exonid}{"chr"};
-	my $start=$exons{$exonid}{"start"};
-	my $end=$exons{$exonid}{"end"};
-	my $strand=$exons{$exonid}{"strand"};
+	my %repblocks;
+	$repblocks{"start"}=[];
+	$repblocks{"end"}=[];
 	
-	my $totlen=$end-$start+1;
-	
-	if(exists $overlapboth{$exonid}){
-	    makeBlocks($overlapboth{$exonid}, \%blocks);
-
-	    my $nbex=@{$blocks{"start"}};
-	    
-	    for(my $i=0; $i<$nbex; $i++){
-		print $output $geneid."\t".$txid."\t".$exonid."\t".$chr."\t".${$blocks{"start"}}[$i]."\t".${$blocks{"end"}}[$i]."\t".$strand."\n";
+	foreach my $exonid (keys %{$txexons{$txid}}){
+	    if(exists $overlapboth{$exonid}){
+		makeBlocks($overlapboth{$exonid}, \%repblocks);
 	    }
 	}
+	
+	my $replen=0;
+
+	my $nbrep=@{$repblocks{"start"}};
+	
+	for(my $i=0; $i<$nbrep; $i++){
+	    $replen+=(${$repblocks{"end"}}[$i] - ${$repblocks{"start"}}[$i]+1);
+	}
+    
+	print $output $geneid."\t".$txid."\t".$thislen."\t".$replen."\n";
     }
 }
 
