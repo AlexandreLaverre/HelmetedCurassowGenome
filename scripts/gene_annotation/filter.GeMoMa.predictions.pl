@@ -265,9 +265,10 @@ $parameters{"pathOverlapRepeats"}="NA";
 $parameters{"maxFractionRepeats"}="NA";
 $parameters{"source"}="NA";
 $parameters{"pathOutputGTF"}="NA";
+$parameters{"pathOutputFullFasta"}="NA";
 $parameters{"pathOutputFasta"}="NA";
 
-my @defaultpars=("pathAnnotGTF", "pathProteins", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta");
+my @defaultpars=("pathAnnotGTF", "pathProteins", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta", "pathOutputFullFasta");
 
 
 my %defaultvalues;
@@ -345,6 +346,25 @@ readOverlapRepeats($parameters{"pathOverlapRepeats"}, \%overlaprepeats);
 my $nbtx=keys %overlaprepeats;
 
 print "Found overlap repeats data for ".$nbtx." transcripts.\n";
+
+print "Done.\n";
+
+
+##############################################################
+
+print "Writing fasta output...\n";
+
+open(my $output, ">".$parameters{"pathOutputFullFasta"});
+
+foreach my $tx (keys %transcripts){
+    my $gene=$transcripts{$tx}{"gene"};
+    my $name=$tx." gene:".$gene." transcript:".$tx;
+    my $seq=$proteins{$tx};
+    
+    writeSequence($seq, $name, $output);
+}
+ 
+close($output);
 
 print "Done.\n";
 

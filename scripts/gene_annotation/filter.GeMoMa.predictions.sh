@@ -39,6 +39,6 @@ fi
 
 #########################################################################
 
-perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --minProteinLength=50 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.1 --source=GeMoMa --pathOutputGTF=${pathResults}/final_predictions.gtf --pathOutputFasta=${pathResults}/final_predictions.faa
+perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --minProteinLength=50 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.1 --source=GeMoMa --pathOutputGTF=${pathResults}/final_predictions.gtf --pathOutputFasta=${pathResults}/final_predictions.faa --pathOutputFullFasta=${pathResults}/filtered_predictions_formatted.faa
 
 #########################################################################
