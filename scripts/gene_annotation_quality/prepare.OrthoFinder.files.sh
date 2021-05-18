@@ -58,13 +58,13 @@ fi
 ##########################################################################
 
 if [ ${annot} = "GeMoMa/combined" ]; then 
-    if [ -e ${pathResults}/primary_transcripts/filtered_predictions.faa ]; then
+    if [ -e ${pathResults}/primary_transcripts/filtered_predictions_formatted.faa ]; then
 	echo "primary transcripts already done"
     else
-	python ${pathTools}/primary_transcript.py ${pathResults}/filtered_predictions.faa
+	python ${pathTools}/primary_transcript.py ${pathResults}/filtered_predictions_formatted.faa
     fi
     
-    ln -s ${pathResults}/primary_transcripts/filtered_predictions.faa ${pathResults}/OrthoFinder/Pauxi_pauxi.fa
+    ln -s ${pathResults}/primary_transcripts/filtered_predictions_formatted.faa ${pathResults}/OrthoFinder/Pauxi_pauxi.fa
 
 fi
 
