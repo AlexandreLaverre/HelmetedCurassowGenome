@@ -58,14 +58,6 @@ fi
 ##########################################################################
 
 if [ ${annot} = "GeMoMa/combined" ]; then 
-    # if [ -e ${pathResults}/primary_transcripts/final_predictions.faa ]; then
-    # 	echo "primary transcripts already done"
-    # else
-    # 	python ${pathTools}/primary_transcript.py ${pathResults}/final_predictions.faa
-    # fi
-    
-    # ln -s ${pathResults}/primary_transcripts/final_predictions.faa ${pathResults}/OrthoFinder/Pauxi_pauxi.fa
-
     if [ -e ${pathResults}/primary_transcripts/filtered_predictions.faa ]; then
 	echo "primary transcripts already done"
     else
@@ -73,6 +65,7 @@ if [ ${annot} = "GeMoMa/combined" ]; then
     fi
     
     ln -s ${pathResults}/primary_transcripts/filtered_predictions.faa ${pathResults}/OrthoFinder/Pauxi_pauxi.fa
+
 fi
 
 ##########################################################################
