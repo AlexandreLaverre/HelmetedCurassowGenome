@@ -108,7 +108,7 @@ freqaa[["long"]]=as.numeric(table(factor(unlist(proteins[long]), levels=a())))
 
 table.freqaa=t(as.data.frame(freqaa))
 colnames(table.freqaa)=a()
-rownames(table.freqaa)=species
+rownames(table.freqaa)=names(freqaa)
 
 ################################################################################
 
