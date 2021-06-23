@@ -235,6 +235,48 @@ sub readOverlapRepeats{
 
 #################################################################################
 
+sub readOrthoGroups{
+    my $pathin=$_[0];
+    my $orthogroups=$_[1];
+
+    open(my $input, $pathin);
+    
+    my $line=<$input>;
+    chomp $line;
+    my @s=split("\t", $line);
+    my %header;
+
+    for(my $i=0; $i<@s; $i++){
+	$header{$s[$i]}=$i;
+    }
+
+    $line=<$input>;
+
+    while($line){
+	chomp $line;
+	my @s=split("\t", $line);
+
+	my $genes=$s[$header{"Pauxi_pauxi"}];
+	my @genes=split(", ", $genes);
+
+	my $nbg=@genes;
+
+	if($nbg==1){
+	    foreach my $g (@genes){
+		if($g ne ""){
+		    $orthogroups->{$g}=1;
+		}
+	    }
+	}
+	
+	$line=<$input>;
+    }
+    
+    close($input);
+}
+
+#################################################################################
+
 sub printHelp{
 
     my $parnames=$_[0];
@@ -260,6 +302,7 @@ sub printHelp{
 my %parameters;
 $parameters{"pathAnnotGTF"}="NA";
 $parameters{"pathProteins"}="NA";
+$parameters{"pathOrthoGroups"}="NA";
 $parameters{"minProteinLength"}="NA";
 $parameters{"pathOverlapRepeats"}="NA";
 $parameters{"maxFractionRepeats"}="NA";
@@ -268,7 +311,7 @@ $parameters{"pathOutputGTF"}="NA";
 $parameters{"pathOutputFullFasta"}="NA";
 $parameters{"pathOutputFasta"}="NA";
 
-my @defaultpars=("pathAnnotGTF", "pathProteins", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta", "pathOutputFullFasta");
+my @defaultpars=("pathAnnotGTF", "pathProteins", "pathOrthoGroups", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta", "pathOutputFullFasta");
 
 
 my %defaultvalues;
@@ -337,6 +380,20 @@ print "Done.\n";
 
 ##############################################################
 
+print "Reading orthogroups...\n";
+
+my %orthogroups;
+
+readOrthoGroups($parameters{"pathOrthoGroups"}, \%orthogroups);
+
+my $nbo=keys %orthogroups;
+
+print "Found ".$nbo." genes in single-copy orthogroups.\n";
+
+print "Done.\n";
+
+##############################################################
+
 print "Reading overlap with repeats...\n";
 
 my %overlaprepeats;
@@ -348,7 +405,6 @@ my $nbtx=keys %overlaprepeats;
 print "Found overlap repeats data for ".$nbtx." transcripts.\n";
 
 print "Done.\n";
-
 
 ##############################################################
 
@@ -392,29 +448,35 @@ foreach my $tx (@alltranscripts){
 	exit(1);
     }
 
-    my $seq=$proteins{$tx};
-    my $len=length $seq;
+    my $gene=$transcripts{$tx}{"gene"};
 
-    if($len<$minlen){
-	$nbtooshort++;
-	delete $transcripts{$tx};
-    } else{
-	my $propstop=computePropStop($seq);
-
-	if($propstop>0){
-	    $nbwithstop++;
+    ## we only delete transcripts from genes that are not in orthogroups
+    
+    if(!exists $orthogroups{$gene}){ 
+	my $seq=$proteins{$tx};
+	my $len=length $seq;
+	
+	if($len<$minlen){
+	    $nbtooshort++;
 	    delete $transcripts{$tx};
 	} else{
-	    if(!exists $overlaprepeats{$tx}){
-		print "Weird! cannot find overlap repeats for ".$tx."\n";
-		exit(1);
-	    }
+	    my $propstop=computePropStop($seq);
 	    
-	    my $proprep=$overlaprepeats{$tx};
-
-	    if($proprep>$maxrep){
-		$nbwithrep++;
+	    if($propstop>0){
+		$nbwithstop++;
 		delete $transcripts{$tx};
+	    } else{
+		if(!exists $overlaprepeats{$tx}){
+		    print "Weird! cannot find overlap repeats for ".$tx."\n";
+		    exit(1);
+		}
+		
+		my $proprep=$overlaprepeats{$tx};
+		
+		if($proprep>$maxrep){
+		    $nbwithrep++;
+		    delete $transcripts{$tx};
+		}
 	    }
 	}
     }
