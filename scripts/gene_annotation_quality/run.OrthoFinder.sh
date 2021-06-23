@@ -2,6 +2,7 @@
 
 export cluster=$1
 export annot=$2
+export type=$3
 
 export assembly="MEGAHIT_RAGOUT"
 
@@ -18,6 +19,6 @@ export pathResults=${path}/results/genome_annotation/${assembly}/${annot}
 
 ulimit -n 50000
 
-orthofinder -f ${pathResults}/OrthoFinder -t 30 
+orthofinder -f ${pathResults}/OrthoFinder_${type} -t 30 
 
 ##########################################################################
