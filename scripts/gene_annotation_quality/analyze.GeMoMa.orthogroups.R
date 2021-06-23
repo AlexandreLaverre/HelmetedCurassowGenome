@@ -17,9 +17,9 @@ protlen=unlist(lapply(proteins, length))
 
 #######################################################################
 
-ortho=read.table(paste(pathOrthoFinder, "Phylogenetic_Hierarchical_Orthogroups/N0.tsv", sep=""), h=T, stringsAsFactors=F, sep="\t", quote="\"")
+orthogroups=read.table(paste(pathOrthoFinder, "Phylogenetic_Hierarchical_Orthogroups/N0.tsv", sep=""), h=T, stringsAsFactors=F, sep="\t", quote="\"")
 
-ortho=setdiff(ortho$Pauxi_pauxi, "")
+ortho=setdiff(orthogroups$Pauxi_pauxi, "")
 ortho=unlist(lapply(ortho, function(x) unlist(strsplit(x, split=", "))))
 
 notortho=setdiff(names(proteins), ortho)
@@ -45,8 +45,36 @@ legend("topright", inset=0.01, col=c("black", "red"), legend=c("in orthogroups",
 
 dev.off()
 
+#######################################################################
+
 ## select proteins with at least 100 aa
 long=names(proteins)[which(protlen>=100)]
+
+#######################################################################
+
+ovrep=read.table(paste(pathGeMoMa, "overlap_repeats.txt", sep=""), h=T, stringsAsFactors=F)
+ovrep$PercentageRepeats=100*ovrep$RepeatOverlapLength/ovrep$TranscriptLength
+
+ovrepgene=tapply(ovrep$PercentageRepeats, ovrep$GeneID, max)
+
+#######################################################################
+
+## protein length
+
+pdf(paste(pathFigures, "OverlapRepeats_GeMoMa_Orthogroups.pdf",sep=""))
+
+do=density(ovrepgene[ortho], bw=0.5, na.rm=T)
+dn=density(ovrepgene[notortho], bw=0.5, na.rm=T)
+xlim=range(c(do$x, dn$x))
+ylim=range(c(do$y, dn$y))
+
+par(mar=c(4.1, 4.1, 2.1, 1.1))
+plot(do$x, do$y, xlim=xlim, ylim=ylim, type="l", xlab="% repeats", ylab="density", col="black")
+lines(dn$x, dn$y, col="red")
+
+legend("topright", inset=0.01, col=c("black", "red"), legend=c("in orthogroups", "not in orthogroups"), lty=1)
+
+dev.off()
 
 #######################################################################
 
