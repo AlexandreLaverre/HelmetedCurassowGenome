@@ -19,6 +19,8 @@ export pathResults=${path}/results/genome_annotation/${assembly}/${annot}
 
 ulimit -n 50000
 
-orthofinder -f ${pathResults}/OrthoFinder_${type} -t 30 
+if [ ${type} = "final" ]; then
+    orthofinder -f ${pathResults}/OrthoFinder_${type} -t 30 -I 2 -M msa 
+fi
 
 ##########################################################################
