@@ -17,7 +17,7 @@ fi
 if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
     export pathTools=/mnt/mydatalocal/Tools
-    export version=1.7.1
+    export version=1.8
 fi
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
