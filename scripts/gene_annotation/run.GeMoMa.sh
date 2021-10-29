@@ -50,8 +50,8 @@ fi
 
 #########################################################################
 
-export genomefile=`ls ${pathGenomes} | grep ${ref}\. | grep fa`
-export annotfile=`ls ${pathAnnotations} | grep ${ref}\. | grep gff`
+export genomefile=`ls ${pathGenomes} | grep ${ref}\\. | grep fa`
+export annotfile=`ls ${pathAnnotations} | grep ${ref}\\. | grep gff`
 
 #########################################################################
 
