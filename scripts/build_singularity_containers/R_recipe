@@ -1,0 +1,47 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%runscript
+
+%environment
+
+%post
+   apt-get update
+   
+   apt-get install -y git
+   apt-get install -y gnupg2
+
+   DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+   DEBIAN_FRONTEND=noninteractive apt-get install -y keyboard-configuration
+   
+   apt-get install -y software-properties-common
+
+   apt-get install -y libcurl4-openssl-dev
+   apt-get install -y libxml2-dev
+      
+   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+   add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+   apt-get update	      
+   apt-get install -y r-base
+
+   apt-get install -y libssl-dev
+   apt-get install -y libtiff5
+   apt-get install -y libtiff5-dev
+
+   apt-get install -y xorg 
+   apt-get install -y libx11-dev 
+   apt-get install -y libglu1-mesa-dev 
+   
+   R -e 'install.packages("ade4")'
+   R -e 'install.packages("ape")'
+   R -e 'install.packages("naniar")'	
+   R -e 'install.packages("vioplot")'
+   R -e 'install.packages("gsubfn")'
+   R -e 'install.packages("stringr")'
+   R -e 'install.packages("Hmisc")'
+   R -e 'install.packages("data.table")'
+   R -e 'install.packages("gplots")'
+   R -e 'install.packages("RColorBrewer")'
+   R -e 'install.packages("imager")'
+   R -e 'install.packages("coxed")'
+ 

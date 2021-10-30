@@ -1,0 +1,10 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%runscript
+
+%environment
+
+%post
+   apt-get update
+   apt-get install -y default-jre 
