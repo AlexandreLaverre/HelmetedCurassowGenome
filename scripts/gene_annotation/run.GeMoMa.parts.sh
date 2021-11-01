@@ -94,7 +94,7 @@ do
 	    
 	    echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults}/${part} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref}.${part} a=${pathAnnotations}/parts/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
 	    
-	    # sbatch ${pathScripts}/bsub_script_gemoma
+	    sbatch ${pathScripts}/bsub_script_gemoma
 	fi
 
 
@@ -110,7 +110,7 @@ do
 	    
 	    echo "java -Xms2G -Xmx64G  -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults}/${part} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref}.${part} a=${pathAnnotations}/${parts}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
 	    
-	    # sbatch ${pathScripts}/bsub_script_gemoma
+	    sbatch ${pathScripts}/bsub_script_gemoma
 	fi
 	
 	#############################################
@@ -119,13 +119,11 @@ do
 	    ## mmseqs available in PATH
 	    echo "java  -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults}/${part} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref}.${part} a=${pathAnnotations}/parts/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 " >> ${pathScripts}/bsub_script_gemoma
 	    
-	    # chmod a+x ${pathScripts}/bsub_script_gemoma
-	    # ${pathScripts}/bsub_script_gemoma
+	    chmod a+x ${pathScripts}/bsub_script_gemoma
+	    ${pathScripts}/bsub_script_gemoma
 	fi
 	
     fi
-
-    exit
 done
 
 #########################################################################
