@@ -4,8 +4,6 @@ export assembly=$1
 export ref=$2
 export source=$3
 export cluster=$4
-export threads=$5
-export constraint=$6
 
 #########################################################################
 
@@ -40,7 +38,6 @@ if [ -e ${pathResults} ]; then
 else
     mkdir -p ${pathResults}
 fi
-
 
 #########################################################################
 
