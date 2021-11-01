@@ -56,7 +56,7 @@ do
     export part=`echo ${annotfile} | cut -f 2 -d '.' `
     
     if [ -e ${pathResults}/${part}/final_annotation.gff ]; then
-	echo ${parth}
+	echo ${part}
 	
 	if [ -e ${pathResults}/final_annotation.gff ]; then
 	    cat ${pathResults}/${part}/final_annotation.gff | grep -v SOFTWARE | grep -v gff-version >> ${pathResults}/final_annotation.gff
@@ -64,8 +64,14 @@ do
 	    cp ${pathResults}/${part}/final_annotation.gff ${pathResults}/final_annotation.gff
 	fi
     else
-	echo "cannot find results for "${part}
-	exit
+	export nbcds=`grep -c CDS ${pathAnnotations}/parts/${ref}.${part}.gff`
+
+	if [ ${nbcds} = 0 ]; then
+	    echo "cannot find results for "${part}", but there are no CDS"
+	else
+	    echo "cannot find results for "${part}", there are "${nbcds}" CDS"
+	    exit
+	fi
     fi
 done
 
