@@ -84,8 +84,8 @@ do
 	
 	if [ ${cluster} = "pbil" ]; then
 	    echo "#SBATCH --job-name=gemoma_${ref}" >>  ${pathScripts}/bsub_script_gemoma
-	    echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${ref}.txt" >>  ${pathScripts}/bsub_script_gemoma
-	    echo "#SBATCH --error=${pathScripts}/std_error_GEMOMA_${ref}.txt" >> ${pathScripts}/bsub_script_gemoma
+	    echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${ref}_${part}.txt" >>  ${pathScripts}/bsub_script_gemoma
+	    echo "#SBATCH --error=${pathScripts}/std_error_GEMOMA_${ref}_${part}.txt" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --mem=12G" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
@@ -102,8 +102,8 @@ do
 	
 	if [ ${cluster} = "in2p3" ]; then
 	    echo "#SBATCH --job-name=gemoma_${ref}" >>  ${pathScripts}/bsub_script_gemoma
-	    echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${ref}.txt" >>  ${pathScripts}/bsub_script_gemoma
-	    echo "#SBATCH --error=${pathScripts}/std_error_GEMOMA_${ref}.txt" >> ${pathScripts}/bsub_script_gemoma
+	    echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${ref}_${part}.txt" >>  ${pathScripts}/bsub_script_gemoma
+	    echo "#SBATCH --error=${pathScripts}/std_error_GEMOMA_${ref}_${part}.txt" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --ntasks=1" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --time=7-00:00:00" >> ${pathScripts}/bsub_script_gemoma
