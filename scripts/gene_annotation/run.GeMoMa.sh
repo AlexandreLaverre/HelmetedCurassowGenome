@@ -111,7 +111,7 @@ else
     
     if [ ${cluster} = "cloud" ]; then
 	## mmseqs available in PATH
-	echo "java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 " >> ${pathScripts}/bsub_script_gemoma
+	echo "java  -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 " >> ${pathScripts}/bsub_script_gemoma
 	
 	chmod a+x ${pathScripts}/bsub_script_gemoma
 	${pathScripts}/bsub_script_gemoma
