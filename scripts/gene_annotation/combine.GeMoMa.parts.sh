@@ -50,8 +50,6 @@ fi
 
 for part in `ls ${pathResults} | grep -v final`
 do
-    export part=`echo ${annotfile} | cut -f 2 -d '.' `
-    
     if [ -e ${pathResults}/${part}/final_annotation.gff ]; then
 	echo ${part}
 	
@@ -63,7 +61,7 @@ do
     else
 	export nbcds=`grep -c CDS ${pathAnnotations}/parts/${ref}.${part}.gff`
 
-	if [ ${nbcds} = 0 ]; then
+	if [ ${nbcds} == '0' ]; then
 	    echo "cannot find results for "${part}", but there are no CDS"
 	else
 	    echo "cannot find results for "${part}", there are "${nbcds}" CDS"
