@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export sp=$1
-export ref=$2
+export ref=$1
+export source=$2
 export cluster=$3
 
 #########################################################################
