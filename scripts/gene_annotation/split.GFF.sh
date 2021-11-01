@@ -32,12 +32,11 @@ fi
 #########################################################################
 
 export annotfile=`ls ${pathAnnotations} | grep ${ref}'\.' | grep gff`
-export prefix=`echo ${annotfile} | cut -f 1 -d '-'`
 
-echo "annotation file ".${annotfile}." prefix "${prefix}
+echo "annotation file ".${annotfile}." prefix "${ref}
 
 #########################################################################
 
-perl ${pathScripts}/split.GFF.pl --pathGFF=${pathAnnotations}/${annotfile} --maxChrSize=50000000 --dirOutput=${pathAnnotations}/parts --prefixOutput=${prefix}
+perl ${pathScripts}/split.GFF.pl --pathGFF=${pathAnnotations}/${annotfile} --maxChrSize=50000000 --dirOutput=${pathAnnotations}/parts --prefixOutput=${ref}
 
 #########################################################################
