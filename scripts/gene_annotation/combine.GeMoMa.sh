@@ -14,9 +14,6 @@ if [ ${cluster} = "cloud" ]; then
     export pathTools=/mnt/mydatalocal/Tools
 fi
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
-export pathGenomes=${path}/data/genome_sequences/${source}
-export pathAnnotations=${path}/data/genome_annotations/${source}
 export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa
 
 #########################################################################
