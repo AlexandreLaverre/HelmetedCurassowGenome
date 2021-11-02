@@ -27,7 +27,7 @@ fi
 #########################################################################
 
 echo "#!/bin/bash " > script_combine_GeMoMa
-echo -n "java -jar ${pathTools}/GeMoMa/GeMoMa-1.7.1.jar CLI GAF " >> script_combine_GeMoMa
+echo -n "java -jar ${pathTools}/GeMoMa/GeMoMa-1.8.jar CLI GAF " >> script_combine_GeMoMa
 
 #########################################################################
 
