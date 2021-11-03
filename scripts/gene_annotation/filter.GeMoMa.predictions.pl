@@ -380,17 +380,24 @@ print "Done.\n";
 
 ##############################################################
 
-print "Reading orthogroups...\n";
+my $pathOrtho=$parameters{"pathOrthoGroups"};
 
 my %orthogroups;
 
-readOrthoGroups($parameters{"pathOrthoGroups"}, \%orthogroups);
+my $nbog=keys %orthogroups;
 
-my $nbo=keys %orthogroups;
+if(-e $pathOrtho){
 
-print "Found ".$nbo." genes in single-copy orthogroups.\n";
-
-print "Done.\n";
+    print "Reading orthogroups...\n";
+        
+    readOrthoGroups($pathOrtho, \%orthogroups);
+    
+    my $nbo=keys %orthogroups;
+    
+    print "Found ".$nbo." genes in single-copy orthogroups.\n";
+    
+    print "Done.\n";
+}
 
 ##############################################################
 
@@ -450,9 +457,9 @@ foreach my $tx (@alltranscripts){
 
     my $gene=$transcripts{$tx}{"gene"};
 
-    ## we only delete transcripts from genes that are not in orthogroups
+    ## we only delete transcripts from genes that are not in orthogroups - if we have the orthogroups
     
-    if(!exists $orthogroups{$gene}){ 
+    if(!exists $orthogroups{$gene} && $nbog>0){ 
 	my $seq=$proteins{$tx};
 	my $len=length $seq;
 	
