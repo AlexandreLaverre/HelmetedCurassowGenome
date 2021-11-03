@@ -17,23 +17,10 @@ fi
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
 export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa/combined
-export pathOrthoFinder=${pathResults}/OrthoFinder_May18/Results_May18
 export pathScripts=${path}/scripts/gene_annotation
 
 #########################################################################
 
-if [ ${assembly} = "MEGAHIT" ]; then
-    export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
-fi
-
-#########################################################################
-
-if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
-    export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed_sm.fa
-fi
-
-#########################################################################
-
-perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathOrthoGroups=${pathOrthoFinder}/Phylogenetic_Hierarchical_Orthogroups/N0.tsv --minProteinLength=100 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.5 --source=GeMoMa --pathOutputGTF=${pathResults}/final_predictions.gtf --pathOutputFasta=${pathResults}/final_predictions.faa --pathOutputFullFasta=${pathResults}/filtered_predictions_formatted.faa
+perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathOrthoGroups=NA --minProteinLength=100 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.5 --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_minLength100_maxFractionRepeats0.5.gtf --pathOutputFasta=${pathResults}/final_predictions_minLength100_maxFractionRepeats0.5.faa --pathOutputFullFasta=${pathResults}/filtered_predictions_formatted.faa
 
 #########################################################################
