@@ -48,7 +48,7 @@ ln -s ${pathProteins}/NCBI/GCA_013396635.1_ASM1339663v1_protein.faa ${pathResult
 
 ln -s ${pathProteins}/NCBI/GCA_013399715.1_ASM1339971v1_protein.faa ${pathResults}/OrthoFinder_${type}/Alectura_lathami.fa
 
-ln -ls ${pathProteins}/NCBI/GCA_013396415.1_ASM1339641v1_protein.faa ${pathResults}/OrthoFinder_${type}/Casuarius_casuarius.fa
+ln -s ${pathProteins}/NCBI/GCA_013396415.1_ASM1339641v1_protein.faa ${pathResults}/OrthoFinder_${type}/Casuarius_casuarius.fa
 
 ##########################################################################
 
