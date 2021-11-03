@@ -44,13 +44,17 @@ done
 
 ## add Penelope pileata
 
-ln -s ${pathProteins}/B10K_NCBI/GCA_013396635.1_ASM1339663v1_protein.faa ${pathResults}/OrthoFinder_${type}/Penelope_pileata.fa
+ln -s ${pathProteins}/NCBI/GCA_013396635.1_ASM1339663v1_protein.faa ${pathResults}/OrthoFinder_${type}/Penelope_pileata.fa
+
+ln -s ${pathProteins}/NCBI/GCA_013399715.1_ASM1339971v1_protein.faa ${pathResults}/OrthoFinder_${type}/Alectura_lathami.fa
+
+ln -ls ${pathProteins}/NCBI/GCA_013396415.1_ASM1339641v1_protein.faa ${pathResults}/OrthoFinder_${type}/Casuarius_casuarius.fa
 
 ##########################################################################
 
 ## add hocco
 
-if [ ${annot} = "BRAKER_Ensembl103_multithread" ]||[ ${annot} = "BRAKER_Ensembl103_singlethread" ]||[ ${annot} = "BRAKER_Ensembl103_bird_species" ]; then 
+if [ ${annot} = "BRAKER_Ensembl103" ]||[ ${annot} = "BRAKER_Ensembl103_bird_species" ]; then 
     gffread -S -y ${pathResults}/braker.faa -g ${pathGenomeAssembly} ${pathResults}/braker.gtf
     
     ln -s ${pathResults}/braker.faa ${pathResults}/OrthoFinder_${type}/Pauxi_pauxi.fa
