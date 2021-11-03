@@ -459,7 +459,7 @@ foreach my $tx (@alltranscripts){
 
     ## we only delete transcripts from genes that are not in orthogroups - if we have the orthogroups
     
-    if(!exists $orthogroups{$gene} && $nbog>0){ 
+    if(!exists $orthogroups{$gene}){ 
 	my $seq=$proteins{$tx};
 	my $len=length $seq;
 	
