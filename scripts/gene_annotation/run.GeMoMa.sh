@@ -57,8 +57,15 @@ fi
 
 #########################################################################
 
-export genomefile=`ls ${pathGenomes} | grep ${ref}'\.' | grep fa`
-export annotfile=`ls ${pathAnnotations} | grep ${ref}'\.' | grep gff`
+if [ ${source} = "Ensembl" ]; then
+    export genomefile=`ls ${pathGenomes} | grep ${ref}'\.' | grep fa`
+    export annotfile=`ls ${pathAnnotations} | grep ${ref}'\.' | grep gff`
+fi
+
+if [ ${source} = "NCBI" ]; then
+    export genomefile=${ref}.fa
+    export annotfile=${ref}_withstopcodons_filtered.gff
+fi
 
 #########################################################################
 
