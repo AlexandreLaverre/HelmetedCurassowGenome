@@ -21,7 +21,7 @@ export pathScripts=${path}/scripts/copy_number_variation
 #########################################################################
 # Align the data
 
-bwa mem -R "@RG\tID:id\tSM:sample\tLB:lib" ${pathAssembly}/genome_sequence_renamed.fa ${pathWGS}/${library}_R1_001_trimmed.fastq.gz ${pathWGS}/${library}_R2_001_trimmed.fastq.gz \
+bwa mem -R "@RG\tID:id\tSM:sample\tLB:lib" ${pathIndex}/genome_sequence_renamed.fa ${pathWGS}/${library}_R1_001_trimmed.fastq.gz ${pathWGS}/${library}_R2_001_trimmed.fastq.gz \
     | samblaster --excludeDups --addMateTags --maxSplitCount 2 --minNonOverlap 20 \
     | samtools view -S -b - \
     > ${pathResults}/${library}.bam
