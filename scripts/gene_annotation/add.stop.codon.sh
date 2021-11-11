@@ -24,22 +24,14 @@ export pathScripts=${path}/scripts/gene_annotation
 
 #########################################################################
 
-export genomefile=`ls ${pathGenomes} | grep ${ref}'\.' | grep fa | grep -v fai$`
-export annotfile=`ls ${pathAnnotations} | grep ${ref}'\.' | grep gff`
-
-#########################################################################
-
-echo "genome file "${genomefile}
-echo "annot file "${annotfile}
-
-#########################################################################
-
-perl ${pathScripts}/add.stop.codon.pl --pathInputGFF=${pathAnnotations}/${annotfile} --pathOutputGFF=${pathAnnotations}/${ref}_withstopcodons.gff
+perl ${pathScripts}/add.stop.codon.pl --pathInputGFF=${pathAnnotations}/${ref}.gff --pathOutputGFF=${pathAnnotations}/${ref}_withstopcodons.gff
 
 # -J   discard any mRNAs that either lack initial START codon
 #   or the terminal STOP codon, or have an in-frame stop codon
 #   (i.e. only print mRNAs with a complete CDS)
 
-gffread -J -g ${pathGenomes}/${genomefile} ${pathAnnotations}/${ref}_withstopcodons.gff > ${pathAnnotations}/${ref}_filtered.gff
+gffread -J -g ${pathGenomes}/${ref}.fa ${pathAnnotations}/${ref}.gff > ${pathAnnotations}/${ref}_initial_filtered.gff
+
+gffread -J -g ${pathGenomes}/${ref}.fa ${pathAnnotations}/${ref}_withstopcodons.gff > ${pathAnnotations}/${ref}_withstopcodons_filtered.gff
 
 #########################################################################
