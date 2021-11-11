@@ -14,7 +14,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathWGS=${path}/data/WGS
-export pathAssembly=${path}/results/genome_assembly/MEGAHIT_RAGOUT
+export pathIndex=${path}/data/genome_indexes/MEGAHIT_RAGOUT
 export pathResults=${path}/results/copy_number_variation
 export pathScripts=${path}/scripts/copy_number_variation
 
