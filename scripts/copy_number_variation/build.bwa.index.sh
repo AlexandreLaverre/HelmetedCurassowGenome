@@ -1,7 +1,6 @@
 #!/bin/bash
 
-export library=$1
-export cluster=$2
+export cluster=$1
 
 #########################################################################
 
