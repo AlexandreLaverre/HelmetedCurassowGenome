@@ -18,8 +18,10 @@ sub readLastExons{
     }
     
     my $line=<$input>;
+   
     
     while($line){
+	$line=~s/\|/-/g;
 	chomp $line;
 	my @s=split("\t", $line);
 	
@@ -107,6 +109,7 @@ sub readSequenceSizes{
     my $line=<$input>;
     
     while($line){
+	$line=~s/\|/-/g;
 	my $prefix=substr $line, 0, 17;
 	
 	if($prefix eq "##sequence-region"){
@@ -242,6 +245,9 @@ my $line=<$input>;
 while($line){
     
     chomp $line;
+    ## we replace "|" in transcript names
+    $line=~s/\|/-/g;
+    
     my @s=split("\t", $line);
     
     my $type=$s[2];
