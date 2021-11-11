@@ -64,7 +64,7 @@ fi
 
 if [ ${source} = "NCBI" ]; then
     export genomefile=${ref}.fa
-    export annotfile=${ref}_withstopcodons_filtered.gff
+    export annotfile=${ref}_withstopcodons.gff
 fi
 
 #########################################################################
