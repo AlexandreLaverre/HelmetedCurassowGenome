@@ -17,7 +17,6 @@ fi
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
 export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa/combined
-export pathOrthoFinder=${pathResults}/OrthoFinder_May18/Results_May18
 export pathScripts=${path}/scripts/gene_annotation
 
 #########################################################################
