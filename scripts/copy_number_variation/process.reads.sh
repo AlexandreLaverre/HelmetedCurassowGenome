@@ -98,7 +98,7 @@ fi
 if [ -e ${pathResults}/${library}.discordants ]; then
     echo "sorted discordants already there"
 else
-    echo "samtools sort ${pathResults}/${library}.discordants.unsorted.bam ${pathResults}/${library}.discordants" >> ${pathScripts}/bsub_script_process
+    echo "samtools sort -o ${pathResults}/${library}.discordants ${pathResults}/${library}.discordants.unsorted.bam " >> ${pathScripts}/bsub_script_process
 
     export run=1
 fi
@@ -106,7 +106,7 @@ fi
 if [ -e ${pathResults}/${library}.splitters ]; then
     echo "sorted split reads already there"
 else
-    echo "samtools sort ${pathResults}/${library}.splitters.unsorted.bam ${pathResults}/${library}.splitters" >> ${pathScripts}/bsub_script_process
+    echo "samtools sort -o ${pathResults}/${library}.splitters ${pathResults}/${library}.splitters.unsorted.bam " >> ${pathScripts}/bsub_script_process
 
     export run=1
 fi
