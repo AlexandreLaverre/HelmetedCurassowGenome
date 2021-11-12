@@ -40,3 +40,7 @@ gffread -S -y ${pathResults}/filtered_predictions.faa -g ${pathAssembly} ${pathR
 gffread -S -x ${pathResults}/filtered_predictions.cds.fa -g ${pathAssembly} ${pathResults}/filtered_predictions.gff
 
 #########################################################################
+
+perl ${pathScripts}/format.GeMoMa.proteins.pl --pathGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathOutput=${pathResults}/filtered_predictions_formatted.faa
+
+#########################################################################
