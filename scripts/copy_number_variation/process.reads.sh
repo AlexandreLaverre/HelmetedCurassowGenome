@@ -2,7 +2,7 @@
 
 export library=$1
 export cluster=$2
-export nthreads=$3
+export threads=$3
 
 #########################################################################
 
