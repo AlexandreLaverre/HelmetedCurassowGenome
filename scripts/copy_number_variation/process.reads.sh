@@ -50,10 +50,9 @@ if [ ${cluster} = "in2p3" ]; then
 fi
 
 #########################################################################
-
 # Align the data
 
-echo "bwa mem -t ${nthreads} -R "@RG\tID:id\tSM:sample\tLB:lib" ${pathIndex}/genome_sequence_renamed.fa ${pathWGS}/${library}_R1_001_trimmed.fastq.gz ${pathWGS}/${library}_R2_001_trimmed.fastq.gz \
+echo "bwa mem -t ${nthreads} -R \"@RG\tID:id\tSM:sample\tLB:lib\" ${pathIndex}/genome_sequence_renamed.fa ${pathWGS}/${library}_R1_001_trimmed.fastq.gz ${pathWGS}/${library}_R2_001_trimmed.fastq.gz \
     | samblaster --excludeDups --addMateTags --maxSplitCount 2 --minNonOverlap 20 \
     | samtools view -S -b - \
     > ${pathResults}/${library}.bam" >> ${pathScripts}/bsub_script_process
