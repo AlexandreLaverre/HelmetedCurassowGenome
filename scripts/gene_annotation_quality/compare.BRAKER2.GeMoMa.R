@@ -1,10 +1,10 @@
 ################################################################################
 
 pathAnnot="../../results/genome_annotation/"
-pathFigures="../../results/figures/"
+pathFigures="../../results/figures"
 
 assembly="MEGAHIT_RAGOUT"
-braker="BRAKER_Ensembl103_multithread"
+braker="BRAKER_Ensembl103"
 gemoma="GeMoMa/combined"
 
 ################################################################################
