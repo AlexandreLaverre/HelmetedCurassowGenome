@@ -48,11 +48,14 @@ rownames(freqaa)=names(proteins)
 ################################################################################
 
 ## add BRAKER2
+print("BRAKER2")
 
-proteins[["BRAKER2"]]=read.fasta(paste(pathAnnot, assembly, "/BRAKER_Ensembl103/proteins.fa", sep=""), seqtype="AA")
+proteins[["BRAKER2"]]=read.fasta(paste(pathAnnot, assembly, "/BRAKER_Ensembl103/braker.faa", sep=""), seqtype="AA")
 this.freq=as.numeric(table(factor(unlist(proteins[["BRAKER2"]]), levels=a())))
 
 ################################################################################
+
+print("AFC")
 
 afc <- dudi.coa(freqaa, scann = FALSE, nf = 5)
 
