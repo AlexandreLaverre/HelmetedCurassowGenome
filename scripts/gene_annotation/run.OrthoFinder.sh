@@ -20,6 +20,10 @@ export pathResults=${path}/results/genome_annotation/${assembly}/${annot}
 
 ulimit -n 50000
 
+## OrthoFinder 2.5.4
+## MAFFT v7.453
+## fasttree ubuntu package 2.1.11-1
+
 ##########################################################################
 
 ## to determine homologous gene families for annotation
