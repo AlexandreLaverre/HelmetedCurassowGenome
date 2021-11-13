@@ -41,20 +41,20 @@ for(sp in species){
 
 ################################################################################
 
+## add BRAKER2
+print("BRAKER2")
+
+proteins[["BRAKER2"]]=read.fasta(paste(pathAnnot, assembly, "/BRAKER_Ensembl103/braker.faa", sep=""), seqtype="AA")
+freqaa[["BRAKER2"]]=as.numeric(table(factor(unlist(proteins[["BRAKER2"]]), levels=a())))
+
+################################################################################
+
 freqaa=t(as.data.frame(freqaa))
 colnames(freqaa)=a()
 rownames(freqaa)=names(proteins)
 
 ################################################################################
-
-## add BRAKER2
-print("BRAKER2")
-
-proteins[["BRAKER2"]]=read.fasta(paste(pathAnnot, assembly, "/BRAKER_Ensembl103/braker.faa", sep=""), seqtype="AA")
-this.freq=as.numeric(table(factor(unlist(proteins[["BRAKER2"]]), levels=a())))
-
-################################################################################
-
+                 
 print("AFC")
 
 afc <- dudi.coa(freqaa, scann = FALSE, nf = 5)
@@ -75,8 +75,12 @@ points(afc$li["BRAKER2",1],afc$li["BRAKER2",2], pch=20, col="seagreen")
 points(afc$li["all",1],afc$li["all",2], pch=20, col="indianred")
 points(afc$li["first_filter",1],afc$li["first_filter",2], pch=20, col="blue")
 
-legend("bottomright", legend=c("GeMoMa all", "GeMoMa filtered", "BRAKER2"), pch=20, col=c("indianred", "blue", "seagreen"), inset=0.01)
+legend("bottomleft", legend=c("GeMoMa all", "GeMoMa filtered", "BRAKER2"), pch=20, col=c("indianred", "blue", "seagreen"), inset=0.01)
 
 dev.off()
+
+################################################################################
+
+
 
 ################################################################################
