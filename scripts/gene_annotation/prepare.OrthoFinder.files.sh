@@ -74,13 +74,13 @@ if [ ${annot} = "GeMoMa/combined" ]; then
     fi
 
     if [ ${type} = "final" ]; then
-	if [ -e ${pathResults}/primary_transcripts/final_predictions.faa ]; then
+	if [ -e ${pathResults}/primary_transcripts/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.faa ]; then
 	    echo "primary transcripts already done"
 	else
-	    python ${pathTools}/primary_transcript.py ${pathResults}/final_predictions.faa
+	    python ${pathTools}/primary_transcript.py ${pathResults}/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.faa
 	fi
 	
-	ln -s ${pathResults}/primary_transcripts/final_predictions.faa ${pathResults}/OrthoFinder_${type}/Pauxi_pauxi.fa
+	ln -s ${pathResults}/primary_transcripts/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.faa ${pathResults}/OrthoFinder_${type}/Pauxi_pauxi.fa
     fi
 fi
 
