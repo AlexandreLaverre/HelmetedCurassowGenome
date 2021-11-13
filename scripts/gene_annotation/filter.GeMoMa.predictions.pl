@@ -393,7 +393,7 @@ if(-e $pathOrtho){
     
     my $nbo=keys %orthogroups;
     
-    print "Found ".$nbo." genes in single-copy orthogroups.\n";
+    print "Found ".$nbo." genes in orthogroups.\n";
     
     print "Done.\n";
 }
