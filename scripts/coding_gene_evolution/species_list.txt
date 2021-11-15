@@ -1,0 +1,19 @@
+Struthio camelus	Ensembl
+Casuarius casuarius	NCBI
+Dromaius novaehollandiae	Ensembl
+Gallus gallus	Ensembl
+Meleagris gallopavo	Ensembl
+Numida meleagris	Ensembl
+Penelope pileata	NCBI
+Alectura lathami	NCBI
+Anseranas semipalmata	NCBI
+Anas platyrhynchos playtyrhynchos	Ensembl
+Anser cygnoides	   Ensembl
+Balearica regulorum	NCBI
+Grus americana		NCBI
+Calidris pugnax		Ensembl
+Bucorvus abyssinicus	NCBI
+Buceros rhinoceros	NCBI
+Upupa epops	NCBI
+Rhinopomastus cyanomelas	NCBI
+Strix occidentalis	Ensembl
