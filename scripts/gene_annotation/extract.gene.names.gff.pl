@@ -53,6 +53,8 @@ sub readGeneNames{
     my $nbok=keys %{$names};
 
     print "Found names for ".$nbok." genes, ".$nbnotok." genes with no name\n";
+
+    close($input);
 }
 
 ##############################################################
