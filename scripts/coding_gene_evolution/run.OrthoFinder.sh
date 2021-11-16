@@ -25,7 +25,7 @@ ulimit -n 50000
 ##########################################################################
 
 if [ ${type} = "fasttree" ]; then
-    orthofinder -f ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type}
+    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type}
 fi
 
 ##########################################################################
@@ -33,7 +33,7 @@ fi
 ## we use previously inferred species tree
 
 if [ ${type} = "iqtree" ]; then
-    orthofinder -f ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/OrthoFinder_fasttree/..
+    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/OrthoFinder_fasttree/..
 fi
 
 ##########################################################################
