@@ -13,12 +13,12 @@ fi
 
 export pathProteins=${path}/data/protein_sequences
 export pathResults=${path}/results/coding_sequence_evolution
-export pathAnnot=${path}/results/genome_annotation/GeMoMa/combined
-export pathScripts=${path}/scripts/coding_sequence_evolution
+export pathAnnot=${path}/results/genome_annotation/${assembly}/GeMoMa/combined
+export pathScripts=${path}/scripts/coding_gene_evolution
 
 ##########################################################################
 
-for sp in `grep Ensembl ${pathScripts}/species_list | cut -f 1`
+for sp in `grep Ensembl ${pathScripts}/species_list.txt | cut -f 1`
 do
     export file=`ls ${pathProteins}/Ensembl103 | grep all.fa | grep ${sp}'\.'`
 

@@ -16,7 +16,7 @@ Bucorvus_abyssinicus	NCBI
 Buceros_rhinoceros	NCBI
 Upupa_epops	NCBI
 Rhinopomastus_cyanomelas	NCBI
-Strix_occidentalis	Ensembl
+Strix_occidentalis_caurina	Ensembl
 Ficedula_albicollis	Ensembl
 Anser_brachyrhynchus	Ensembl
 Aquila_chrysaetos_chrysaetos	Ensembl
