@@ -7,7 +7,7 @@ Numida_meleagris	Ensembl
 Penelope_pileata	NCBI
 Alectura_lathami	NCBI
 Anseranas_semipalmata	NCBI
-Anas_platyrhynchos_playtyrhynchos	Ensembl
+Anas_platyrhynchos_platyrhynchos	Ensembl
 Anser_cygnoides	Ensembl
 Balearica_regulorum	NCBI
 Grus_americana	NCBI
