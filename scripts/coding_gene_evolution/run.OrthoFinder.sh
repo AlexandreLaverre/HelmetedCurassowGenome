@@ -11,7 +11,7 @@ if [ ${cluster} = "cloud" ]; then
     export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
 fi
 
-export pathResults=${path}/results/coding_sequence_evolution/
+export pathResults=${path}/results/coding_gene_evolution/
 
 ##########################################################################
 
@@ -33,7 +33,7 @@ fi
 ## we use previously inferred species tree
 
 if [ ${type} = "iqtree" ]; then
-    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/OrthoFinder_fasttree/..
+    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree.txt
 fi
 
 ##########################################################################
