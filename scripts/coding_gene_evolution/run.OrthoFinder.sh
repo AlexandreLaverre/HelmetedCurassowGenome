@@ -33,7 +33,7 @@ fi
 ## we use previously inferred species tree
 
 if [ ${type} = "iqtree" ]; then
-    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree.txt
+    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree_rooted.txt
 fi
 
 ##########################################################################
