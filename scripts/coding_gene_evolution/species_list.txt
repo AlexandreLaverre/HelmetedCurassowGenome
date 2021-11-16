@@ -1,19 +1,27 @@
-Struthio camelus	Ensembl
-Casuarius casuarius	NCBI
-Dromaius novaehollandiae	Ensembl
-Gallus gallus	Ensembl
-Meleagris gallopavo	Ensembl
-Numida meleagris	Ensembl
-Penelope pileata	NCBI
-Alectura lathami	NCBI
-Anseranas semipalmata	NCBI
-Anas platyrhynchos playtyrhynchos	Ensembl
-Anser cygnoides	   Ensembl
-Balearica regulorum	NCBI
-Grus americana		NCBI
-Calidris pugnax		Ensembl
-Bucorvus abyssinicus	NCBI
-Buceros rhinoceros	NCBI
-Upupa epops	NCBI
-Rhinopomastus cyanomelas	NCBI
-Strix occidentalis	Ensembl
+Struthio_camelus_australis	Ensembl
+Casuarius_casuarius	NCBI
+Dromaius_novaehollandiae	Ensembl
+Gallus_gallus	Ensembl
+Meleagris_gallopavo	Ensembl
+Numida_meleagris	Ensembl
+Penelope_pileata	NCBI
+Alectura_lathami	NCBI
+Anseranas_semipalmata	NCBI
+Anas_platyrhynchos_playtyrhynchos	Ensembl
+Anser_cygnoides	Ensembl
+Balearica_regulorum	NCBI
+Grus_americana	NCBI
+Calidris_pugnax	Ensembl
+Bucorvus_abyssinicus	NCBI
+Buceros_rhinoceros	NCBI
+Upupa_epops	NCBI
+Rhinopomastus_cyanomelas	NCBI
+Strix_occidentalis	Ensembl
+Ficedula_albicollis	Ensembl
+Anser_brachyrhynchus	Ensembl
+Aquila_chrysaetos_chrysaetos	Ensembl
+Geospiza_fortis	Ensembl
+Parus_major	Ensembl
+Serinus_canaria	Ensembl
+Strigops_habroptila	Ensembl
+Coturnix_japonica	Ensembl
