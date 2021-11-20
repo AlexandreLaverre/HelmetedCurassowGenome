@@ -48,8 +48,6 @@ for file in `ls ${pathResults}/CDS | grep unaln | sed -n "${start},${end}p;${end
 do
     export prefix=`basename ${file} .unaln.fa`
 
-    echo ${prefix}
-
     if [ -e ${pathResults}/CDS/${prefix}.aln.best.fas ]; then
 	echo "already done"
     else
