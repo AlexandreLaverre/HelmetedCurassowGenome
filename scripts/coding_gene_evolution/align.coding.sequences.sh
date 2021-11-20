@@ -49,21 +49,21 @@ do
 
     echo ${prefix}
     
-    echo "prank -codon -once -f=fasta -t=${pathResults}/CDS/${prefix}.tree -d=${pathResults}/CDS/${file} -o=${pathResults}/CDS/${prefix}.aln.fa" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "prank -codon -once -f=fasta -t=${pathResults}/CDS/${prefix}.tree -d=${pathResults}/CDS/${file} -o=${pathResults}/CDS/${prefix}.aln" >> ${pathScripts}/log/bsub_prank_${start}_${end}
 
-    echo "prank -convert -f=phylips -d=${pathResults}/CDS/${prefix}.aln.fa -o=${pathResults}/CDS/${prefix}.aln.phy"  >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "prank -convert -f=phylips -d=${pathResults}/CDS/${prefix}.aln.best.fas -o=${pathResults}/CDS/${prefix}.aln"  >> ${pathScripts}/log/bsub_prank_${start}_${end}
     
 done
 
 ##########################################################################
 
 if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
-    sbatch ${pathScripts}/log/bsub_script_prank_${start}_${end}
+    sbatch ${pathScripts}/log/bsub_prank_${start}_${end}
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    chmod a+x ${pathScripts}/log/bsub_script_prank_${start}_${end}
-    ${pathScripts}/log/bsub_script_prank_${start}_${end}
+    chmod a+x ${pathScripts}/log/bsub_prank_${start}_${end}
+    ${pathScripts}/log/bsub_prank_${start}_${end}
 fi
 
 ##########################################################################
