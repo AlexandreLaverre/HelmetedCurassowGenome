@@ -10,6 +10,10 @@ if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
+if [ ${cluster} = "in2p3" ]; then
+    export path=/sps/biometr/necsulea/HelmetedCurassowGenome
+fi
+
 export pathCDS=${path}/data/coding_sequences
 export pathAnnot=${path}/results/genome_annotation/MEGAHIT_RAGOUT/GeMoMa/combined
 export pathResults=${path}/results/coding_gene_evolution
