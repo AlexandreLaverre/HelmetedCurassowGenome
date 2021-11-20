@@ -352,7 +352,15 @@ foreach my $id (keys %orthogroups){
 	
 	if(exists $cds{$sp}{$seqid}){
 	    my $seq=uc $cds{$sp}{$seqid};
-	    writeSequence($seq, $sp, $output);
+
+	    my $len=length $seq;
+	    my $mod=$len % 3;
+
+	    if($mod==0){
+		writeSequence($seq, $sp, $output);
+	    } else{
+		print "Discarded ".$sp." for ".$id.", not multiple of 3.\n";
+	    }
 	} else{
 	    print $id."\n";
 	    print "Cannot find ".$seqid." for ".$sp."\n";
