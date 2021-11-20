@@ -35,4 +35,6 @@ fi
 
 gffread -S -x ${pathResults}/final_annotations.cds.fa -g ${pathAssembly} ${pathResults}/final_annotations.gtf
 
+perl ${pathScripts}/format.GeMoMa.proteins.pl --pathAnnotGTF=${pathResults}/final_annotations.gtf --pathProteins=${pathResults}/final_annotations.cds.fa --pathOutput=${pathResults}/final_annotations_formatted.cds.fa
+
 #########################################################################
