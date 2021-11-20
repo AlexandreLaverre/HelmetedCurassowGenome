@@ -9,6 +9,7 @@ library(ape)
 #########################################################################
 
 full.tree=read.tree(paste(pathResults, "species_tree_rooted.txt",sep=""))
+full.tree$node.label <- NULL
 
 #########################################################################
 
