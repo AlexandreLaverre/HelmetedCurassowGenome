@@ -9,6 +9,12 @@ if [ ${cluster} = "cloud" ]; then
     export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
 fi
 
+
+if [ ${cluster} = "pbil" ]; then
+    export path=/beegfs/data/necsulea/HelmetedCurassowGenome
+    export pathTools=/beegfs/home/necsulea/Tools/OrthoFinder/tools
+fi
+
 export pathCDS=${path}/data/coding_sequences
 export pathAnnot=${path}/results/genome_annotation/MEGAHIT_RAGOUT/GeMoMa/combined
 export pathResults=${path}/results/coding_gene_evolution
