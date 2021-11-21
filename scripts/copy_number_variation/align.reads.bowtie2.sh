@@ -14,7 +14,7 @@ if [ ${cluster} = "in2p3" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 ##############################################################
