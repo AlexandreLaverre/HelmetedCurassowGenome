@@ -68,7 +68,7 @@ else
 	echo "#SBATCH --error=${pathScripts}/log/std_err_bowtie2" >> ${pathScripts}/log/bsub_script_bowtie2
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/log/bsub_script_bowtie2
     fi
-    
+
     echo "bowtie2 -p ${threads} --no-unal --very-sensitive-local -x ${pathBowtieIndex} -1 ${filesR1} -2 ${filesR2} -S ${pathResults}/accepted_hits_allsamples.sam > ${pathResults}/bowtie2_output 2>&1" >> ${pathScripts}/log/bsub_script_bowtie2
 
     echo "samtools sort -m 12G -@ ${threads} -o ${pathResults}/accepted_hits_allsamples.bam ${pathResults}/accepted_hits_allsamples.sam " >> ${pathScripts}/log/bsub_script_bowtie2
@@ -82,6 +82,5 @@ else
 	${pathScripts}/log/bsub_script_bowtie2
     fi
 fi
-
 
 ##############################################################
