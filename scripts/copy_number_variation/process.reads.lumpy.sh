@@ -12,8 +12,8 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/home/ubuntu/data/mydatalocal/Tools
 fi
 
 if [ ${cluster} = "in2p3" ]; then
