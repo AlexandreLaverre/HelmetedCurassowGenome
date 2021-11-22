@@ -26,6 +26,8 @@ export pathIndex=${path}/data/genome_indexes/MEGAHIT_RAGOUT
 export pathResults=${path}/results/copy_number_variation
 export pathScripts=${path}/scripts/copy_number_variation
 
+## bwa 0.7.17-4
+
 #########################################################################
 
 echo "#!/bin/bash" > ${pathScripts}/bsub_script_process
@@ -59,11 +61,34 @@ export run=0
 if [ -e ${pathResults}/${library}.bam ]; then
     echo "bwa already there"
 else
-    echo "bwa mem -t ${threads} -R \"@RG\tID:id\tSM:sample\tLB:lib\" ${pathIndex}/genome_sequence_renamed.fa ${pathWGS}/${library}_R1_001_trimmed.fastq.gz ${pathWGS}/${library}_R2_001_trimmed.fastq.gz \
+    if [ ${library} = "allsamples" ]; then
+	export pathR1=${pathWGS}/${library}_R1_trimmed.fastq.gz
+	export pathR2=${pathWGS}/${library}_R2_trimmed.fastq.gz
+
+	if [ -e ${pathWGS}/${library}_R1_trimmed.fastq.gz ]; then
+	    echo "R1 all samples already there"
+	else
+	    cat ${pathWGS}/B*_R1_001_trimmed.fastq.gz > ${pathWGS}/${library}_R1_trimmed.fastq.gz
+	fi
+
+	if [ -e ${pathWGS}/${library}_R2_trimmed.fastq.gz ]; then
+	    echo "R2 all samples already there"
+	else
+	    cat ${pathWGS}/B*_R2_001_trimmed.fastq.gz > ${pathWGS}/${library}_R2_trimmed.fastq.gz
+	fi
+
+
+	echo "bwa mem -t ${threads} -R \"@RG\tID:id\tSM:sample\tLB:lib\" ${pathIndex}/genome_sequence_renamed.fa ${pathR1} ${pathR2} \
     | samblaster --excludeDups --addMateTags --maxSplitCount 2 --minNonOverlap 20 \
     | samtools view -S -b - \
     > ${pathResults}/${library}.bam" >> ${pathScripts}/bsub_script_process
 
+    else
+	echo "bwa mem -t ${threads} -R \"@RG\tID:id\tSM:sample\tLB:lib\" ${pathIndex}/genome_sequence_renamed.fa ${pathWGS}/${library}_R1_001_trimmed.fastq.gz ${pathWGS}/${library}_R2_001_trimmed.fastq.gz \
+    | samblaster --excludeDups --addMateTags --maxSplitCount 2 --minNonOverlap 20 \
+    | samtools view -S -b - \
+    > ${pathResults}/${library}.bam" >> ${pathScripts}/bsub_script_process
+    fi
     export run=1
 fi
 
