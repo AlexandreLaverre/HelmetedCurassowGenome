@@ -25,9 +25,29 @@ export pathResults=${path}/results/CNVnator
 
 ##############################################################
 
+# index bam file
+
+if [ -e ${pathAln}/accepted_hits_allsamples.bam.bai ]; then
+    echo "bam index already there"
+else
+    samtools index ${pathAln}/accepted_hits_allsamples.bam
+fi
+
+##############################################################
+
+## Extract bam for this chromosome
+
+if [ -e  ${pathAln}/accepted_hits_allsamples_${chr}.bam ]; then
+    echo "bam file already there"
+else
+    samtools view -h -b -o ${pathAln}/accepted_hits_allsamples_${chr}.bam ${pathAln}/accepted_hits_allsamples.bam ${chr}
+fi
+
+##############################################################
+
 ## Extract read mapping
 
-cnvnator -root ${pathResults}/allsamples_${chr}.root -tree ${pathAln}/accepted_hits_allsamples.bam -chrom ${chr}
+cnvnator -root ${pathResults}/allsamples_${chr}.root -tree ${pathAln}/accepted_hits_allsamples_${chr}.bam -chrom ${chr}
 
 ##############################################################
 
