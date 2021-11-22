@@ -35,7 +35,7 @@ fi
 if [ ${type} = "iqtree" ]; then
     #  orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree_rooted.txt
 
-    orthofinder -f ${pathResults} -fg ${pathResults}/OrthoFinder_${type}/Results_Nov16 -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree_rooted.txt
+    orthofinder -fg ${pathResults}/OrthoFinder_${type}/Results_Nov16 -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree_rooted.txt
 fi
 
 ##########################################################################
