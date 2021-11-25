@@ -6,6 +6,8 @@ pathResults="../../results/coding_gene_evolution/"
 
 helmeted=c("Anseranas_semipalmata", "Numida_meleagris", "Casuarius_casuarius", "Balearica_regulorum", "Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi")
 
+helmeted10=substr(helmeted, 1, 10)
+
 #########################################################################
 
 library(ape)
@@ -14,6 +16,8 @@ library(ape)
 
 full.tree=read.tree(paste(pathResults, "species_tree_rooted.txt",sep=""))
 full.tree$node.label <- NULL
+
+full.tree$tip.label=substr(full.tree$tip.label,1,10)
 
 #########################################################################
 
