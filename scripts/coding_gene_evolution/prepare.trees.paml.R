@@ -25,6 +25,8 @@ files=system(paste("ls ",pathResults, "CDS/ | grep unaln",sep=""), intern=T)
 
 #########################################################################
 
+nbdone=0
+
 for(file in files){
   prefix=paste(unlist(strsplit(file, split="\\."))[1:2], collapse=".")
 
@@ -50,6 +52,12 @@ for(file in files){
   ## add labels for internal branches
 
   write.tree(this.tree,file=paste(pathResults, "CDS/",prefix,".branchmodel.tree",sep=""))
+
+  nbdone=nbdone+1
+  
+  if(nbdone%%1000==0){
+    print(paste("done ",nbdone,"trees"))
+  }
 }
 
 #########################################################################
