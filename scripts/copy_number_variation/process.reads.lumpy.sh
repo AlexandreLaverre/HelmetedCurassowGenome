@@ -27,6 +27,7 @@ export pathResults=${path}/results/copy_number_variation
 export pathScripts=${path}/scripts/copy_number_variation
 
 ## bwa 0.7.17-4
+## install libssl-dev to compile lumpy
 
 #########################################################################
 
