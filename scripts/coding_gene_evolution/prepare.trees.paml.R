@@ -32,6 +32,7 @@ for(file in files){
 
   species=system(paste("grep \">\" ",pathResults,"/CDS/",file,sep=""), intern=T)
   species=unlist(lapply(species, function(x) substr(x,2,nchar(x))))
+  species=substr(species,1,10)
 
   this.tree=keep.tip(full.tree, species)
   this.tree$node.label=rep("", this.tree$Nnode)
