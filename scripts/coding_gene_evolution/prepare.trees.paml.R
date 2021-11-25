@@ -4,6 +4,10 @@ pathResults="../../results/coding_gene_evolution/"
 
 #########################################################################
 
+helmeted=c("Anseranas_semipalmata", "Numida_meleagris", "Casuarius_casuarius", "Balearica_regulorum", "Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi")
+
+#########################################################################
+
 library(ape)
 
 #########################################################################
@@ -13,7 +17,7 @@ full.tree$node.label <- NULL
 
 #########################################################################
 
-files=system(paste("ls ",pathResults, "CDS/",sep=""), intern=T)
+files=system(paste("ls ",pathResults, "CDS/ | grep unaln",sep=""), intern=T)
 
 #########################################################################
 
@@ -24,8 +28,24 @@ for(file in files){
   species=unlist(lapply(species, function(x) substr(x,2,nchar(x))))
 
   this.tree=keep.tip(full.tree, species)
+  this.tree$node.label=rep("", this.tree$Nnode)
+  
+  ## check if we need to label internal branch
+  
+  if(all(c("Bucorvus_abyssinicus", "Buceros_rhinoceros")%in%this.tree$tip.label)){
+    anc=getMRCA(this.tree, tip=c("Bucorvus_abyssinicus", "Buceros_rhinoceros"))
+    node.nb=anc-length(this.tree$tip.label)
+    this.tree$node.label[node.nb]="#1" 
+  }
 
-  write.tree(this.tree,file=paste(pathResults, "CDS/",prefix,".tree",sep=""))
+  ## add labels for external branches, helmeted birds
+  
+  this.helmeted=which(this.tree$tip.label%in%helmeted)
+  this.tree$tip.label[this.helmeted]=paste(this.tree$tip.label[this.helmeted], "#1", sep=" ")
+
+  ## add labels for internal branches
+
+  write.tree(this.tree,file=paste(pathResults, "CDS/",prefix,".branchmodel.tree",sep=""))
 }
 
 #########################################################################
