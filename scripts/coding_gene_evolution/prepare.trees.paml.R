@@ -8,17 +8,17 @@ library(ape)
 
 #########################################################################
 
-write.tree.adapted <- function (phy, file = "", append = FALSE, digits = 10, tree.names = FALSE) 
+write.tree.adapted <- function (phy, file = "", append = FALSE, digits = 10, tree.names = FALSE)
 {
-    if (!(inherits(phy, c("phylo", "multiPhylo")))) 
+    if (!(inherits(phy, c("phylo", "multiPhylo"))))
         stop("object \"phy\" has no trees")
-    if (inherits(phy, "phylo")) 
+    if (inherits(phy, "phylo"))
         phy <- c(phy)
     N <- length(phy)
     res <- character(N)
     if (is.logical(tree.names)) {
         if (tree.names) {
-            tree.names <- if (is.null(names(phy))) 
+            tree.names <- if (is.null(names(phy)))
                 character(N)
             else names(phy)
         }
@@ -33,9 +33,9 @@ write.tree.adapted <- function (phy, file = "", append = FALSE, digits = 10, tre
     }
     ## phy <- ape:::.uncompressTipLabel(phy)
     class(phy) <- NULL
-    for (i in 1:N) res[i] <- ape:::.write.tree2(phy[[i]], digits = digits, 
+    for (i in 1:N) res[i] <- ape:::.write.tree2(phy[[i]], digits = digits,
         tree.prefix = tree.names[i], FALSE)
-    if (file == "") 
+    if (file == "")
         return(res)
     else cat(res, file = file, append = append, sep = "\n")
 }
@@ -74,19 +74,17 @@ for(file in files){
 
   this.tree=keep.tip(full.tree, species)
   this.tree$node.label=rep("", this.tree$Nnode)
-  
+
   ## check if we need to label internal branch
-  
+
   if(all(rhinoceros10%in%this.tree$tip.label)){
     anc=getMRCA(this.tree, tip=rhinoceros10)
     node.nb=anc-length(this.tree$tip.label)
     this.tree$node.label[node.nb]=" #1"
-
-    stop()
   }
 
   ## add labels for external branches, helmeted birds
-  
+
   this.helmeted=which(this.tree$tip.label%in%helmeted10)
   this.tree$tip.label[this.helmeted]=paste(this.tree$tip.label[this.helmeted], "#1", sep=" ")
 
@@ -95,11 +93,10 @@ for(file in files){
   write.tree.adapted(this.tree,file=paste(pathResults, "CDS/",prefix,".branchmodel.tree",sep=""))
 
   nbdone=nbdone+1
-  
+
   if(nbdone%%1000==0){
     print(paste("done ",nbdone,"trees"))
   }
 }
 
 #########################################################################
-
