@@ -13,7 +13,7 @@ full.tree$node.label <- NULL
 
 #########################################################################
 
-files=system(paste("ls ",pathResults, "CDS/",sep=""), intern=T)
+files=system(paste("ls ",pathResults, "CDS/ | grep unaln.fa",sep=""), intern=T)
 
 #########################################################################
 
@@ -29,4 +29,3 @@ for(file in files){
 }
 
 #########################################################################
-
