@@ -12,12 +12,12 @@ library(ape)
 
 ###########################################################################
 
+full.tree=read.tree(paste(pathResults, "/species_tree_rooted.txt",sep=""))
+
 if(file.exists(paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))){
   print("tree already there")
 }  else {
-  full.tree=read.tree(paste(pathResults, "/species_tree_rooted.txt",sep=""))
   full.tree$node.label <- NULL
-  
   write.tree(full.tree, paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))
 }
 
