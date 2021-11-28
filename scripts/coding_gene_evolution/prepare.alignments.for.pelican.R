@@ -8,27 +8,7 @@ pathAnnot="../../results/genome_annotation/MEGAHIT_RAGOUT/GeMoMa/combined/"
 
 ###########################################################################
 
-library(ape)
 library(stringr)
-
-###########################################################################
-
-full.tree=read.tree(paste(pathResults, "/species_tree_rooted.txt",sep=""))
-full.tree$node.label <- NULL
-
-write.tree(full.tree, paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))
-
-###########################################################################
-
-helmeted=c("Anseranas_semipalmata", "Numida_meleagris", "Casuarius_casuarius", "Balearica_regulorum", "Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi")
-
-all.species=full.tree$tip.label
-
-phenotype.data=data.frame("species"=all.species, "trait"=rep(NA, length(all.species)))
-phenotype.data$trait[which(phenotype.data$species%in%helmeted)]="helmeted"
-phenotype.data$trait[which(!(phenotype.data$species%in%helmeted))]="non-helmeted"
-
-write.table(phenotype.data, file=paste(pathResults, "/phenotype_data.txt",sep=""), row.names=F, col.names=T, sep="\t", quote=F)
 
 ###########################################################################
 
