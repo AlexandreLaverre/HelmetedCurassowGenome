@@ -9,13 +9,14 @@ pathAnnot="../../results/genome_annotation/MEGAHIT_RAGOUT/GeMoMa/combined/"
 ###########################################################################
 
 library(ape)
+library(stringr)
 
 ###########################################################################
 
 full.tree=read.tree(paste(pathResults, "/species_tree_rooted.txt",sep=""))
 full.tree$node.label <- NULL
 
-write.tree(full.tree, paste(pathResults, "/species_tree_unrooted_nobootstrap.txt",sep=""))
+write.tree(full.tree, paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))
 
 ###########################################################################
 
@@ -44,21 +45,25 @@ for(i in 1:nrow(N0)){
   hog=N0$HOG[i]
   og=N0$OG[i]
 
-  path=paste(pathCDS, hog,"_",og,".aln.best.fas",sep="")
-
-  if(file.exists(path)){
+  pathIn=paste(pathCDS, hog,"_",og,".aln.best.fas",sep="")
+  
+  if(file.exists(pathIn)){
     id.pauxi=N0[i,"Pauxi_pauxi"]
 
     if(id.pauxi%in%rownames(names)){
       name.pauxi=names[id.pauxi, "GeneName.Pauxi_pauxi"]
 
+      if(length(grep("/",name.pauxi))!=0){
+        name.pauxi=str_replace(name.pauxi, '/', '_')
+      }
+      
       if(!is.na(name.pauxi)){
-        system(paste("cp ",path, " ",pathOutput, "/",id.pauxi,"_",name.pauxi,".fa",sep=""))
+        system(paste("cp ",pathIn, " ",pathOutput, "/",id.pauxi,"_",name.pauxi,".fa",sep=""))
       } else{
-        system(paste("cp ",path, " ",pathOutput, "/",id.pauxi,".fa",sep=""))
+        system(paste("cp ",pathIn, " ",pathOutput, "/",id.pauxi,".fa",sep=""))
       }
     } else{
-      system(paste("cp ",path, " ",pathOutput, "/",id.pauxi,".fa",sep=""))
+      system(paste("cp ",pathIn, " ",pathOutput, "/",id.pauxi,".fa",sep=""))
     }
   }
 
