@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export cluster=$1
+export species=$1
+export cluster=$2
 
 #########################################################################
 
@@ -8,7 +9,11 @@ if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/necsulea/HelmetedCurassowGenome
 fi
 
-export pathWGS=${path}/data/WGS
+if [ ${cluster} = "cloud" ]; then
+    export path=//home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
+fi
+
+export pathWGS=${path}/data/WGS/${species}
 export pathScripts=${path}/scripts/data_quality
 
 #########################################################################
@@ -22,6 +27,14 @@ done
 
 #########################################################################
 
-fastqc -o ${pathWGS} ${pathFastQ}
+if [ -e ${pathWGS}/fastqc ]; then
+    echo "output dir already there"
+else
+    mkdir ${pathWGS}/fastqc
+fi
+
+#########################################################################
+
+fastqc -o ${pathWGS}/fastqc ${pathFastQ}
 
 #########################################################################

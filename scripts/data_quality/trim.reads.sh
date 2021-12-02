@@ -7,7 +7,7 @@ export cluster=$3
 ###############################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/HelmetedCurassowGenome
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 
@@ -15,7 +15,11 @@ if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/necsulea/HelmetedCurassowGenome
 fi
 
-export pathWGS=${path}/data/WGS
+export pathWGS=${path}/data/WGS/${sp}
+
+###############################################################
+
+## This is cutadapt 2.8 with Python 3.8.10
 
 ###############################################################
 
