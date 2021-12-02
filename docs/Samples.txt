@@ -3,8 +3,8 @@ WGS	HelmetedCurassow	Blood	Adult	B10	S2	B10_S2_R1_001.fastq.gz	B10_S2_R2_001.fas
 WGS	HelmetedCurassow	Blood	Adult	B10	S4	B10_S4_R1_001.fastq.gz	B10_S4_R2_001.fastq.gz	.
 WGS	HelmetedCurassow	Blood	Adult	B51	S1	B51_S1_R1_001.fastq.gz	B51_S1_R2_001.fastq.gz	.
 WGS	HelmetedCurassow	Blood	Adult	B51	S3	B51_S3_R1_001.fastq.gz	B51_S3_R2_001.fastq.gz	.
-WGS	Basiliscus_vittatus	Liver	Adult	WGS_Liver_Female	.	WGS_Liver_Female_R1.fastq.gz	WGS_Liver_Female_R2.fastq.gz	SRR10136140
-WGS	Basiliscus_vittatus	Liver	Adult	WGS_Liver_Male	.	WGS_Liver_Male_R1.fastq.gz	WGS_Liver_Male_R2.fastq.gz	SRR10136141
+WGS	Basiliscus_vittatus	Liver	Adult	Liver_Female	.	Liver_Female_R1.fastq.gz	Liver_Female_R2.fastq.gz	SRR10136140
+WGS	Basiliscus_vittatus	Liver	Adult	Liver_Male	.	Liver_Male_R1.fastq.gz	Liver_Male_R2.fastq.gz	SRR10136141
 RNASeq	Basiliscus_vittatus	Blood	Adult	Bv_bl_M2	.	Bv_bl_M2_R1.fastq.gz	Bv_bl_M2_R2.fastq.gz	SRR8700052
 RNASeq	Basiliscus_vittatus	Blood	Adult	Bv_bl_F2	.	Bv_bl_F2_R1.fastq.gz	Bv_bl_F2_R2.fastq.gz	SRR8700053
 RNASeq	Basiliscus_vittatus	Kidney	Adult	Bv_kd_M	.	Bv_kd_M_R1.fastq.gz	Bv_kd_M_R2.fastq.gz	SRR8700054
