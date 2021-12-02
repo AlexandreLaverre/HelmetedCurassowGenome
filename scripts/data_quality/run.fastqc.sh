@@ -10,7 +10,7 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=//home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 export pathWGS=${path}/data/WGS/${species}
