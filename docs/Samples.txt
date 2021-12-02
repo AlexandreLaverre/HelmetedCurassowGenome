@@ -1,0 +1,21 @@
+DataType	Species	Tissue	DevelopmentalStage	SampleName	Library	R1	R2	Accession number
+WGS	HelmetedCurassow	Blood	Adult	B10	S2	B10_S2_R1_001.fastq.gz	B10_S2_R2_001.fastq.gz	.
+WGS	HelmetedCurassow	Blood	Adult	B10	S4	B10_S4_R1_001.fastq.gz	B10_S4_R2_001.fastq.gz	.
+WGS	HelmetedCurassow	Blood	Adult	B51	S1	B51_S1_R1_001.fastq.gz	B51_S1_R2_001.fastq.gz	.
+WGS	HelmetedCurassow	Blood	Adult	B51	S3	B51_S3_R1_001.fastq.gz	B51_S3_R2_001.fastq.gz	.
+WGS	Basiliscus_vittatus	Liver	Adult	WGS_Liver_Female	.	WGS_Liver_Female_R1.fastq.gz	WGS_Liver_Female_R2.fastq.gz	SRR10136140
+WGS	Basiliscus_vittatus	Liver	Adult	WGS_Liver_Male	.	WGS_Liver_Male_R1.fastq.gz	WGS_Liver_Male_R2.fastq.gz	SRR10136141
+RNASeq	Basiliscus_vittatus	Blood	Adult	Bv_bl_M2	.	Bv_bl_M2_R1.fastq.gz	Bv_bl_M2_R2.fastq.gz	SRR8700052
+RNASeq	Basiliscus_vittatus	Blood	Adult	Bv_bl_F2	.	Bv_bl_F2_R1.fastq.gz	Bv_bl_F2_R2.fastq.gz	SRR8700053
+RNASeq	Basiliscus_vittatus	Kidney	Adult	Bv_kd_M	.	Bv_kd_M_R1.fastq.gz	Bv_kd_M_R2.fastq.gz	SRR8700054
+RNASeq	Basiliscus_vittatus	Testis	Adult	Bv_ts_M	.	Bv_ts_M_R1.fastq.gz	Bv_ts_M_R2.fastq.gz	SRR8700055
+RNASeq	Basiliscus_vittatus	Blood	Adult	Bv_bl_F1	.	Bv_bl_F1_R1.fastq.gz	Bv_bl_F1_R2.fastq.gz	SRR8700056
+RNASeq	Basiliscus_vittatus	Liver	Adult	Bv_lv_M	.	Bv_lv_M_R1.fastq.gz	Bv_lv_M_R2.fastq.gz	SRR8700057
+RNASeq	Basiliscus_vittatus	Heart	Adult	Bv_ht_M	.	Bv_ht_M_R1.fastq.gz	Bv_ht_M_R2.fastq.gz	SRR8700058
+RNASeq	Basiliscus_vittatus	Blood	Adult	Bv_bl_M1	.	Bv_bl_M1_R1.fastq.gz	Bv_bl_M1_R2.fastq.gz	SRR8700059
+RNASeq	Basiliscus_vittatus	Ovary	Adult	Bv_ov_F	.	Bv_ov_F_R1.fastq.gz	Bv_ov_F_R2.fastq.gz	SRR8700060
+RNASeq	Basiliscus_vittatus	Brain	Adult	Bv_br_M	.	Bv_br_M_R1.fastq.gz	Bv_br_M_R2.fastq.gz	SRR8700061
+RNASeq	Basiliscus_vittatus	Heart	Adult	Bv_ht_F	.	Bv_ht_F_R1.fastq.gz	Bv_ht_F_R2.fastq.gz	SRR8700062
+RNASeq	Basiliscus_vittatus	Kidney	Adult	Bv_kd_F	.	Bv_kd_F_R1.fastq.gz	Bv_kd_F_R2.fastq.gz	SRR8700063
+RNASeq	Basiliscus_vittatus	Brain	Adult	Bv_br_F	.	Bv_br_F_R1.fastq.gz	Bv_br_F_R2.fastq.gz	SRR8700064
+RNASeq	Basiliscus_vittatus	Liver	Adult	Bv_lv_F	.	Bv_lv_F_R1.fastq.gz	Bv_lv_F_R2.fastq.gz	SRR8700065
