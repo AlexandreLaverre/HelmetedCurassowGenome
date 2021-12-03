@@ -42,6 +42,15 @@ echo ${pathR2}
 
 #########################################################################
 
+if [ -e ${pathResults} ]; then
+    echo "output dir already there"
+else
+    mkdir -p ${pathResults}/MEGAHIT
+    mkdir -p ${pathResults}/tmp
+fi
+
+########################################################################
+
 if [ ${cluster} = "pbil" ]; then
     echo "#!/bin/bash" >  ${pathScripts}/bsub_script_megahit
     echo "#SBATCH --job-name=mh" >>  ${pathScripts}/bsub_script_megahit
@@ -52,7 +61,7 @@ if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --cpus-per-task=${nthreads}" >> ${pathScripts}/bsub_script_megahit
     echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_megahit
 
-    echo "megahit -1 ${pathR1} -2 ${pathR2} -t ${nthreads} --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults}/MEGAHIT_${species} --tmp-dir ${pathResults}/tmp_${species}" >> ${pathScripts}/bsub_script_megahit
+    echo "megahit -1 ${pathR1} -2 ${pathR2} -t ${nthreads} --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults}/MEGAHIT --tmp-dir ${pathResults}/tmp" >> ${pathScripts}/bsub_script_megahit
 
     sbatch ${pathScripts}/bsub_script_megahit
 fi
