@@ -69,7 +69,7 @@ fi
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    megahit -1 ${pathR1} -2 ${pathR2} -t ${nthreads} --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults}/MEGAHIT_${species} --tmp-dir ${pathResults}/tmp_${species}
+    megahit -1 ${pathR1} -2 ${pathR2} -t ${nthreads} --no-mercy --min-count 3 -m 1e10 --out-prefix final -o ${pathResults}/MEGAHIT --tmp-dir ${pathResults}/tmp
 fi
 
 #########################################################################
