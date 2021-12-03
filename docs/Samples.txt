@@ -19,3 +19,8 @@ RNASeq	Basiliscus_vittatus	Heart	Adult	Bv_ht_F	.	Bv_ht_F_R1.fastq.gz	Bv_ht_F_R2.
 RNASeq	Basiliscus_vittatus	Kidney	Adult	Bv_kd_F	.	Bv_kd_F_R1.fastq.gz	Bv_kd_F_R2.fastq.gz	SRR8700063
 RNASeq	Basiliscus_vittatus	Brain	Adult	Bv_br_F	.	Bv_br_F_R1.fastq.gz	Bv_br_F_R2.fastq.gz	SRR8700064
 RNASeq	Basiliscus_vittatus	Liver	Adult	Bv_lv_F	.	Bv_lv_F_R1.fastq.gz	Bv_lv_F_R2.fastq.gz	SRR8700065
+RNASeq	Chamaeleo_calyptratus	WholeEmbryo	Embryo	WholeEmbryo	KapaStranded	WholeEmbryo_R1.fastq.gz	WholeEmbryo_R2.fastq.gz	SRR6662597
+RNASeq	Chamaeleo_calyptratus	Testis	Adult	Testis_Adult	KapaStranded	Testis_Adult_R1.fastq.gz	Testis_Adult_R2.fastq.gz	SRR6662598
+RNASeq	Chamaeleo_calyptratus	Eye	Adult	Eye_Male	KapaStranded	Eye_Male_R1.fastq.gz	Eye_Male_R2.fastq.gz	SRR6662599
+RNASeq	Chamaeleo_calyptratus	Ovary	Adult	Ovary_Adult	KapaStranded	Ovary_Adult_R1.fastq.gz	Ovary_Adult_R2.fastq.gz	SRR6662600
+RNASeq	Chamaeleo_calyptratus	Eye	Adult	Eye_Female	KapaStranded	Eye_Female_R1.fastq.gz	Eye_Female_R2.fastq.gz	SRR6662601
