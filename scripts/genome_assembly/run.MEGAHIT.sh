@@ -45,8 +45,7 @@ echo ${pathR2}
 if [ -e ${pathResults} ]; then
     echo "output dir already there"
 else
-    mkdir -p ${pathResults}/MEGAHIT
-    mkdir -p ${pathResults}/tmp
+    mkdir -p ${pathResults}
 fi
 
 ########################################################################
