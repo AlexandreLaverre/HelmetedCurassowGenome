@@ -53,21 +53,35 @@ fi
 
 if [ ${sp} = "Chamaeleo_calyptratus" ]; then
 
+    export pathR=${pathData}/${sample}.fastq.gz
     export pathR1=${pathData}/${sample}_R1.fastq.gz
     export pathR2=${pathData}/${sample}_R2.fastq.gz
 
+    export pathRout=${pathData}/${sample}_trimmed.fastq.gz
     export pathR1out=${pathData}/${sample}_R1_trimmed.fastq.gz
     export pathR2out=${pathData}/${sample}_R2_trimmed.fastq.gz
 
     ## TruSeq
+    export adapter=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
     export adapter1=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
     export adapter2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 fi
 
 ###############################################################
 
-echo ${sample}
-
-cutadapt --minimum-length 50 --trim-n -a ${adapter1} -A ${adapter2} -o ${pathR1out} -p ${pathR2out} ${pathR1} ${pathR2}
+if [ -e ${pathR1} ]&& [ -e ${pathR2} ]; then
+    echo "paired end"
+    echo ${sample}
+    
+    cutadapt --minimum-length 50 --trim-n -a ${adapter1} -A ${adapter2} -o ${pathR1out} -p ${pathR2out} ${pathR1} ${pathR2}
+else
+    if [ -e ${pathR} ]; then
+	echo "single end"
+	cutadapt --minimum-length 50 --trim-n -a ${adapter} -o ${pathRout} ${pathR}
+    else
+	echo "cannot find data"
+	exit
+    fi
+fi
 
 ###############################################################
