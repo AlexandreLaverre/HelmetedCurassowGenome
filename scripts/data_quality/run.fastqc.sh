@@ -1,8 +1,9 @@
 #!/bin/bash
 
 export species=$1
-export cluster=$2
-export nthreads=$3
+export datatype=$2
+export cluster=$3
+export nthreads=$4
 
 #########################################################################
 
@@ -14,28 +15,28 @@ if [ ${cluster} = "cloud" ]; then
     export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathWGS=${path}/data/WGS/${species}
+export pathData=${path}/data/${datatype}/${species}
 export pathScripts=${path}/scripts/data_quality
 
 #########################################################################
 
 export pathFastQ=""
 
-for file in `ls ${pathWGS} | grep fastq.gz `
+for file in `ls ${pathData} | grep fastq.gz `
 do
-    export pathFastQ="${pathWGS}/${file} ${pathFastQ}"
+    export pathFastQ="${pathData}/${file} ${pathFastQ}"
 done
 
 #########################################################################
 
-if [ -e ${pathWGS}/fastqc ]; then
+if [ -e ${pathData}/fastqc ]; then
     echo "output dir already there"
 else
-    mkdir ${pathWGS}/fastqc
+    mkdir ${pathData}/fastqc
 fi
 
 #########################################################################
 
-fastqc -o ${pathWGS}/fastqc --threads ${nthreads} ${pathFastQ}
+fastqc -o ${pathData}/fastqc --threads ${nthreads} ${pathFastQ}
 
 #########################################################################
