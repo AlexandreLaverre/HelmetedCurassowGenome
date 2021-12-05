@@ -1,8 +1,9 @@
 #!/bin/bash
 
 export sp=$1
-export sample=$2
-export cluster=$3
+export datatype=$2
+export sample=$3
+export cluster=$4
 
 ###############################################################
 
@@ -15,7 +16,7 @@ if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/necsulea/HelmetedCurassowGenome
 fi
 
-export pathWGS=${path}/data/WGS/${sp}
+export pathData=${path}/data/${datatype}/${sp}
 
 ###############################################################
 
@@ -26,24 +27,41 @@ if [ ${sp} = "Pauxi_pauxi" ]; then
     export adapter1=CTGTCTCTTATACACATCT
     export adapter2=CTGTCTCTTATACACATCT
 
-    export pathR1=${pathWGS}/${sample}_R1_001.fastq.gz
-    export pathR2=${pathWGS}/${sample}_R2_001.fastq.gz
+    export pathR1=${pathData}/${sample}_R1_001.fastq.gz
+    export pathR2=${pathData}/${sample}_R2_001.fastq.gz
 
-    export pathR1out=${pathWGS}/${sample}_R1_001_trimmed.fastq.gz
-    export pathR2out=${pathWGS}/${sample}_R2_001_trimmed.fastq.gz
+    export pathR1out=${pathData}/${sample}_R1_001_trimmed.fastq.gz
+    export pathR2out=${pathData}/${sample}_R2_001_trimmed.fastq.gz
 fi
+
+###############################################################
 
 if [ ${sp} = "Basiliscus_vittatus" ]; then
 
-    export pathR1=${pathWGS}/${sample}_R1.fastq.gz
-    export pathR2=${pathWGS}/${sample}_R2.fastq.gz
+    export pathR1=${pathData}/${sample}_R1.fastq.gz
+    export pathR2=${pathData}/${sample}_R2.fastq.gz
 
-    export pathR1out=${pathWGS}/${sample}_R1_trimmed.fastq.gz
-    export pathR2out=${pathWGS}/${sample}_R2_trimmed.fastq.gz
+    export pathR1out=${pathData}/${sample}_R1_trimmed.fastq.gz
+    export pathR2out=${pathData}/${sample}_R2_trimmed.fastq.gz
 
     ## TruSeq
     export adapter1=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
     export adapter2=CAAGCAGAAGACGGCATACGAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT
+fi
+
+###############################################################
+
+if [ ${sp} = "Chamaeleo_calyptratus" ]; then
+
+    export pathR1=${pathData}/${sample}_R1.fastq.gz
+    export pathR2=${pathData}/${sample}_R2.fastq.gz
+
+    export pathR1out=${pathData}/${sample}_R1_trimmed.fastq.gz
+    export pathR2out=${pathData}/${sample}_R2_trimmed.fastq.gz
+
+    ## TruSeq
+    export adapter1=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
+    export adapter2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 fi
 
 ###############################################################
