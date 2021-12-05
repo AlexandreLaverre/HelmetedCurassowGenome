@@ -23,4 +23,4 @@ RNASeq	Chamaeleo_calyptratus	WholeEmbryo	Embryo	WholeEmbryo	KapaStranded	WholeEm
 RNASeq	Chamaeleo_calyptratus	Testis	Adult	Testis_Adult	KapaStranded	Testis_Adult_R1.fastq.gz	Testis_Adult_R2.fastq.gz	SRR6662598
 RNASeq	Chamaeleo_calyptratus	Eye	Adult	Eye_Male	KapaStranded	Eye_Male_R1.fastq.gz	Eye_Male_R2.fastq.gz	SRR6662599
 RNASeq	Chamaeleo_calyptratus	Ovary	Adult	Ovary_Adult	KapaStranded	Ovary_Adult_R1.fastq.gz	Ovary_Adult_R2.fastq.gz	SRR6662600
-RNASeq	Chamaeleo_calyptratus	Eye	Adult	Eye_Female	KapaStranded	Eye_Female_R1.fastq.gz	Eye_Female_R2.fastq.gz	SRR6662601
+RNASeq	Chamaeleo_calyptratus	Eye	Adult	Eye_Female	KapaStranded	Eye_Female.fastq.gz	.	SRR6662601
