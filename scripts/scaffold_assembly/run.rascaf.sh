@@ -22,6 +22,6 @@ fi
 
 #########################################################################
 
-rascaf -o ${pathResults}/final -b ${pathMEGAHIT}/accepted_hits_all_samples.bam -f ${pathMEGAHIT}/final.contigs.fa -ms 5 
+rascaf -o ${pathResults}/final -b ${pathMEGAHIT}/accepted_hits_all_samples.bam -f ${pathMEGAHIT}/final.contigs.fa -ms 5 -cs 
 
 #########################################################################
