@@ -8,11 +8,11 @@ export nthreads=$4
 #############################################################################
 
 if [ ${cluster} = "pbil" ]; then
-    export path=/beegfs/data/necsulea/HelmetedCurassowGenom
+    export path=/beegfs/data/necsulea/HelmetedCurassowGenome
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenom
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 export pathRNASeq=${path}/data/RNASeq/${species}
@@ -32,7 +32,7 @@ export type="NA"
 if [ ${pathR2} = "." ]; then
     export type="single_end"
 else
-    if [ -e ${pathRNASeq}/${pathR2}]; then
+    if [ -e ${pathRNASeq}/${pathR2} ]; then
 	export type="paired_end"
     else
 	echo "cannot find R2"
@@ -74,13 +74,13 @@ else
 	echo "#SBATCH --mem=4G" >>  ${pathScripts}/bsub_script_hisat ## 5g per CPU
     fi	
 
-    if [ ${nbtype} = "single_end" ]; then
+    if [ ${type} = "single_end" ]; then
 	echo "single-end"
-	echo "hisat2 --seed 19 -p ${nthreads} -x ${pathIndex} -U ${pathR1} -S ${pathResults}/hisat2_${sample}/accepted_hits.sam ${strand} --max-intronlen 1000000 --dta-cufflinks --no-unal --met-file ${pathResults}/hisat2_${sample}/metrics.txt  --novel-splicesite-outfile ${pathResults}/hisat2_${sample}/novel_splicesites.txt >& ${pathResults}/hisat2_${sample}/align_summary.txt">> ${pathScripts}/bsub_script_hisat
+	echo "hisat2 --seed 19 -p ${nthreads} -x ${pathIndex} -U ${pathRNASeq}/${pathR1} -S ${pathResults}/hisat2_${sample}/accepted_hits.sam ${strand} --max-intronlen 1000000 --dta-cufflinks --no-unal --met-file ${pathResults}/hisat2_${sample}/metrics.txt  --novel-splicesite-outfile ${pathResults}/hisat2_${sample}/novel_splicesites.txt >& ${pathResults}/hisat2_${sample}/align_summary.txt">> ${pathScripts}/bsub_script_hisat
     else
 	if [ ${type} = "paired_end" ]; then
 	    echo "paired-end"
-	    echo "hisat2 --seed 19 -p ${nthreads} -x ${pathIndex} -m1 ${pathR2} -m2 ${pathR2} -S ${pathResults}/hisat2_${sample}/accepted_hits.sam ${strand} -max-intronlen 1000000 --dta-cufflinks --no-unal --met-file ${pathResults}/hisat2_${sample}/metrics.txt  --novel-splicesite-outfile ${pathResults}/hisat2_${sample}/novel_splicesites.txt >& ${pathResults}/hisat2_${sample}/align_summary.txt">> ${pathScripts}/bsub_script_hisat
+	    echo "hisat2 --seed 19 -p ${nthreads} -x ${pathIndex} -1 ${pathRNASeq}/${pathR1} -2 ${pathRNASeq}/${pathR2} -S ${pathResults}/hisat2_${sample}/accepted_hits.sam ${strand} --max-intronlen 1000000 --dta-cufflinks --no-unal --met-file ${pathResults}/hisat2_${sample}/metrics.txt  --novel-splicesite-outfile ${pathResults}/hisat2_${sample}/novel_splicesites.txt >& ${pathResults}/hisat2_${sample}/align_summary.txt">> ${pathScripts}/bsub_script_hisat
 	fi
     fi
 
