@@ -6,7 +6,7 @@ export cluster=$2
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=//home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 export pathMEGAHIT=${path}/results/genome_assembly/${sp}/MEGAHIT
