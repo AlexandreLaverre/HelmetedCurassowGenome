@@ -13,6 +13,7 @@ fi
 export pathGenomes=${path}/data/genome_sequences/Ensembl103
 export pathAssembly=${path}/results/genome_assembly/${sp}/MEGAHIT
 export pathResults=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT
+export pathScripts=${path}/scripts/scaffold_assembly
 
 #########################################################################
 
