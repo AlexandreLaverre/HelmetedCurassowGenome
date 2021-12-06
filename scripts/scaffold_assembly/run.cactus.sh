@@ -27,7 +27,7 @@ fi
 
 #########################################################################
 
-if [ ${sp} = "Pauxi_pauxi"]; then
+if [ ${sp} = "Pauxi_pauxi" ]; then
     echo "(Anas_platyrhynchos_platyrhynchos, ((Penelope_pileata, Pauxi_pauxi), Gallus_gallus));" > ${pathResults}/seqFile
     echo "" >>  ${pathResults}/seqFile
     
@@ -41,7 +41,7 @@ fi
 
 #########################################################################
 
-if [ ${sp} = "Basiliscus_vittatus"]; then
+if [ ${sp} = "Basiliscus_vittatus" ]; then
     echo "(Salvator_merianae, ((Basiliscus_vittatus, Anolis_carolinensis), Pseudonaja_textilis));" > ${pathResults}/seqFile
     echo "" >>  ${pathResults}/seqFile
     
