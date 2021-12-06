@@ -48,7 +48,7 @@ if [ ${sp} = "Basiliscus_vittatus" ]; then
     
     for sp in Salvator_merianae Anolis_carolinensis Pseudonaja_textilis
     do
-	echo "${sp} ${pathGenomes}/${sp}/genome_sm_clean.fa" >> ${pathResults}/seqFile
+	echo "${sp} ${pathGenomes}/${sp}.sm.clean.fa" >> ${pathResults}/seqFile
     done
 
     if [ -e ${pathAssembly}/final.contigs.clean.fa ]; then
