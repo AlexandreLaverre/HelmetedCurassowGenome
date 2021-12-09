@@ -33,15 +33,15 @@ fi
 ###############################################################
 
 if [ ${sp} = "Pauxi_pauxi" ]; then
-    export seq=NexteraPE-PE.fa
+    export sequence=NexteraPE-PE.fa
 fi
 
 if [ ${sp} = "Basiliscus_vittatus" ]; then
-    export seq=TruSeq2-PE.fa
+    export sequence=TruSeq2-PE.fa
 fi
 
 if [ ${sp} = "Chamaeleo_calyptratus" ]; then
-    export seq=TruSeq3-PE-2.fa
+    export sequence=TruSeq3-PE-2.fa
 fi
 
 ###############################################################
