@@ -70,7 +70,7 @@ if [ ${restore} = "false" ]; then
     #########################################################################
 else
     ## restore
-    docker run -v ${path}:/ifb/data/mydatalocal/HelmetedCurassowGenome --restart -t quay.io/comparative-genomics-toolkit/cactus:v1.3.0 cactus --binariesMode local --workDir ${pathResults}/ --maxServiceJobs 1 --maxCores ${nthreads} --maxMemory 60G ${pathResults}/jobStore ${pathResults}/seqFile ${pathResults}/alignment.hal
+    docker run -v ${path}:/ifb/data/mydatalocal/HelmetedCurassowGenome --rm -t quay.io/comparative-genomics-toolkit/cactus:v1.3.0 cactus  --restart --binariesMode local --workDir ${pathResults}/ --maxServiceJobs 1 --maxCores ${nthreads} --maxMemory 60G ${pathResults}/jobStore ${pathResults}/seqFile ${pathResults}/alignment.hal
 fi
 
 #########################################################################
