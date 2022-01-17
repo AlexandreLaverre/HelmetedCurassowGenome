@@ -1,16 +1,17 @@
 #!/bin/bash
 
-export prefix=$1
-export cluster=$2
+export sp=$1
+export prefix=$2
+export cluster=$3
 
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathHALParts=${path}/results/genome_assembly/MEGAHIT_RAGOUT/mafs_by_chr
-export pathHAL=${path}/results/genome_assembly/MEGAHIT_RAGOUT
+export pathHALParts=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT/mafs_by_chr
+export pathHAL=${path}/results/genome_assembly/{$sp}/MEGAHIT_RAGOUT
 
 #########################################################################
 
