@@ -48,6 +48,12 @@ else
     mkdir -p ${pathResults}
 fi
 
+if [ -e ${pathResults}/tmp ]; then
+    echo "tmp dir already there"
+else
+    mkdir -p ${pathResults}/tmp
+fi
+
 ########################################################################
 
 if [ ${cluster} = "pbil" ]; then
