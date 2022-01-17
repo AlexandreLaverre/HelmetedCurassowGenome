@@ -1,17 +1,19 @@
 #!/bin/bash
 
-export cluster=$1
+export sp=$1
+export cluster=$2
+export ncores=$3
 
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/home/ubuntu/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/genome_assembly/MEGAHIT_RAGOUT
+export pathResults=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT
 
 #########################################################################
 
-ragout -o ${pathResults} -s maf --refine -t 24 ragout.recipe.${cluster} 
+ragout -o ${pathResults} -s hal --refine -t ${ncores} ragout.recipe.${sp}.${cluster}
 
 #########################################################################

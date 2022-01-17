@@ -1,0 +1,12 @@
+# reference and target genome names (required)
+.references = Salvator_merianae,Anolis_carolinensis,Pseudonaja_textilis
+.target = Basiliscus_vittatus
+
+# phylogenetic tree
+.tree = (Salvator_merianae, ((Basiliscus_vittatus, Anolis_carolinensis), Pseudonaja_textilis));
+
+# synteny blocks scale (optional)
+.blocks = large
+
+# HAL input
+.hal = /ifb/data/mydatalocal/HelmetedCurassowGenome/results/genome_assembly/Basiliscus_vittatus/MEGAHIT_RAGOUT/alignment.hal
