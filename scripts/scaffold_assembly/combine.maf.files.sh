@@ -11,7 +11,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathHALParts=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT/mafs_by_chr
-export pathHAL=${path}/results/genome_assembly/{$sp}/MEGAHIT_RAGOUT
+export pathHAL=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT
 
 #########################################################################
 
