@@ -11,6 +11,6 @@
 # MAF input
 .maf = /ifb/data/mydatalocal/HelmetedCurassowGenome/results/genome_assembly/Basiliscus_vittatus/MEGAHIT_RAGOUT/alignment.maf
 Basiliscus_vittatus.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/results/genome_assembly/Basiliscus_vittatus/MEGAHIT/final.contigs.clean.fa
-Salvator_merianae.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Salvator_merianae.sm.clean.fa
-Anolis_carolinensis.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Anolis_carolinensis.sm.clean.fa
-Pseudonaja_textilis.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Pseudonaja_textilis.sm.clean.fa
+Salvator_merianae.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Ensembl103/Salvator_merianae.sm.clean.fa
+Anolis_carolinensis.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Ensembl103/Anolis_carolinensis.sm.clean.fa
+Pseudonaja_textilis.fasta = /ifb/data/mydatalocal/HelmetedCurassowGenome/data/genome_sequences/Ensembl103/Pseudonaja_textilis.sm.clean.fa
