@@ -28,8 +28,9 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
-export pathGenomes=${path}/data/genome_sequences/${source}
-export pathAnnotations=${path}/data/genome_annotations/${source}
+export pathAllGenomes=${path}/data/genome_sequences
+export pathSourceGenomes=${path}/data/genome_sequences/${source}
+export pathSourceAnnotations=${path}/data/genome_annotations/${source}
 export pathResults=${path}/results/genome_annotation/${target}/${assembly}/GeMoMa/${ref}
 export pathScripts=${path}/scripts/gene_annotation
 export pathScriptsScaffoldAssembly=${path}/scripts/scaffold_assembly
@@ -60,14 +61,15 @@ fi
 #########################################################################
 
 if [ ${assembly} = "NCBI" ]; then
-    export pathAssembly=${pathGenomes}/NCBI/${target}.clean.fa
+    export pathAssembly=${pathAllGenomes}/NCBI/${target}.clean.fa
 
     if [ -e ${pathAssembly} ]; then
 	echo "genome file already there"
     else
-	if [ -e ${pathGenomes}/NCBI/${target}.fa.gz ]; then
-	    perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathGenomes}/NCBI/${target}.fa.gz --pathOutput=${pathGenomes}/NCBI/${target}.clean.fa
+	if [ -e ${pathAllGenomes}/NCBI/${target}.fa.gz ]; then
+	    perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/NCBI/${target}.fa.gz --pathOutput=${pathAllGenomes}/NCBI/${target}.clean.fa
 	else
+	    echo "looking for "${pathAllGenomes}/NCBI/${target}.fa.gz
 	    echo "cannot find target genome file!"
 	    exit
 	fi
@@ -77,8 +79,8 @@ fi
 #########################################################################
 
 if [ ${source} = "Ensembl" ]; then
-    export genomefile=`ls ${pathGenomes} | grep ${ref}'\.' | grep fa`
-    export annotfile=`ls ${pathAnnotations} | grep ${ref}'\.' | grep gff`
+    export genomefile=`ls ${pathSourceGenomes} | grep ${ref}'\.' | grep fa`
+    export annotfile=`ls ${pathSourceAnnotations} | grep ${ref}'\.' | grep gff`
 fi
 
 if [ ${source} = "NCBI" ]; then
@@ -109,7 +111,7 @@ else
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_gemoma
 
-	echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
+	echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathSourceAnnotations}/${annotfile}  g=${pathSourceGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
 
 	sbatch ${pathScripts}/bsub_script_gemoma
     fi
@@ -125,7 +127,7 @@ else
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=7-00:00:00" >> ${pathScripts}/bsub_script_gemoma
 
-	echo "java -Xms2G -Xmx64G  -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
+	echo "java -Xms2G -Xmx64G  -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathSourceAnnotations}/${annotfile}  g=${pathSourceGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
 
 	sbatch ${pathScripts}/bsub_script_gemoma
     fi
@@ -135,7 +137,7 @@ else
 
     if [ ${cluster} = "cloud" ]; then
 	## mmseqs available in PATH
-	echo "java  -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 " >> ${pathScripts}/bsub_script_gemoma
+	echo "java  -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathSourceAnnotations}/${annotfile}  g=${pathSourceGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 " >> ${pathScripts}/bsub_script_gemoma
 
 	chmod a+x ${pathScripts}/bsub_script_gemoma
 	${pathScripts}/bsub_script_gemoma
