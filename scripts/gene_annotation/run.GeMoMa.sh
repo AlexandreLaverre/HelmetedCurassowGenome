@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export assembly=$1
-export ref=$2
-export source=$3
-export cluster=$4
-export threads=$5
-export constraint=$6
+export target=$1
+export assembly=$2
+export ref=$3
+export source=$4
+export cluster=$5
+export threads=$6
 
 #########################################################################
 
@@ -32,6 +32,10 @@ export pathGenomes=${path}/data/genome_sequences/${source}
 export pathAnnotations=${path}/data/genome_annotations/${source}
 export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa/${ref}
 export pathScripts=${path}/scripts/gene_annotation
+export pathScriptsScaffoldAssembly=${path}/scripts/scaffold_assembly
+
+## using mmseqs2, installed using apt on Ubuntu 20.04
+## version 9-d36de+ds-4 amd64
 
 #########################################################################
 
@@ -45,14 +49,29 @@ fi
 
 if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
-    export suffix=final.contigs
 fi
 
 #########################################################################
 
 if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed_sm.fa
-    export suffix=genome_sequence
+fi
+
+#########################################################################
+
+if [ ${assembly} = "NCBI" ]; then
+    export pathAssembly=${pathGenomes}/NCBI/${target}.clean.fa
+
+    if [ -e ${pathAssembly} ]; then
+	echo "genome file already there"
+    else
+	if [ -e ${pathGenomes}/NCBI/${target}.fa.gz ]; then
+	    perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathGenomes}/NCBI/${target}.fa.gz --pathOutput=${pathGenomes}/NCBI/${target}.clean.fa
+	else
+	    echo "cannot find target genome file!"
+	    exit
+	fi
+    fi
 fi
 
 #########################################################################
@@ -79,7 +98,6 @@ if [ -e ${pathResults}/final_annotation.gff ]; then
 else
     echo "#!/bin/bash" > ${pathScripts}/bsub_script_gemoma
 
-
     #############################################
 
     if [ ${cluster} = "pbil" ]; then
@@ -90,7 +108,6 @@ else
 	echo "#SBATCH --mem=12G" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_gemoma
-	echo "#SBATCH --constraint=${constraint}">> ${pathScripts}/bsub_script_gemoma
 
 	echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref} a=${pathAnnotations}/${annotfile}  g=${pathGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
 
