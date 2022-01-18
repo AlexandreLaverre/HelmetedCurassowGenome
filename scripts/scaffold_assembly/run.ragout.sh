@@ -14,6 +14,8 @@ export pathResults=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT
 
 #########################################################################
 
+## ragout 2.3
+
 ragout -o ${pathResults} -s maf --refine -t ${ncores} ragout.recipe.${cluster}.${sp}
 
 #########################################################################
