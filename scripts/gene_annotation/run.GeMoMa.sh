@@ -22,8 +22,8 @@ if [ ${cluster} = "in2p3" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/ifb/data/mydatalocal/Tools
     export version=1.8
 fi
 
