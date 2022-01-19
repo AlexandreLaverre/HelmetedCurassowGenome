@@ -52,7 +52,7 @@ fi
 #########################################################################
 
 if [ ${assembly} = "NCBI" ]; then
-    export file=`ls ${pathEnsembl} | grep ${sp}. | grep fa`
+    export file=`ls ${pathNCBI} | grep ${sp}. | grep fa`
     export pathAssembly=${pathNCBI}/${file}
 fi
 
