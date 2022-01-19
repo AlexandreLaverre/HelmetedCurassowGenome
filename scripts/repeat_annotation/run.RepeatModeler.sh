@@ -5,6 +5,7 @@
 export sp=$1
 export assembly=$2
 export cluster=$3
+export threads=$4
 
 #########################################################################
 
@@ -18,7 +19,7 @@ fi
 
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
-export pathResults=${path}/results/repeats/${assembly}/${sp}/RepeatModeler
+export pathResults=${path}/results/repeats/${sp}/${assembly}/RepeatModeler
 export pathScripts=${path}/scripts/repeat_annotation
 
 # Search Engine = rmblast 2.11.0+
@@ -29,6 +30,6 @@ export pathScripts=${path}/scripts/repeat_annotation
 
 #########################################################################
 
-RepeatModeler -database ${pathResults}/repeat_modeler_db -pa 8 -LTRStruct >& ${pathResults}/RepeatModeler.out
+RepeatModeler -database ${pathResults}/repeat_modeler_db -pa ${threads} -LTRStruct >& ${pathResults}/RepeatModeler.out
 
 #########################################################################
