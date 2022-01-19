@@ -2,9 +2,10 @@
 
 ########################################################################
 
-export method=$1
-export lib=$2
-export cluster=$3
+export sp=$1
+export assembly=$2
+export lib=$3
+export cluster=$4
 
 #########################################################################
 
@@ -13,24 +14,27 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathRepeatModeler=${path}/results/repeats/${method}/RepeatModeler
-export pathResults=${path}/results/repeats/${method}/RepeatMasker/${lib}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
+export pathRepeatModeler=${path}/results/repeats/${sp}/${assembly}/RepeatModeler
+export pathResults=${path}/results/repeats/${sp}/${assembly}/RepeatMasker/${lib}
 export pathScripts=${path}/scripts/repeat_annotation
+
+## RepeatMasker 4.1.2
+## CONS-Dfam 3.3 (Avril 2021)
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT" ]; then
+if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
 fi
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed.fa
 fi
 

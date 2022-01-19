@@ -2,8 +2,9 @@
 
 ########################################################################
 
-export method=$1
-export cluster=$2
+export sp=$1
+export method=$2
+export cluster=$3
 
 #########################################################################
 
@@ -12,13 +13,19 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${method}
 export pathResults=${path}/results/repeats/${method}
 export pathScripts=${path}/scripts/repeat_annotation
+
+## RepeatModeler 2.0.1
+## RECON 1.08
+## RepeatScout 1.0.6
+## TRF 4.09
+## rmblast 2.11.0
 
 #########################################################################
 
