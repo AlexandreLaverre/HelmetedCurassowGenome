@@ -78,8 +78,8 @@ fi
 
 #########################################################################
 
-if [ ${source} = "Ensembl" ]; then
-    export genomefile=`ls ${pathSourceGenomes} | grep ${ref}'\.' | grep fa | grep sm | grep -v clean`
+if [ ${source} = "Ensembl103" ]; then
+    export genomefile=`ls ${pathSourceGenomes} | grep ${ref}'\.' | grep fa`
     export annotfile=`ls ${pathSourceAnnotations} | grep ${ref}'\.' | grep gff`
 fi
 
