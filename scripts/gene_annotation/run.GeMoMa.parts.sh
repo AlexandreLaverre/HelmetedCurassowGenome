@@ -68,9 +68,14 @@ if [ ${assembly} = "NCBI" ]; then
 	if [ -e ${pathAllGenomes}/NCBI/${target}.fa.gz ]; then
 	    perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/NCBI/${target}.fa.gz --pathOutput=${pathAllGenomes}/NCBI/${target}.clean.fa
 	else
-	    echo "looking for "${pathAllGenomes}/NCBI/${target}.fa.gz
-	    echo "cannot find target genome file!"
-	    exit
+	    if [ -e ${pathAllGenomes}/NCBI/${target}.fa ]; then
+		perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/NCBI/${target}.fa --pathOutput=${pathAllGenomes}/NCBI/${target}.clean.fa
+	    else
+		
+		echo "looking for "${pathAllGenomes}/NCBI/${target}.fa.gz
+		echo "cannot find target genome file!"
+		exit
+	    fi
 	fi
     fi
 fi
