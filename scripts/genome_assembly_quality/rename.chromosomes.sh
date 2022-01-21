@@ -2,8 +2,9 @@
 
 ########################################################################
 
-export method=$1
-export cluster=$2
+export sp=$1
+export method=$2
+export cluster=$3
 
 #########################################################################
 
@@ -16,7 +17,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${method}
 export pathScripts=${path}/scripts/genome_assembly_quality
 
 #########################################################################
