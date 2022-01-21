@@ -16,6 +16,8 @@ export pathResults=${path}/results/transcriptome_assembly/${sp}/Trinity
 ## jellyfish 2.3.0
 ## samtools 1.10, htslib 1.10.2-3
 ## bowtie2 2.3.5.1
+## salmon 1.6.0
+## java openjdk 11.0.13 2021-10-19
 ## Trinity 2.13.2
 
 #############################################################################
