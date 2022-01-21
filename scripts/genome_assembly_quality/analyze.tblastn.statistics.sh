@@ -18,8 +18,8 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathProteinSequences=${path}/data/protein_sequences/${refsp}
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathResults=${path}/results/genome_assembly_quality/${method}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${method}
+export pathResults=${path}/results/genome_assembly_quality/${sp}/${method}
 export pathScripts=${path}/scripts/genome_assembly_quality
 
 export ensrelease=103
