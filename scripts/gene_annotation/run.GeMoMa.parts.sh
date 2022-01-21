@@ -90,7 +90,11 @@ echo "genome file "${genomefile}
 
 #########################################################################
 
-${pathResults}/${part}/final_annotation.gff
+if [ -e ${pathResults}/final_annotation.gff ]; then
+    echo "full annotation already done for this species"
+    exit
+fi
+
 #########################################################################
 
 for annotfile in `ls ${pathSourceAnnotations}/parts | grep ${ref}'\.'`
