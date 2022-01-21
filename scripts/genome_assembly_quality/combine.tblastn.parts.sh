@@ -2,9 +2,10 @@
 
 ########################################################################
 
-export method=$1
-export refsp=$2
-export cluster=$3
+export sp=$1
+export method=$2
+export refsp=$3
+export cluster=$4
 
 #########################################################################
 
@@ -17,8 +18,8 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathProteinSequences=${path}/data/protein_sequences/${refsp}
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathResults=${path}/results/genome_assembly_quality/${method}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${method}
+export pathResults=${path}/results/genome_assembly_quality/${sp}/${method}
 export pathScripts=${path}/scripts/genome_assembly
 
 export ensrelease=103
