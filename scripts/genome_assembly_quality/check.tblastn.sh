@@ -2,10 +2,11 @@
 
 ########################################################################
 
-export method=$1
-export refsp=$2
-export cluster=$3
-export nthreads=$4
+export sp=$1
+export assembly=$2
+export refsp=$3
+export cluster=$4
+export nthreads=$5
 
 #########################################################################
 
@@ -18,22 +19,22 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathProteinSequences=${path}/data/protein_sequences/${refsp}
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathResults=${path}/results/genome_assembly_quality/${method}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
+export pathResults=${path}/results/genome_assembly_quality/${sp}/${assembly}
 export pathScripts=${path}/scripts/genome_assembly
 
 export ensrelease=103
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT" ]; then
+if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
     export suffix=final.contigs
 fi
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathGenomeAssembly}/genome_sequence.fa
     export suffix=genome_sequence
 fi
