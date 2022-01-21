@@ -48,6 +48,6 @@ fi
 
 #############################################################################
 
-Trinity --seqtype fq --max-memory 300G --left ${pathData}/allsamples_R1.fastq.gz --right ${pathData}/allsamples_R2.fastq.gz --SS_lib_type ${libtype} --CPU ${nthreads} --min-contig_length 200 --trimmomatic --output ${pathResults}
+Trinity --seqType fq --max_memory 300G --left ${pathData}/allsamples_R1.fastq.gz --right ${pathData}/allsamples_R2.fastq.gz --SS_lib_type ${libtype} --CPU ${nthreads} --min_contig_length 200 --trimmomatic --output ${pathResults}
 
 #############################################################################
