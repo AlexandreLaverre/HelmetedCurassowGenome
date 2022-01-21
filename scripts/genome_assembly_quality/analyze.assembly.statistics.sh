@@ -2,8 +2,9 @@
 
 ########################################################################
 
-export method=$1	# MEGAHIT or MEGAHIT_RAGOUT
-export cluster=$2	# pbil or cloud
+export sp=$1
+export method=$2	# MEGAHIT or MEGAHIT_RAGOUT
+export cluster=$3	# pbil or cloud
 
 #########################################################################
 
@@ -15,7 +16,7 @@ if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/genome_assembly/${method}
+export pathResults=${path}/results/genome_assembly/${sp}/${method}
 export pathScripts=${path}/scripts/genome_assembly_quality
 
 #########################################################################
