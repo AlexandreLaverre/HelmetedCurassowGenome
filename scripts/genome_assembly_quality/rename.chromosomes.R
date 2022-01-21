@@ -17,7 +17,7 @@ for(sp in c("Basiliscus_vittatus")){
   
 ##############################################################
   
-  s=readLines(paste(pathResults, "assembly.stats.out", sep=""))
+  s=readLines(paste(pathResults, sp, "/", method, "/assembly.stats.out", sep=""))
 
   id=unlist(lapply(s, function(x) {y=unlist(strsplit(x, split=":")); return(paste(y[1:(length(y)-1)], collapse=":"))}))
   size=as.numeric(unlist(lapply(s, function(x) {y=unlist(strsplit(x, split=":")); return(y[length(y)])})))
