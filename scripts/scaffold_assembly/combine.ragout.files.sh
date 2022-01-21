@@ -1,17 +1,18 @@
 #!/bin/bash
 
-export cluster=$1
+export sp=$1
+export cluster=$2
 
 #########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/genome_assembly/MEGAHIT_RAGOUT
+export pathResults=${path}/results/genome_assembly/${sp}/MEGAHIT_RAGOUT
 
 #########################################################################
 
-cat ${pathResults}/Pauxi_pauxi_scaffolds.fasta ${pathResults}/Pauxi_pauxi_unplaced.fasta > ${pathResults}/genome_sequence.fa
+cat ${pathResults}/${sp}_scaffolds.fasta ${pathResults}/${sp}_unplaced.fasta > ${pathResults}/genome_sequence.fa
  
 #########################################################################
