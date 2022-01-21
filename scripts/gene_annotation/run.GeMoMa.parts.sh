@@ -90,6 +90,9 @@ echo "genome file "${genomefile}
 
 #########################################################################
 
+${pathResults}/${part}/final_annotation.gff
+#########################################################################
+
 for annotfile in `ls ${pathSourceAnnotations}/parts | grep ${ref}'\.'`
 do
     export part=`echo ${annotfile} | cut -f 2 -d '.' `
