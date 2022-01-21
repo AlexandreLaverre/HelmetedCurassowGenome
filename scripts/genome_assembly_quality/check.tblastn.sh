@@ -45,13 +45,18 @@ if [ ${nthreads} = "parts" ]; then
     for i in {0..100};
     do
 	if [ -e ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa ]; then
-	    export last=`tail -n 1 ${pathResults}/tblastn_parts/${refsp}_AllPeptides${ensrelease}_vs_${suffix}_part${i}.tblastn.out | cut -f 1`
-	    export tot=`grep -c ">" ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa `
-	    export index=`grep ">" ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa | grep -n ${last} | cut -f 1 -d ':'`
-	    
-	    export ratio=$(($index * 100 / $tot))
-    
-	    echo "part "${i}" index "${index}" out of "${tot}" "${ratio}"% done";
+
+	    if [ -e ${pathResults}/tblastn_parts/${refsp}_AllPeptides${ensrelease}_vs_${suffix}_part${i}.tblastn.out ]; then
+		export last=`tail -n 1 ${pathResults}/tblastn_parts/${refsp}_AllPeptides${ensrelease}_vs_${suffix}_part${i}.tblastn.out | cut -f 1`
+		export tot=`grep -c ">" ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa `
+		export index=`grep ">" ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa | grep -n ${last} | cut -f 1 -d ':'`
+		
+		export ratio=$(($index * 100 / $tot))
+		
+		echo "part "${i}" index "${index}" out of "${tot}" "${ratio}"% done";
+	    else
+		echo "part "${i}" not yet started"
+	    fi
 	fi
 
     done
