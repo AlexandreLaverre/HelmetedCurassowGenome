@@ -73,8 +73,10 @@ if [ ${threads} = "parts" ]; then
     do
 	if [ -e ${pathProteinSequences}/fasta_parts/AllPeptides_Ensembl${ensrelease}_part${i}.fa ]; then
 
+	    echo "#!/bin/bash" > ${pathScripts}/bsub_script_tblastn
+	    
 	    if [ ${cluster} = "pbil" ]; then
-		echo "#SBATCH --job-name=tblastn_${ref}_part${i}" >  ${pathScripts}/bsub_script_tblastn
+		echo "#SBATCH --job-name=tblastn_${ref}_part${i}" >>  ${pathScripts}/bsub_script_tblastn
 		echo "#SBATCH --output=${pathScripts}/std_output_tblastn_${ref}.txt" >>  ${pathScripts}/bsub_script_tblastn
 		echo "#SBATCH --error=${pathScripts}/std_error_tblastn_${ref}.txt" >> ${pathScripts}/bsub_script_tblastn
 		echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_tblastn
@@ -101,7 +103,8 @@ else
     if [ -e ${pathResults}/AllPeptides${ensrelease}_vs_${suffix}.tblastn.out ]; then
 	echo "already done"
     else
-
+	echo "#!/bin/bash" > ${pathScripts}/bsub_script_tblastn
+	
 	 if [ ${cluster} = "pbil" ]; then
 	     echo "#SBATCH --job-name=tblastn_${ref}" >  ${pathScripts}/bsub_script_tblastn
 	     echo "#SBATCH --output=${pathScripts}/std_output_tblastn_${ref}.txt" >>  ${pathScripts}/bsub_script_tblastn
