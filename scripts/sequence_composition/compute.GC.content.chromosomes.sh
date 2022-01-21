@@ -2,8 +2,9 @@
 
 ########################################################################
 
-export method=$1
-export cluster=$2
+export sp=$1
+export assembly=$2
+export cluster=$3
 
 #########################################################################
 
@@ -12,21 +13,21 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
 export pathScripts=${path}/scripts/sequence_composition
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT" ]; then
+if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
 fi
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed.fa
 fi
 
