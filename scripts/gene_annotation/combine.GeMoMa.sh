@@ -1,20 +1,22 @@
 #!/bin/bash
 
-export assembly=$1
-export cluster=$2
+export sp=$1
+export assembly=$2
+export cluster=$3
 
 #########################################################################
 
 if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
+    export pathTools=/beegfs/home/${USER}/Tools
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/ifb/data/mydatalocal/Tools
 fi
 
-export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa
+export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/GeMoMa
 
 #########################################################################
 
