@@ -3,8 +3,8 @@
 export sp=$1
 export assembly=$2
 export sample=$3
-export cluster=$3
-export nthreads=$4
+export cluster=$4
+export nthreads=$5
 
 #############################################################################
 
