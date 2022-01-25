@@ -33,19 +33,20 @@ echo "#!/bin/bash " > script_combine_GeMoMa
 echo -n "java -jar ${pathTools}/GeMoMa/GeMoMa-1.8.jar CLI GAF " >> script_combine_GeMoMa
 
 #########################################################################
-## add reference annotation for this species if it exists
 
-if [ ${assembly} = "NCBI" ]||[ ${assembly} = "Ensembl103" ]; then
-    export referenceGFF=`ls ${pathData}/${assembly} | grep ${sp} | grep gff | grep -v filtered | grep -v stop | grep -v gz`
+# ## add reference annotation for this species if it exists
 
-    echo ${referenceGFF}
+# if [ ${assembly} = "NCBI" ]||[ ${assembly} = "Ensembl103" ]; then
+#     export referenceGFF=`ls ${pathData}/${assembly} | grep ${sp} | grep gff | grep -v filtered | grep -v stop | grep -v gz`
+
+#     echo ${referenceGFF}
     
-    if [ -e ${pathData}/${assembly}/${referenceGFF} ]; then
-	echo -n "p=${sp}_${assembly} g=${pathData}/${assembly}/${referenceGFF} ">> script_combine_GeMoMa
-    else
-	echo "cannot find reference annotation for "${sp}
-    fi
-fi
+#     if [ -e ${pathData}/${assembly}/${referenceGFF} ]; then
+# 	echo -n "p=${sp}_${assembly} g=${pathData}/${assembly}/${referenceGFF} ">> script_combine_GeMoMa
+#     else
+# 	echo "cannot find reference annotation for "${sp}
+#     fi
+# fi
 
 #########################################################################
 
