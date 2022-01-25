@@ -41,7 +41,7 @@ fi
 if [ ${sp} = "Basiliscus_vittatus" ]; then
     export strand="--rna-strandness R" ## TruSeq
 else
-  export strand=""
+    export strand=""
 fi
 
 #############################################################################
@@ -59,19 +59,19 @@ else
    
     if [ -e ${pathRNASeq}/${sample}.fastq.gz ]; then
 	export pathR=${pathRNASeq}/${sample}.fastq.gz,${pathR}
-	export type="single_end"
+	export seqtype="single_end"
     fi
     
     if [ -e ${pathRNASeq}/${sample}_R1.fastq.gz ]; then
 	export pathR1=${pathRNASeq}/${sample}_R1.fastq.gz,${pathR1}
 	export nbR1=$((nbR1+1))
-	export type="paired_end"
+	export seqtype="paired_end"
     fi
 
      if [ -e ${pathRNASeq}/${sample}_R2.fastq.gz ]; then
 	export pathR2=${pathRNASeq}/${sample}_R2.fastq.gz,${pathR2}
 	export nbR2=$((nbR2+1))
-	export type="paired_end"
+	export seqtype="paired_end"
     fi    
     
     #############################################################################
@@ -89,12 +89,12 @@ else
 	echo "#SBATCH --mem=4G" >>  ${pathScripts}/bsub_script_hisat ## 5g per CPU
     fi	
 
-    if [ ${type} = "single_end" ]; then
+    if [ ${seqtype} = "single_end" ]; then
 	echo "single-end"
 	echo "hisat2 --seed 19 -p ${nthreads} -x ${pathIndex} -U ${pathR} -S ${pathResults}/${sample}/accepted_hits.sam ${strand} --max-intronlen 1000000 --dta-cufflinks --no-unal --met-file ${pathResults}/${sample}/metrics.txt  --novel-splicesite-outfile ${pathResults}/${sample}/novel_splicesites.txt >& ${pathResults}/${sample}/align_summary.txt">> ${pathScripts}/bsub_script_hisat
     fi
         
-    if [ ${type} = ${paired_end} ]; then
+    if [ ${seqtype} = "paired_end" ]; then
 	echo "paired-end"
 	echo "hisat2 --seed 19 -p ${nthreads} -x ${pathIndex} -1 ${pathR1} -2 ${pathR2} -S ${pathResults}/${sample}/accepted_hits.sam ${strand} --max-intronlen 1000000 --dta-cufflinks --no-unal --met-file ${pathResults}/${sample}/metrics.txt  --novel-splicesite-outfile ${pathResults}/${sample}/novel_splicesites.txt >& ${pathResults}/${sample}/align_summary.txt">> ${pathScripts}/bsub_script_hisat
     fi
