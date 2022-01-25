@@ -41,7 +41,7 @@ if [ ${assembly} = "NCBI" ]||[ ${assembly} = "Ensembl103" ]; then
     echo ${referenceGFF}
     
     if [ -e ${pathData}/${assembly}/${referenceGFF} ]; then
-	echo -n "p=${sp}_${assembly} g=${pathData}/${assembly}/${referenceGFF}">> script_combine_GeMoMa
+	echo -n "p=${sp}_${assembly} g=${pathData}/${assembly}/${referenceGFF} ">> script_combine_GeMoMa
     else
 	echo "cannot find reference annotation for "${sp}
     fi
