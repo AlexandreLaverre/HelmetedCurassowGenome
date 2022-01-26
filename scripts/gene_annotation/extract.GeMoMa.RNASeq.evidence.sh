@@ -3,7 +3,6 @@
 export target=$1
 export assembly=$2
 export cluster=$3
-export threads=$4
 
 #########################################################################
 
@@ -97,7 +96,6 @@ else
 	echo "#SBATCH --error=${pathScripts}/std_error_GEMOMA_${target}.txt" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --mem=12G" >> ${pathScripts}/bsub_script_gemoma
-	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_gemoma
 
 	echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam o=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
@@ -113,7 +111,6 @@ else
 	echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${target}.txt" >>  ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --error=${pathScripts}/std_error_GEMOMA_${target}.txt" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --ntasks=1" >> ${pathScripts}/bsub_script_gemoma
-	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=7-00:00:00" >> ${pathScripts}/bsub_script_gemoma
 
 	echo "java -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam o=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
