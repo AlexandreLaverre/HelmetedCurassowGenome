@@ -10,8 +10,8 @@ export assembly="MEGAHIT_RAGOUT"
 ##########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/ifb/data/mydatalocal/Tools/OrthoFinder/tools
 fi
 
 export pathResults=${path}/results/genome_annotation/${assembly}/${annot}

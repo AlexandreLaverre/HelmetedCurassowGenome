@@ -1,22 +1,23 @@
 #!/bin/bash
 
-export cluster=$1
-export annot=$2
-export type=$3
-
+export sp="Pauxi_pauxi"
 export assembly="MEGAHIT_RAGOUT"
 export genome="genome_sequence_renamed"
+
+export cluster=$2
+export annot=$3
+export type=$4
 
 ##########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/ifb/data/mydatalocal/Tools/OrthoFinder/tools
 fi
 
 export pathProteins=${path}/data/protein_sequences
-export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}/${genome}.fa
-export pathResults=${path}/results/genome_annotation/${assembly}/${annot}
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}/${genome}.fa
+export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/${annot}
 
 mkdir ${pathResults}/OrthoFinder_${type}
 
