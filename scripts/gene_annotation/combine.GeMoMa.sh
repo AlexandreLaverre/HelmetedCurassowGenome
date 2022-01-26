@@ -48,7 +48,7 @@ echo -n "java -jar ${pathTools}/GeMoMa/GeMoMa-1.8.jar CLI GAF " >> script_combin
 #     fi
 # fi
 
-#########################################################################
+###########################################n##############################
 
 for ref in `ls ${pathResults} | grep -v combined`
 do
