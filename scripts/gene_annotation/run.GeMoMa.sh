@@ -27,7 +27,7 @@ if [ ${cluster} = "cloud" ]; then
     export version=1.8
 fi
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
+export pathGenomeAssembly=${path}/results/genome_assembly/${target}/${assembly}
 export pathAllGenomes=${path}/data/genome_sequences
 export pathSourceGenomes=${path}/data/genome_sequences/${source}
 export pathSourceAnnotations=${path}/data/genome_annotations/${source}
