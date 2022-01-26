@@ -98,7 +98,7 @@ else
 	echo "#SBATCH --mem=12G" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_gemoma
 
-	echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam o=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
+	echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam outdir=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
 
 	sbatch ${pathScripts}/bsub_script_gemoma
     fi
@@ -113,7 +113,7 @@ else
 	echo "#SBATCH --ntasks=1" >> ${pathScripts}/bsub_script_gemoma
 	echo "#SBATCH --time=7-00:00:00" >> ${pathScripts}/bsub_script_gemoma
 
-	echo "java -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam o=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
+	echo "java -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam outdir=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
 
 	sbatch ${pathScripts}/bsub_script_gemoma
     fi
@@ -122,7 +122,7 @@ else
 
     if [ ${cluster} = "cloud" ]; then
 	## mmseqs available in PATH
-	echo "java  -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam o=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
+	echo "java  -Xms2G -Xmx64G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI ERE s=FR_FIRST_STRAND m=${pathRNASeq}/accepted_hits_all_samples.bam outdir=${pathResults}" >> ${pathScripts}/bsub_script_gemoma
 
 	chmod a+x ${pathScripts}/bsub_script_gemoma
 	${pathScripts}/bsub_script_gemoma
