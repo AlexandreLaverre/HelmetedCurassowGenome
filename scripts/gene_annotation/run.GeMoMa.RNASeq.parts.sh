@@ -47,14 +47,21 @@ fi
 
 if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
-    export suffix=final.contigs
 fi
 
 #########################################################################
 
 if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
-    export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed_sm.fa
-    export suffix=genome_sequence
+      if [ -e ${pathGenomeAssembly}/genome_sequence_renamed_sm.fa ]; then
+	export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed_sm.fa
+    else
+	if [ -e ${pathGenomeAssembly}/genome_sequence_renamed.fa ]; then
+	    export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed.fa
+	else
+	    echo "cannot find genome sequence"
+	    exit
+	fi
+    fi
 fi
 
 #########################################################################
