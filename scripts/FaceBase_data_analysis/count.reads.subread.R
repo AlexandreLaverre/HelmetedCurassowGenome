@@ -37,7 +37,7 @@ counts$Length=annot[rownames(counts), "Length"]
 
 ####################################################
 
-write.table(counts, file=paste(pathResults, "ReadCounts_", sample, ".txt", sep=""), row.names=F, col.names=T, sep="\t")
+write.table(counts, file=paste(pathResults, "ReadCounts_", sample, ".txt", sep=""), row.names=T, col.names=T, sep="\t")
 
 ####################################################################
 
