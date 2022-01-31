@@ -27,9 +27,10 @@ pathAln=paste(pathRNASeq, file, sep="")
 
 res.unique=featureCounts(files=pathAln, annot.ext=pathAnnot, isGTFAnnotationFile=TRUE, GTF.featureType="exon", GTF.attrType="gene_id", countMultiMappingReads=FALSE, nthreads=nthreads)
 
-counts=res.unique$counts
+counts=as.data.frame(res.unique$counts)
+colnames(counts)=sample
 
-annot=res.unique$annotation
+annot=as.data.frame(res.unique$annotation)
 rownames(annot)=as.character(annot$GeneID)
 
 counts$Length=annot[rownames(counts), "Length"]
