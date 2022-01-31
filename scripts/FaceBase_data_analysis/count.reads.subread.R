@@ -23,7 +23,7 @@ pathResults=paste(path, "results/FaceBase_analysis/Mouse/",sep="")
 ####################################################################
 
 sample=unlist(strsplit(file, split="\\."))[1]
-file=paste(sample,".bam",sep="")
+file=paste(sample,"_sorted.bam",sep="")
 pathAln=paste(pathRNASeq, file, sep="")
 
 res.unique=featureCounts(files=pathAln, annot.ext=pathAnnot, isGTFAnnotationFile=TRUE, GTF.featureType="exon", GTF.attrType="gene_id", countMultiMappingReads=FALSE, nthreads=nthreads)
