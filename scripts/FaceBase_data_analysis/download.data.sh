@@ -17,9 +17,9 @@ export pathScripts=${path}/scripts/FaceBase_data_analysis
 echo "#!/bin/bash" > ${pathScripts}/bsub_script_download
 
 if [ ${cluster} = "in2p3" ]; then
-    echo "#SBATCH --job-name=d${i}" >>  ${pathScripts}/bsub_script_download
-    echo "#SBATCH --output=${pathScripts}/std_output_download_${i}.txt" >>  ${pathScripts}/bsub_script_download
-    echo "#SBATCH --error=${pathScripts}/std_error_download_${i}.txt" >> ${pathScripts}/bsub_script_download
+    echo "#SBATCH --job-name=d_${index}" >>  ${pathScripts}/bsub_script_download
+    echo "#SBATCH --output=${pathScripts}/std_output_download_${index}.txt" >>  ${pathScripts}/bsub_script_download
+    echo "#SBATCH --error=${pathScripts}/std_error_download_${index}.txt" >> ${pathScripts}/bsub_script_download
     echo "#SBATCH --ntasks=1" >> ${pathScripts}/bsub_script_download
     echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_download
     echo "#SBATCH --time=7-00:00:00" >> ${pathScripts}/bsub_script_download
@@ -28,9 +28,9 @@ if [ ${cluster} = "in2p3" ]; then
 
     echo -n "wget " >>  ${pathScripts}/bsub_script_download
 
-    sed -n ${i}p ${pathData}/FaceBase_samples.txt >>  ${pathScripts}/bsub_script_download
+    head -n ${index} ${pathData}/FaceBase_samples.txt | tail -n 1 >>  ${pathScripts}/bsub_script_download
     
-    #sbatch ${pathScripts}/bsub_script_download
+    sbatch ${pathScripts}/bsub_script_download
 fi
 
 ########################################################################################
