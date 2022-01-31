@@ -30,7 +30,7 @@ res.unique=featureCounts(files=pathAln, annot.ext=pathAnnot, isGTFAnnotationFile
 counts=res.unique$counts
 
 annot=res.unique$annotation
-rownames(annot)=annot$GeneID
+rownames(annot)=as.character(annot$GeneID)
 
 counts$Length=annot[rownames(counts), "Length"]
 
