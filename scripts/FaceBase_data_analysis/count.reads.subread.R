@@ -22,7 +22,6 @@ pathResults=paste(path, "results/FaceBase_analysis/Mouse/",sep="")
   
 ####################################################################
 
-sample=unlist(strsplit(file, split="\\."))[1]
 file=paste(sample,"_sorted.bam",sep="")
 pathAln=paste(pathRNASeq, file, sep="")
 
@@ -30,9 +29,14 @@ res.unique=featureCounts(files=pathAln, annot.ext=pathAnnot, isGTFAnnotationFile
 
 counts=res.unique$counts
 
+annot=res.unique$annotation
+rownames(annot)=annot$GeneID
+
+counts$Length=annot[rownames(counts), "Length"]
+
 ####################################################
 
-write.table(res.counts, file=paste(pathResults, "ReadCounts_", sample, ".txt", sep=""), row.names=F, col.names=T, sep="\t")
+write.table(counts, file=paste(pathResults, "ReadCounts_", sample, ".txt", sep=""), row.names=F, col.names=T, sep="\t")
 
 ####################################################################
 
