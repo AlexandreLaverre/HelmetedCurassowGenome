@@ -19,6 +19,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 
+export pathGenomeSequences=${path}/data/genome_sequences/${assembly}
 export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
 export pathRepeatModeler=${path}/results/repeats/${sp}/${assembly}/RepeatModeler
 export pathResults=${path}/results/repeats/${sp}/${assembly}/RepeatMasker/${lib}
@@ -45,6 +46,19 @@ fi
 
 if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed.fa
+fi
+
+#########################################################################
+
+if [ ${assembly} = "NCBI" ]; then
+    export pathAssembly=${pathGenomeSequences}/${sp}.fa
+fi
+
+#########################################################################
+
+if [ ${assembly} = "Ensembl103" ]; then
+    export file=`ls ${pathGenomeSequences} | grep ${sp} | grep fa`
+    export pathAssembly=${pathGenomeSequences}/${file}
 fi
 
 #########################################################################
