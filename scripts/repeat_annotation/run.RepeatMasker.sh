@@ -6,6 +6,7 @@ export sp=$1
 export assembly=$2
 export lib=$3
 export cluster=$4
+export nthreads=$5
 
 #########################################################################
 
@@ -28,6 +29,14 @@ export pathScripts=${path}/scripts/repeat_annotation
 
 #########################################################################
 
+if [ -e ${pathResults} ]; then
+    echo "path results already there"
+else
+    mkdir -p ${pathResults}
+fi
+
+#########################################################################
+
 if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
 fi
@@ -41,13 +50,13 @@ fi
 #########################################################################
 
 if [ ${lib} = "Dfam" ]; then
-    RepeatMasker -e rmblast -pa 8 -s -dir ${pathResults} -gff ${pathAssembly}
+    RepeatMasker -e rmblast -pa ${nthreads} -s -dir ${pathResults} -gff ${pathAssembly}
 fi
 
 #########################################################################
 
 if [ ${lib} = "RepeatModeler" ]; then
-    RepeatMasker -e rmblast -pa 8 -s -dir ${pathResults} -gff ${pathAssembly} -lib ${pathRepeatModeler}/repeat_modeler_db-families.fa
+    RepeatMasker -e rmblast -pa ${nthreads} -s -dir ${pathResults} -gff ${pathAssembly} -lib ${pathRepeatModeler}/repeat_modeler_db-families.fa
 fi
 
 #########################################################################
