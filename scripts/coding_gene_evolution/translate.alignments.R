@@ -21,9 +21,15 @@ translate_alignment <- function(seq){
 }
 
 ########################################################################
+
+results=read.table(paste(pathResults, "pelican_output_by_category/best_sites.tsv",sep=""),h=T, stringsAsFactors=F)
+
+########################################################################
+
 nbdone=0
 
-for(file in files){
+for(gene in unique(results$alignment)){
+  file=paste(gene, ".fa", sep="")
   
   aln=read.fasta(paste(pathResults,"data_for_pelican/",file,sep=""))
 
