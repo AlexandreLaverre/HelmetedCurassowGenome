@@ -57,7 +57,7 @@ fi
 
 ## first make blastdb if not already there
 
-if [ -e ${pathResults}/${suffix}.nhr ]; then
+if [ -e ${pathTranscriptomeAssembly}/${suffix}.nhr ]; then
     echo "blast database already done"
 else
     makeblastdb -dbtype nucl -in ${pathAssembly} -out ${pathTranscriptomeAssembly}/${suffix}
