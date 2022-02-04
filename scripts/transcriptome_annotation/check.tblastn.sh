@@ -23,6 +23,13 @@ export pathTranscriptomeAssembly=${path}/results/transcriptome_assembly/${target
 export pathResults=${path}/results/transcriptome_assembly/${target}/tblastn_results
 export pathScripts=${path}/scripts/transcriptome_annotation
 
+#########################################################################
+
+if [ ${assembly} = "Trinity" ]; then
+    export pathAssembly=${pathTranscriptomeAssembly}/Trinity.fasta
+    export suffix=Trinity
+fi
+
 ########################################################################
 
 export protfile=`ls ${pathProteinSequences} | grep ${refsp} | grep fa`
