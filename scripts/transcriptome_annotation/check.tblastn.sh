@@ -15,7 +15,7 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 export pathProteinSequences=${path}/data/protein_sequences/${source}/primary_transcripts
