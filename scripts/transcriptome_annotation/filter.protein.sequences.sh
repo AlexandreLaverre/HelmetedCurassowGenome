@@ -20,7 +20,7 @@ do
 	echo "already extracted primary transcripts"
     else
 	echo "extracting primary transcripts for "${file}
-	python ${pathTools}/primary_transcript.py ${pathProteins}/Ensembl103/${file}
+	python ${pathTools}/primary_transcript.py ${pathSequences}/${file}
     fi
 done
 
