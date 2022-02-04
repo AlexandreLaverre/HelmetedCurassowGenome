@@ -4,9 +4,9 @@ export sp="Pauxi_pauxi"
 export assembly="MEGAHIT_RAGOUT"
 export genome="genome_sequence_renamed"
 
-export cluster=$2
-export annot=$3
-export type=$4
+export cluster=$1
+export annot=$2
+export type=$3
 
 ##########################################################################
 
@@ -37,9 +37,9 @@ done
 for file in `ls ${pathProteins}/Ensembl103/primary_transcripts/ | grep all.fa`
 do
     export sp=`echo ${file} | cut -f 1 -d '.'`
-    
+
     ln -s ${pathProteins}/Ensembl103/primary_transcripts/${file} ${pathResults}/OrthoFinder_${type}/${sp}.fa
-done 
+done
 
 ##########################################################################
 
@@ -55,9 +55,9 @@ ln -s ${pathProteins}/NCBI/GCA_013396415.1_ASM1339641v1_protein.faa ${pathResult
 
 ## add hocco
 
-if [ ${annot} = "BRAKER_Ensembl103" ]||[ ${annot} = "BRAKER_Ensembl103_bird_species" ]; then 
+if [ ${annot} = "BRAKER_Ensembl103" ]||[ ${annot} = "BRAKER_Ensembl103_bird_species" ]; then
     gffread -S -y ${pathResults}/braker.faa -g ${pathGenomeAssembly} ${pathResults}/braker.gtf
-    
+
     ln -s ${pathResults}/braker.faa ${pathResults}/OrthoFinder_${type}/Pauxi_pauxi.fa
 fi
 
@@ -70,7 +70,7 @@ if [ ${annot} = "GeMoMa/combined" ]; then
 	else
 	    python ${pathTools}/primary_transcript.py ${pathResults}/filtered_predictions_formatted.faa
 	fi
-	
+
 	ln -s ${pathResults}/primary_transcripts/filtered_predictions_formatted.faa ${pathResults}/OrthoFinder_${type}/Pauxi_pauxi.fa
     fi
 
@@ -80,7 +80,7 @@ if [ ${annot} = "GeMoMa/combined" ]; then
 	else
 	    python ${pathTools}/primary_transcript.py ${pathResults}/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.faa
 	fi
-	
+
 	ln -s ${pathResults}/primary_transcripts/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.faa ${pathResults}/OrthoFinder_${type}/Pauxi_pauxi.fa
     fi
 fi
