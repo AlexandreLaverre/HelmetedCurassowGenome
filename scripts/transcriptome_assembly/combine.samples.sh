@@ -11,17 +11,6 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathData=${path}/data/RNASeq/${sp}
-export pathResults=${path}/results/transcriptome_assembly/${sp}/TransLiG
-
-## TransLiG v1.3
-
-#############################################################################
-
-if [ -e ${pathResults} ]; then
-    echo "path output exists"
-else
-    mkdir -p ${pathResults}
-fi
 
 #############################################################################
 
