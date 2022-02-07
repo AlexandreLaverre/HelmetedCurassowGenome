@@ -12,7 +12,7 @@ fi
 export pathData=${path}/data/RNASeq/${sp}
 export pathResults=${path}/results/transcriptome_assembly/${sp}/TransLiG
 
-## TransLiG v1.3 
+## TransLiG v1.3
 
 #############################################################################
 
@@ -50,4 +50,3 @@ fi
 TransLiG -m ${libtype} -s fq -p pair -l ${pathData}/allsamples_R1.fastq.gz -r ${pathData}/allsamples_R2.fastq.gz -o ${pathResults}
 
 #############################################################################
-

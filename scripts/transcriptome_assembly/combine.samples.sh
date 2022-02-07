@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 export sp=$1
 export trimmed=$2
