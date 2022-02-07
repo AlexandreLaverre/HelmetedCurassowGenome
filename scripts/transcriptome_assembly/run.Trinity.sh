@@ -3,6 +3,7 @@
 export sp=$1
 export cluster=$2
 export nthreads=$3
+export maxmem=$4
 
 #############################################################################
 
@@ -45,14 +46,18 @@ fi
 ## RF: TruSeq mRNA stranded, also Kapa Biosystems Stranded mRNA
 
 if [ ${sp} = "Chamaeleo_calyptratus" ]; then
-    export libtype="RF"
+    export libtype="--SS_lib_type RF"
 else
-    echo "unknown library type!"
-    exit
+    if [ ${sp} = "Chamaeleo_chamaeleon_recticrista" ]; then
+	export libtype="" ## not stranded
+    else
+	echo "unknown library type!"
+	exit
+    fi
 fi
 
 #############################################################################
 
-Trinity --seqType fq --max_memory 300G --left ${pathData}/allsamples_R1.fastq.gz --right ${pathData}/allsamples_R2.fastq.gz --SS_lib_type ${libtype} --CPU ${nthreads} --min_contig_length 200 --trimmomatic --output ${pathResults}
+Trinity --seqType fq --max_memory ${maxmem} --left ${pathData}/allsamples_R1.fastq.gz --right ${pathData}/allsamples_R2.fastq.gz ${libtype} --CPU ${nthreads} --min_contig_length 200 --trimmomatic --output ${pathResults}
 
 #############################################################################
