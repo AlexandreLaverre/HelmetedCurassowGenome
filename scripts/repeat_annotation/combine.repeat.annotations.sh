@@ -2,8 +2,9 @@
 
 ########################################################################
 
-export assembly=$1
-export cluster=$2
+export sp=$1
+export assembly=$2
+export cluster=$3
 
 #########################################################################
 
@@ -15,8 +16,8 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
-export pathRepeatMasker=${path}/results/repeats/${assembly}/RepeatMasker
+export pathGenomeSequences=${path}/data/genome_sequences/${assembly}
+export pathRepeatMasker=${path}/results/repeats/${sp}/${assembly}/RepeatMasker
 export pathScripts=${path}/scripts/repeat_annotation
 
 #########################################################################
