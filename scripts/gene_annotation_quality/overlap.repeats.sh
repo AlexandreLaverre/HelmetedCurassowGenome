@@ -8,7 +8,7 @@ export cluster=$4
 ##############################################################
 
 if [ ${cluster} = "pbil" ]; then
-    export path=/bgeefs/data/necsulea/HelmetedCurassowGenome
+    export path=/beegfs/data/necsulea/HelmetedCurassowGenome
 else
     if [ ${cluster} = "cloud" ]; then
 	export path=/mnt/mydatalocal/HelmetedCurassowGenome
