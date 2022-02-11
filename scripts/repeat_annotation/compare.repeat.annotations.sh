@@ -16,6 +16,7 @@ if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
+export pathGenomeSequences=${path}/data/genome_sequences/${assembly}
 export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
 export pathRepeatMasker=${path}/results/repeats/${sp}/${assembly}/RepeatMasker
 export pathScripts=${path}/scripts/repeat_annotation
