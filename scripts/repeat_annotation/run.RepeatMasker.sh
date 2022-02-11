@@ -28,6 +28,13 @@ export pathScripts=${path}/scripts/repeat_annotation
 ## RepeatMasker 4.1.2
 ## CONS-Dfam 3.3 (Avril 2021)
 
+##Using Master RepeatMasker Database: /ifb/data/mydatalocal/Tools/RepeatMasker/Libraries/RepeatMaskerLib.h5
+## Title    : Dfam
+## Version  : 3.3
+## Date     : 2020-11-09
+##Families : 273,693
+
+
 #########################################################################
 
 if [ -e ${pathResults} ]; then

@@ -2,8 +2,9 @@
 
 ########################################################################
 
-export method=$1
-export cluster=$2
+export sp=$1
+export method=$2
+export assembly=$3
 
 #########################################################################
 
@@ -16,20 +17,33 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${method}
-export pathRepeatMasker=${path}/results/repeats/${method}/RepeatMasker
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
+export pathRepeatMasker=${path}/results/repeats/${sp}/${assembly}/RepeatMasker
 export pathScripts=${path}/scripts/repeat_annotation
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT" ]; then
+if [ ${assembly} = "MEGAHIT" ]; then
     export prefix=final.contigs
 fi
 
 #########################################################################
 
-if [ ${method} = "MEGAHIT_RAGOUT" ]; then
+if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export prefix=genome_sequence_renamed
+fi
+
+#########################################################################
+
+if [ ${assembly} = "NCBI" ]; then
+    export prefix=${sp}
+fi
+
+########################################################################
+
+if [ ${assembly} = "Ensembl103" ]; then
+    export file=`ls ${pathGenomeSequences} | grep ${sp} | grep fa`
+    export prefix=`basename ${file} .fa`
 fi
 
 #########################################################################
@@ -39,4 +53,3 @@ perl ${pathScripts}/compare.repeat.annotations.pl --pathAnnotation1=${pathRepeat
 perl ${pathScripts}/compare.repeat.annotations.pl --pathAnnotation2=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation1=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/Comparison_RepeatModeler_Dfam.txt
 
 #########################################################################
-

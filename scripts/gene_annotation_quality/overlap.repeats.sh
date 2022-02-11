@@ -1,8 +1,9 @@
 #!/bin/bash
 
-export assembly=$1
-export annot=$2
-export cluster=$3
+export sp=$1
+export assembly=$2
+export annot=$3
+export cluster=$4
 
 ##############################################################
 
@@ -18,22 +19,20 @@ fi
 
 ##############################################################
 
-export pathRepeatMasker=${path}/results/repeats/${assembly}/RepeatMasker/CombinedRepeatAnnotations.txt 
-export pathResults=${path}/results/genome_annotation/${assembly}/${annot}
+export pathRepeatMasker=${path}/results/repeats/${sp}/${assembly}/RepeatMasker/CombinedRepeatAnnotations.txt
+export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/${annot}
 export pathScripts=${path}/scripts/gene_annotation_quality
-
-export release=94
 
 ##############################################################
 
 if [ ${annot} = "BRAKER_Ensembl103_multithread" ]; then
-    export pathGTF=${pathResults}/braker.gtf  
+    export pathGTF=${pathResults}/braker.gtf
 fi
 
 ##############################################################
 
 if [ ${annot} = "GeMoMa" ]; then
-    export pathResults=${path}/results/genome_annotation/${assembly}/${annot}/combined
+    export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/${annot}/combined
     export pathGTF=${pathResults}/filtered_predictions.gtf
 fi
 
