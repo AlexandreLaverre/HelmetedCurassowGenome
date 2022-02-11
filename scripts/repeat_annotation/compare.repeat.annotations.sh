@@ -60,8 +60,17 @@ fi
 
 #########################################################################
 
-perl ${pathScripts}/compare.repeat.annotations.pl --pathAnnotation1=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation2=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/Comparison_Dfam_RepeatModeler.txt
+if [ -e ${pathRepeatMasker}/Comparison_Dfam_RepeatModeler.txt ]; then
+    echo "Dfam vs RepeatModeler already done"
+else
+    perl ${pathScripts}/compare.repeat.annotations.pl --pathAnnotation1=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation2=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/Comparison_Dfam_RepeatModeler.txt
+fi
 
-perl ${pathScripts}/compare.repeat.annotations.pl --pathAnnotation2=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation1=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/Comparison_RepeatModeler_Dfam.txt
+#########################################################################
 
+if [ -e ${pathRepeatMasker}/Comparison_RepeatModeler_Dfam.txt ]; then
+    echo "RepeatModeler vs Dfam already done"
+else
+    perl ${pathScripts}/compare.repeat.annotations.pl --pathAnnotation2=${pathRepeatMasker}/Dfam/${prefix}.fa.out --pathAnnotation1=${pathRepeatMasker}/RepeatModeler/${prefix}.fa.out --pathOutput=${pathRepeatMasker}/Comparison_RepeatModeler_Dfam.txt
+fi
 #########################################################################
