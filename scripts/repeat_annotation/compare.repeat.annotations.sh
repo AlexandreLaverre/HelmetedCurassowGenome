@@ -3,8 +3,8 @@
 ########################################################################
 
 export sp=$1
-export method=$2
-export assembly=$3
+export assembly=$2
+export cluster=$3
 
 #########################################################################
 
@@ -15,7 +15,6 @@ fi
 if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
-
 
 export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
 export pathRepeatMasker=${path}/results/repeats/${sp}/${assembly}/RepeatMasker
