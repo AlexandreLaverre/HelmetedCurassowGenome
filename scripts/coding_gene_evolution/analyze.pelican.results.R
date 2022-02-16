@@ -4,7 +4,14 @@ pathResults="../../results/coding_gene_evolution/"
 pathPhenotypes="../../data/MGI_alleles/"
 pathExp="../../results/FaceBase_analysis/Mouse/"
 pathAnnot="../../data/genome_annotations/Ensembl103/"
+pathData="../../data/data_from_literature/"
 pathFigures="../../results/figures/"
+
+#####################################################################
+
+hn.missense=read.table(paste(pathData, "HHCM_Kuhlwilm_Boeckx2019_missense.txt",sep=""), h=F, stringsAsFactors=F,sep="\t", quote="\"")
+
+hn.genes=unique(unlist(lapply(hn.missense$V3, function(x) unlist(strsplit(x,split=";")))))
 
 #####################################################################
 
@@ -16,8 +23,12 @@ mgi$Gene=toupper(unlist(lapply(mgi$Allele.Symbol, function(x) unlist(strsplit(x,
 
 files=system(paste("ls ",pathResults, "data_for_pelican/",sep=""), intern=T)
 genes=unlist(lapply(files, function(x) unlist(strsplit(x, split="\\."))[1]))
-genes=unlist(lapply(genes, function(x) unlist(strsplit(x, split="_"))[3]))
-genes=setdiff(genes, NA)
+hocco.genes=unlist(lapply(genes, function(x) paste(unlist(strsplit(x, split="_"))[1:2], collapse="_")))
+human.genes=unlist(lapply(genes, function(x) unlist(strsplit(x, split="_"))[3]))
+
+hocco.genes=hocco.genes[which(!is.na(human.genes))]
+human.genes=human.genes[which(!is.na(human.genes))]
+
 
 #####################################################################
 
@@ -28,7 +39,7 @@ tested.mgi.genes=intersect(mgi$Gene, genes)
 best_sites=read.table(paste(pathResults, "pelican_output_by_category/best_sites.tsv",sep=""), h=T, stringsAsFactors=F)
 best_sites$Gene=unlist(lapply(best_sites$alignment,function(x) unlist(strsplit(x, split="_"))[3]))
 
-best_sites=best_sites[which(best_sites$Gene%in%genes),]
+best_sites=best_sites[which(best_sites$Gene%in%humangenes),]
 
 #####################################################################
 
