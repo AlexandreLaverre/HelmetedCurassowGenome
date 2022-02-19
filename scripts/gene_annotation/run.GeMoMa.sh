@@ -89,17 +89,23 @@ fi
 #########################################################################
 
 if [ ${assembly} = "Ensembl103" ]; then
-    export prefix=`ls ${pathAllGenomes}/Ensembl103/ | grep ${target} | grep dna_sm`
-   
-    if [ -e ${pathAssembly} ]; then
-	echo "genome file is there"
-	
-	perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/Ensembl103/${prefix} --pathOutput=${pathAllGenomes}/Ensembl103/${target}.clean.fa
-	
+
+    if [ -e ${pathAllGenomes}/Ensembl103/${target}.clean.fa ]; then
+	echo "ok"
 	export pathAssembly=${pathAllGenomes}/Ensembl103/${target}.clean.fa
     else
-	echo "cannot find genome file"
-	exit
+	export prefix=`ls ${pathAllGenomes}/Ensembl103/ | grep ${target} | grep dna_sm`
+
+	if [ -e ${pathAssembly} ]; then
+	    echo "genome file is there"
+
+	    perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/Ensembl103/${prefix} --pathOutput=${pathAllGenomes}/Ensembl103/${target}.clean.fa
+
+	    export pathAssembly=${pathAllGenomes}/Ensembl103/${target}.clean.fa
+	else
+	    echo "cannot find genome file"
+	    exit
+	fi
     fi
 fi
 

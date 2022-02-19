@@ -71,7 +71,7 @@ if [ ${assembly} = "NCBI" ]; then
 	    if [ -e ${pathAllGenomes}/NCBI/${target}.fa ]; then
 		perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/NCBI/${target}.fa --pathOutput=${pathAllGenomes}/NCBI/${target}.clean.fa
 	    else
-		
+
 		echo "looking for "${pathAllGenomes}/NCBI/${target}.fa.gz
 		echo "cannot find target genome file!"
 		exit
@@ -86,14 +86,15 @@ if [ ${assembly} = "Ensembl103" ]; then
 
     if [ -e ${pathAllGenomes}/Ensembl103/${target}.clean.fa ]; then
 	echo "ok"
+	export pathAssembly=${pathAllGenomes}/Ensembl103/${target}.clean.fa
     else
 	export prefix=`ls ${pathAllGenomes}/Ensembl103/ | grep ${target} | grep dna_sm`
-	
+
 	if [ -e ${pathAssembly} ]; then
 	    echo "genome file is there"
-	    
+
 	    perl ${pathScriptsScaffoldAssembly}/cleanup.fasta.names.pl --pathInput=${pathAllGenomes}/Ensembl103/${prefix} --pathOutput=${pathAllGenomes}/Ensembl103/${target}.clean.fa
-	    
+
 	    export pathAssembly=${pathAllGenomes}/Ensembl103/${target}.clean.fa
 	else
 	    echo "cannot find genome file"
@@ -127,7 +128,7 @@ do
     if [ -e ${pathResults}/${part} ]; then
 	echo "dir output already there"
     else
-	mkdir -p ${pathResults}/${part} 
+	mkdir -p ${pathResults}/${part}
     fi
 
     if [ -e ${pathResults}/${part}/final_annotation.gff ]; then
@@ -136,7 +137,7 @@ do
 	echo "#!/bin/bash" > ${pathScripts}/bsub_script_gemoma
 
 	#############################################
-	
+
 	if [ ${cluster} = "pbil" ]; then
 	    echo "#SBATCH --job-name=gemoma_${ref}" >>  ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${ref}_${part}.txt" >>  ${pathScripts}/bsub_script_gemoma
@@ -145,15 +146,15 @@ do
 	    echo "#SBATCH --mem=12G" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_gemoma
-	    
+
 	    echo "singularity exec -B ${path} -B ${pathTools} ${pathTools}/basic_ubuntu.simg java -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults}/${part} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref}_${part} a=${pathSourceAnnotations}/parts/${annotfile}  g=${pathSourceGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
-	    
+
 	    sbatch ${pathScripts}/bsub_script_gemoma
 	fi
 
 
 	#############################################
-	
+
 	if [ ${cluster} = "in2p3" ]; then
 	    echo "#SBATCH --job-name=gemoma_${ref}" >>  ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --output=${pathScripts}/std_output_GEMOMA_${ref}_${part}.txt" >>  ${pathScripts}/bsub_script_gemoma
@@ -161,22 +162,22 @@ do
 	    echo "#SBATCH --ntasks=1" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_gemoma
 	    echo "#SBATCH --time=7-00:00:00" >> ${pathScripts}/bsub_script_gemoma
-	    
+
 	    echo "java -Xms2G -Xmx64G -Xss1G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults}/${part} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref}_${part} a=${pathSourceAnnotations}/parts/${annotfile}  g=${pathSourceGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 m=${pathTools}/mmseqs/bin/ " >> ${pathScripts}/bsub_script_gemoma
-	    
+
 	    sbatch ${pathScripts}/bsub_script_gemoma
 	fi
-	
+
 	#############################################
-	
+
 	if [ ${cluster} = "cloud" ]; then
 	    ## mmseqs available in PATH
 	    echo "java  -Xms2G -Xmx64G -Xss1G -jar ${pathTools}/GeMoMa/GeMoMa-${version}.jar CLI GeMoMaPipeline threads=${threads} outdir=${pathResults}/${part} GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=${pathAssembly} i=${ref}_${part} a=${pathSourceAnnotations}/parts/${annotfile}  g=${pathSourceGenomes}/${genomefile} GeMoMa.m=500000 Extractor.f=false GeMoMa.i=10 " >> ${pathScripts}/bsub_script_gemoma
-	    
+
 	    chmod a+x ${pathScripts}/bsub_script_gemoma
 	    ${pathScripts}/bsub_script_gemoma
 	fi
-	
+
     fi
 
 done
