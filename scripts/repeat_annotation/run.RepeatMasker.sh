@@ -25,7 +25,7 @@ export pathRepeatModeler=${path}/results/repeats/${sp}/${assembly}/RepeatModeler
 export pathResults=${path}/results/repeats/${sp}/${assembly}/RepeatMasker/${lib}
 export pathScripts=${path}/scripts/repeat_annotation
 
-## RepeatMasker 4.1.2
+## RepeatMasker 4.1.2-p1
 ## CONS-Dfam 3.3 (Avril 2021)
 
 ##Using Master RepeatMasker Database: /ifb/data/mydatalocal/Tools/RepeatMasker/Libraries/RepeatMaskerLib.h5
@@ -34,6 +34,21 @@ export pathScripts=${path}/scripts/repeat_annotation
 ## Date     : 2020-11-09
 ##Families : 273,693
 
+
+# cd-hit-v4.8.1-2019-0228
+# LTR_retriever-2.9.0
+# mafft-7.475-without-extensions -> mafft 7.453
+# RECON-1.08
+# RepeatModeler-2.0.1
+# rmblast-2.11.0
+# trf409.linux64
+# genometools-1.6.1
+# NINJA-0.95-cluster_only
+# RepeatMasker
+# RepeatScout-1.0.6
+# salmon-1.6.0_linux_x86_64
+# trinityrnaseq-v2.13.2
+# jellyfish 2.3.0
 
 #########################################################################
 
