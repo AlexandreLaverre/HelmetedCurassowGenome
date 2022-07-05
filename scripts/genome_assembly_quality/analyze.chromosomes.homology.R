@@ -17,10 +17,21 @@ pathFigures="../../results/figures/"
 ####################################################################
 
 for(sp in species){
+
+    pathGenome=paste("../../results/genome_assembly/",sp,"/",assembly,"/",sep="")
+
+    seqnames=read.table(paste(pathGenome, "sequence_names.txt",sep=""), h=F, stringsAsFactors=F)
+    rownames(seqnames)=seqnames[,2]
+
+    chrsizes=read.table(paste(pathGenome, "GCContent_ChromosomeSize.txt",sep=""), h=T, stringsAsFactors=F)
+    rownames(chrsizes)=chrsizes$Chr
+
+    sizes=chrsizes$Size
+    names(sizes)=seqnames[chrsizes$Chr, 1]
+
+    pathResults=paste("../../results/genome_assembly_quality/",sp,"/",assembly,"/",sep="")
+
     for(ref in reflist[[sp]]){
-
-        pathResults=paste("../../results/genome_assembly_quality/",sp,"/",assembly,"/",sep="")
-
 
         ## gene coordinates
 
@@ -86,6 +97,8 @@ for(sp in species){
         maxx=max(aln$End)
 
         ypos=length(contigs):1
+        smally=2/length(ypos)
+
         names(ypos)=contigs
 
         plot(1, type="n", xlim=c(minx, maxx), ylim=c(0,max(ypos)+1), axes=F, xlab="", ylab="", main="")
@@ -93,16 +106,23 @@ for(sp in species){
         for(contig in contigs){
             this.aln=aln[which(aln$Contig==contig),]
 
+            this.size=sizes[contig]
+
             xpos=this.aln$TgPos
 
             segments(minx, ypos[contig], maxx, ypos[contig], lty=2, col="gray40")
 
+            rect(minx, ypos[contig]-smally, this.size, ypos[contig]+smally, col=NA, border="gray40")
+
             points(this.aln$TgPos, rep(ypos[contig], nrow(this.aln)), pch=20, col=col.vector[this.aln$RefChr], cex=1.1)
         }
 
-        legend("bottomleft", horiz=T, legend=chr.legend[1:mean.nb.chr], pch=20, col=col.vector[1:mean.nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2)
-        legend("bottomleft", horiz=T, legend=chr.legend[(mean.nb.chr+1):nb.chr], pch=20, col=col.vector[(mean.nb.chr+1):nb.chr], inset=c(0, -0.05), bty="n",xpd=NA, cex=0.9, pt.cex=2)
-
+        if(nb.chr>6){
+            legend("bottomleft", horiz=T, legend=chr.legend[1:mean.nb.chr], pch=20, col=col.vector[1:mean.nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2, title=paste(ref, "chromosomes"))
+            legend("bottomleft", horiz=T, legend=chr.legend[(mean.nb.chr+1):nb.chr], pch=20, col=col.vector[(mean.nb.chr+1):nb.chr], inset=c(0, -0.05), bty="n",xpd=NA, cex=0.9, pt.cex=2)
+        } else{
+            legend("bottomleft", horiz=T, legend=chr.legend[1:nb.chr], pch=20, col=col.vector[1:nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2, title=paste(ref, "chromosomes"))
+        }
 
         dev.off()
     }

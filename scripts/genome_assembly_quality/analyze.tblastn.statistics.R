@@ -1,65 +1,74 @@
 #########################################################################
 
-pwd=getwd()
-dirs=unlist(strsplit(pwd, split="/"))
-path=paste(dirs[1:(length(dirs)-2)], collapse="/")
-path=paste(path, "/", sep="")
+species=c("Basiliscus_vittatus", "Pauxi_pauxi")
 
-pathResults=paste(path, "results/genome_assembly_quality/",sep="")
-pathAnnot=paste(path, "data/ensembl_annotations/",sep="")
-pathFigures=paste(path, "results/figures/", sep="")
-
-#########################################################################
-
-method="MEGAHIT_RAGOUT"
+reflist=list()
+reflist[["Basiliscus_vittatus"]]=c("Anolis_carolinensis")
+reflist[["Pauxi_pauxi"]]=c("Chicken", "Duck")
 
 ensrelease=103
+minpcid=50
 
-#########################################################################
+prefixes=c("genome_sequence", "final.contigs")
+names(prefixes)=c("MEGAHIT_RAGOUT", "MEGAHIT")
 
-mat.counts.50=matrix(rep(NA,3*4), nrow=3)
-rownames(mat.counts.50)=c("Chicken", "Duck", "PaintedTurtle")
-colnames(mat.counts.50)=as.character(c(50, 60, 70, 80))
+pathAnnot="../../data/ensembl_annotations/"
+pathFigures="../../results/figures/"
+pathResults="../../results/genome_assembly_quality/"
 
-mat.prop.50=mat.counts.50
-mat.counts.0=mat.counts.50
-mat.prop.0=mat.counts.50
+####################################################################
 
-for(ref in c("Chicken", "Duck", "PaintedTurtle")){
-  
-  genecoords=read.table(paste(pathAnnot, ref, "/GeneCoordinates_Ensembl", ensrelease,".txt", sep=""), h=T, stringsAsFactors=F, sep="\t", quote="\"")
+for(sp in species){
 
-  genecoords=genecoords[which(genecoords$Protein.stable.ID!=""),]
-  nbtot=length(unique(genecoords$Gene.stable.ID))
-  
-  
-  for(minpcid in c(50, 60, 70, 80)){
-    aln=read.table(paste(pathResults, method,"/AlignmentStatistics_", ref, "_AllPeptides",ensrelease,"_vs_genome_sequence_minPCIdentity",minpcid,".txt",sep=""), h=T, stringsAsFactors=F, sep="\t")
-    
-    aln$ProteinID=unlist(lapply(aln$ProteinID, function(x) unlist(strsplit(x, split="\\."))[1]))
-    aln$GeneID=unlist(lapply(aln$GeneID, function(x) unlist(strsplit(x, split="\\."))[1]))
-    
-    aln$PropAln=aln$AlignedLength/aln$TotalLength
-    aln=aln[order(aln$PropAln, decreasing=T),]
-    aln=aln[which(!duplicated(aln$GeneID)),] ## best aligned protein per gene
-    
-    nbaln50=length(which(aln$PropAln>0.5))
-    nbaln0=length(unique(aln$GeneID))
+    for(ref in reflist[[sp]]){
+        genecoords=read.table(paste(pathAnnot, ref, "/GeneCoordinates_Ensembl", ensrelease,".txt", sep=""), h=T, stringsAsFactors=F, sep="\t", quote="\"")
 
-    mat.counts.0[ref,as.character(minpcid)]=nbaln0
-    mat.counts.50[ref,as.character(minpcid)]=nbaln50
-    mat.prop.0[ref,as.character(minpcid)]=nbaln0/nbtot
-    mat.prop.50[ref,as.character(minpcid)]=nbaln50/nbtot
-  }
+        genecoords=genecoords[which(genecoords$Protein.stable.ID!=""),]
+        nbtot=length(unique(genecoords$Gene.stable.ID))
+
+        prop.aln.list=list()
+
+        for(assembly in c("MEGAHIT_RAGOUT", "MEGAHIT")){
+
+            prop.aln.list[[assembly]]=list()
+
+            aln=read.table(paste(pathResults, sp, "/", assembly,"/AlignmentStatistics_", ref, "_AllPeptides",ensrelease,"_vs_",prefixes[assembly],"_minPCIdentity",minpcid,".txt",sep=""), h=T, stringsAsFactors=F, sep="\t")
+
+            aln$ProteinID=unlist(lapply(aln$ProteinID, function(x) unlist(strsplit(x, split="\\."))[1]))
+            aln$GeneID=unlist(lapply(aln$GeneID, function(x) unlist(strsplit(x, split="\\."))[1]))
+
+            aln$PropAln=aln$AlignedLength/aln$TotalLength
+            aln=aln[order(aln$PropAln, decreasing=T),]
+            aln=aln[which(!duplicated(aln$GeneID)),] ## best aligned protein per gene
+
+            prop.aln.list[[assembly]]=aln$PropAln
+
+            prop.wellaligned=round(100*length(which(aln$PropAln>0.5))/nbtot, digits=1)
+
+            print(paste(prop.wellaligned,"% proteins are well aligned for ",sp, " vs ",ref," ",assembly,sep=""))
+        }
+
+        ## plot density of proportion of aligned sequence
+
+
+        prop.aln.megahit=100*prop.aln.list[["MEGAHIT"]]
+        prop.aln.ragout=100*prop.aln.list[["MEGAHIT_RAGOUT"]]
+
+        dm=density(prop.aln.megahit, bw=1.5)
+        dr=density(prop.aln.ragout, bw=1.5)
+
+        xlim=range(c(dm$x, dr$x))
+        ylim=range(c(dm$y, dr$y))
+
+        pdf(file=paste(pathFigures, "TBLASTNHits_PCAlignedSequence_MinPCIdentity",minpcid,"_",sp,"_",ref,".pdf",sep=""), width=6, height=6)
+        plot(dm$x, dm$y, col="black", xlim=xlim, ylim=ylim, xlab="% aligned protein sequence", ylab="density", type="l")
+        lines(dr$x, dr$y, col="red")
+        legend("topleft", lty=1, col=c("black", "red"), legend=c("MEGAHIT", "MEGAHIT_RAGOUT"), inset=0.01, cex=0.9)
+
+        mtext(paste(sp, " vs ", ref, ", min pc identity ", minpcid, "%",sep=""), side=3, line=1, cex=1.1)
+        dev.off()
+
+    }
 }
-
-pdf(file=paste(pathFigures, "NbGenesWithTBLASTNHits_",method,".pdf",sep=""), width=8, height=5)
-par(mfrow=c(1,2))
-par(mar=c(4.1, 4.5, 4.1, 1.1))
-barplot(mat.counts.0,beside=T, col=c("indianred", "darkred", "steelblue"), ylim=c(0, 20000), xlab="minimum % identity", ylab="nb. genes", cex.lab=1.1)
-legend("topleft", c("chicken", "duck", "painted turtle"), horiz=T, fill=c("indianred", "darkred", "steelblue"), inset=c(0, -0.25), bty="n",xpd=NA, cex=1.1) 
-barplot(100*mat.prop.0,beside=T, col=c("indianred", "darkred", "steelblue"), ylim=c(0, 100), xlab="minimum % identity", ylab="% genes", cex.lab=1.1)
-
-dev.off()
 
 #########################################################################

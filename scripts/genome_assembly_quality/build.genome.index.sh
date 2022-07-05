@@ -14,6 +14,11 @@ if [ ${cluster} = "pbil" ]; then
     export samtools="singularity exec -B /beegfs/data/necsulea /beegfs/home/necsulea/Tools/samtools_1.3.1.sif samtools"
 fi
 
+if [ ${cluster} = "pbil_local" ]; then
+    export path=/beegfs/data/${USER}/HelmetedCurassowGenome
+    export samtools="singularity exec -B /beegfs/data/necsulea /beegfs/home/necsulea/Tools/samtools_1.3.1.sif samtools"
+fi
+
 export pathWGS=${path}/data/WGS/${sp}
 export pathResults=${path}/results/genome_assembly/${sp}/${method}
 export pathScripts=${path}/scripts/genome_assembly_quality
@@ -48,9 +53,9 @@ echo "bowtie2-build --threads ${threads} ${pathAssembly} ${pathResults}/${prefix
 
 if [ ${cluster} = "pbil" ]; then
     sbatch ${pathScripts}/bsub_script_bowtie2
-	 fi
+fi
 
-if [ ${cluster} = "cloud" ]; then
+if [ ${cluster} = "cloud" ]||[ ${cluster} = "pbil_local" ]; then
     chmod a+x ${pathScripts}/bsub_script_bowtie2
     ${pathScripts}/bsub_script_bowtie2
 fi
