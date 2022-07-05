@@ -9,7 +9,7 @@ ensrelease=103
 minpcid=60
 assembly="MEGAHIT_RAGOUT"
 
-col.set=c("black", "red", "lightblue1", "lightseagreen", "violet",  "gray60", "gray30", "indianred", "darkred", "darkgoldenrod", "yellow", "orange", "darkorange", "darkseagreen", "darkturquoise", "deeppink",  "goldenrod4", "darkslategray", "darkslateblue", "khaki2", "green", "hotpink",  "yellow3", "lightsalmon", "mediumpurple1",  "navajowhite2", "lightsteelblue2", "steelblue", "saddlebrown","peru", "turquoise4", "yellowgreen")
+col.set=c("black", "red", "royalblue", "lightseagreen", "violet",  "darkgoldenrod", "turquoise4", "yellowgreen", "indianred", "darkred","yellow", "orange", "darkorange", "darkseagreen", "darkturquoise", "deeppink",  "goldenrod4", "darkslategray", "darkslateblue", "lightblue1", "khaki2", "green", "hotpink",  "yellow3", "lightsalmon", "mediumpurple1",  "navajowhite2", "lightsteelblue2", "steelblue", "saddlebrown","peru")
 
 pathAnnot="../../data/ensembl_annotations/"
 pathFigures="../../results/figures/"
@@ -23,8 +23,16 @@ for(sp in species){
     seqnames=read.table(paste(pathGenome, "sequence_names.txt",sep=""), h=F, stringsAsFactors=F)
     rownames(seqnames)=seqnames[,2]
 
+    synonyms=seqnames[,2]
+    names(synonyms)=seqnames[,1]
+
+    revsynonyms=seqnames[,1]
+    names(revsynonyms)=seqnames[,2]
+
     chrsizes=read.table(paste(pathGenome, "GCContent_ChromosomeSize.txt",sep=""), h=T, stringsAsFactors=F)
     rownames(chrsizes)=chrsizes$Chr
+
+    chrsizes=chrsizes[order(chrsizes$Size, decreasing=T),]
 
     sizes=chrsizes$Size
     names(sizes)=seqnames[chrsizes$Chr, 1]
@@ -57,6 +65,17 @@ for(sp in species){
         aln$RefStrand=genecoords[aln$ProteinID,"Strand"]
         aln$RefPos=genecoords[aln$ProteinID,"MeanPos"]
 
+        ## chr colors
+        nb.hits=as.numeric(table(as.factor(aln$RefChr)))
+        names(nb.hits)=levels(as.factor(aln$RefChr))
+        nb.hits=sort(nb.hits,decreasing=T)
+        all.refchr=names(nb.hits)
+        all.colors=rep("gray60", length(all.refchr))
+        names(all.colors)=all.refchr
+
+        atleast50=length(which(nb.hits>=50))
+        all.colors[1:min(length(col.set), atleast50)]=col.set[1:min(length(col.set), atleast50)]
+
         aln=aln[which(!is.na(aln$Start)),] ## unique hits
 
         aln$TgPos=(aln$Start+aln$End)/2
@@ -85,13 +104,16 @@ for(sp in species){
         mean.nb.chr=floor(nb.chr/2)
 
         ## select contigs with at least 50 genes with tblastn hits
+        ## contigs=names(nb.genes.tg)[which(nb.genes.tg>=50)]
 
-        contigs=names(nb.genes.tg)[which(nb.genes.tg>=50)]
+        ## select contigs with at least 3 Mb
+        selcontigs=chrsizes$Chr[which(chrsizes$Size>=3e6)]
+        contigs=revsynonyms[selcontigs]
 
         ## do plot
 
         pdf(file=paste(pathFigures, "Synteny_",sp,"_",ref,".pdf",sep=""), width=10, height=10)
-        par(mar=c(3.1, 2.1,1.1, 2.1))
+        par(mar=c(3.1, 2.1,1.1, 5.1))
 
         minx=1
         maxx=max(aln$End)
@@ -107,21 +129,29 @@ for(sp in species){
             this.aln=aln[which(aln$Contig==contig),]
 
             this.size=sizes[contig]
+            this.syn=synonyms[contig]
 
             xpos=this.aln$TgPos
 
             segments(minx, ypos[contig], maxx, ypos[contig], lty=2, col="gray40")
 
-            rect(minx, ypos[contig]-smally, this.size, ypos[contig]+smally, col=NA, border="gray40")
+            rect(minx, ypos[contig]-smally, this.size, ypos[contig]+smally, col="white", border="gray40")
 
-            points(this.aln$TgPos, rep(ypos[contig], nrow(this.aln)), pch=20, col=col.vector[this.aln$RefChr], cex=1.1)
+            points(this.aln$TgPos, rep(ypos[contig], nrow(this.aln)), pch=20, col=all.colors[this.aln$RefChr], cex=0.6)
+
+            mtext(this.syn, side=4, las=2, at=ypos[contig])
         }
 
+        prettyx=pretty(c(minx, maxx)/1e6)
+        axislab=paste(prettyx, "Mb",sep="")
+
+        axis(side=3, pos=length(contigs)+0.5, at=prettyx*1e6, labels=axislab)
+
         if(nb.chr>6){
-            legend("bottomleft", horiz=T, legend=chr.legend[1:mean.nb.chr], pch=20, col=col.vector[1:mean.nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2, title=paste(ref, "chromosomes"))
-            legend("bottomleft", horiz=T, legend=chr.legend[(mean.nb.chr+1):nb.chr], pch=20, col=col.vector[(mean.nb.chr+1):nb.chr], inset=c(0, -0.05), bty="n",xpd=NA, cex=0.9, pt.cex=2)
+            legend("bottomleft", horiz=T, legend=chr.legend[1:mean.nb.chr], pch=20, col=all.colors[1:mean.nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2, title=paste(ref, "chromosomes"))
+            legend("bottomleft", horiz=T, legend=c(chr.legend[(mean.nb.chr+1):nb.chr], "other"), pch=20, col=c(all.colors[(mean.nb.chr+1):nb.chr], "gray60"), inset=c(0, -0.05), bty="n",xpd=NA, cex=0.9, pt.cex=2)
         } else{
-            legend("bottomleft", horiz=T, legend=chr.legend[1:nb.chr], pch=20, col=col.vector[1:nb.chr], inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2, title=paste(ref, "chromosomes"))
+            legend("bottomleft", horiz=T, legend=c(chr.legend[1:nb.chr], "other"), pch=20, col=c(all.colors[1:nb.chr], "gray60"), inset=c(0, -0.001), bty="n", cex=0.9, xpd=NA, pt.cex=2, title=paste(ref, "chromosomes"))
         }
 
         dev.off()
