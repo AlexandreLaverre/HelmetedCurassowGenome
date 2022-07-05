@@ -11,7 +11,7 @@ export threads=$4
 
 if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
-    export samtools=singularity exec -B /beegfs/data/necsulea /beegfs/home/necsulea/Tools/samtools_1.3.1.sif samtools
+    export samtools="singularity exec -B /beegfs/data/necsulea /beegfs/home/necsulea/Tools/samtools_1.3.1.sif samtools"
 fi
 
 export pathWGS=${path}/data/WGS/${sp}
