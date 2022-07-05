@@ -32,10 +32,9 @@ fi
 
 #########################################################################
 
-if [ -e ${pathResults}/${prefix}.1.bt2 ]; then
-    echo "bowtie index already done"
-else
-    bowtie2-build --threads ${threads} ${pathAssembly} ${pathResults}/${prefix}
+if [ ! -e ${pathResults}/${prefix}.1.bt2 ]; then
+    echo "bowtie index not present"
+    exit
 fi
 
 #########################################################################
