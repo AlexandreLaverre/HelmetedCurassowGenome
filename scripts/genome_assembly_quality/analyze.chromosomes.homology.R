@@ -16,7 +16,7 @@ minpcid=60
 
 ####################################################################
 
-col.set=c("black", "gray30", "gray60", "red", "indianred", "darkred", "darkgoldenrod", "yellow", "orange", "darkorange", "darkseagreen", "darkturquoise", "deeppink", "violet", "goldenrod4", "darkslategray", "darkslateblue", "khaki2", "green", "hotpink", "lightblue1", "yellow3", "lightsalmon", "mediumpurple1", "lightseagreen", "navajowhite2", "lightsteelblue2", "steelblue", "saddlebrown","peru", "turquoise4", "yellowgreen")
+col.set=c("black", "red", "lightblue1", "lightseagreen", "violet",  "gray60", "gray30", "indianred", "darkred", "darkgoldenrod", "yellow", "orange", "darkorange", "darkseagreen", "darkturquoise", "deeppink",  "goldenrod4", "darkslategray", "darkslateblue", "khaki2", "green", "hotpink",  "yellow3", "lightsalmon", "mediumpurple1",  "navajowhite2", "lightsteelblue2", "steelblue", "saddlebrown","peru", "turquoise4", "yellowgreen")
 
 ####################################################################
 
