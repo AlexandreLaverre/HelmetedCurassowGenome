@@ -35,7 +35,7 @@ fi
 echo "#!/bin/bash" > ${pathScripts}/bsub_script_bowtie2
 
 if [ ${cluster} = "pbil" ]; then
-    echo "#SBATCH --job-name=bowtie2_index" >  ${pathScripts}/bsub_script_bowtie2
+    echo "#SBATCH --job-name=bowtie2_index" >>  ${pathScripts}/bsub_script_bowtie2
     echo "#SBATCH --output=${pathScripts}/std_output_bowtie2_index.txt" >>  ${pathScripts}/bsub_script_bowtie2
     echo "#SBATCH --error=${pathScripts}/std_error_bowtie2_index.txt" >> ${pathScripts}/bsub_script_bowtie2
     echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_bowtie2
