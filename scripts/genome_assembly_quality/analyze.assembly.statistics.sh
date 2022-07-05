@@ -29,7 +29,6 @@ if [ ${method} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathResults}/genome_sequence.fa
 fi
 
-
 #########################################################################
 
 perl ${pathScripts}/analyze.assembly.statistics.pl --pathAssembly=${pathAssembly} --pathOutputStatistics=${pathResults}/assembly.stats.out
