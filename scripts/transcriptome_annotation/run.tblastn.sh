@@ -19,6 +19,10 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
+if [ ${cluster} = "in2p3" ]; then
+    export path=/sps/biometr/necsulea/HelmetedCurassowGenome
+fi
+
 export pathProteinSequences=${path}/data/protein_sequences/${source}/primary_transcripts
 export pathTranscriptomeAssembly=${path}/results/transcriptome_assembly/${target}
 export pathResults=${path}/results/transcriptome_assembly/${target}/tblastn_results
@@ -26,6 +30,7 @@ export pathScripts=${path}/scripts/transcriptome_annotation
 
 ## ncbi-blast-2.8.1+ on pbil
 ## ncbi-blast 2.12.0+ on cloud
+## ncbi-blast 2.13.0+ on in2p3
 
 #########################################################################
 
@@ -71,7 +76,7 @@ if [ -e ${pathResults}/${refsp}_vs_${suffix}.tblastn.out ]; then
 else
     echo "#!/bin/bash" > ${pathScripts}/bsub_script_tblastn
 
-    if [ ${cluster} = "pbil" ]; then
+    if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
 	echo "#SBATCH --job-name=tblastn_${refsp}" >>  ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --output=${pathScripts}/std_output_tblastn_${refsp}.txt" >>  ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --error=${pathScripts}/std_error_tblastn_${refsp}.txt" >> ${pathScripts}/bsub_script_tblastn
@@ -83,7 +88,7 @@ else
 
     echo "tblastn -num_threads ${threads} -query ${pathProteinSequences}/${protfile} -db ${pathTranscriptomeAssembly}/${suffix} -out ${pathResults}/${refsp}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt \"6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps\"">> ${pathScripts}/bsub_script_tblastn
 
-    if [ ${cluster} = "pbil" ]; then
+    if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
 	sbatch ${pathScripts}/bsub_script_tblastn
     fi
 
