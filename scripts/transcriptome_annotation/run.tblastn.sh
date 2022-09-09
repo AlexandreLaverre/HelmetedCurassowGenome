@@ -60,6 +60,7 @@ fi
 if [ -e ${pathTranscriptomeAssembly}/${suffix}.nhr ]; then
     echo "blast database already done"
 else
+    echo "cannot find path" ${pathTranscriptomeAssembly}/${suffix}.nhr
     makeblastdb -dbtype nucl -in ${pathAssembly} -out ${pathTranscriptomeAssembly}/${suffix}
 fi
 
@@ -71,9 +72,9 @@ else
     echo "#!/bin/bash" > ${pathScripts}/bsub_script_tblastn
 
     if [ ${cluster} = "pbil" ]; then
-	echo "#SBATCH --job-name=tblastn_${ref}" >  ${pathScripts}/bsub_script_tblastn
-	echo "#SBATCH --output=${pathScripts}/std_output_tblastn_${ref}.txt" >>  ${pathScripts}/bsub_script_tblastn
-	echo "#SBATCH --error=${pathScripts}/std_error_tblastn_${ref}.txt" >> ${pathScripts}/bsub_script_tblastn
+	echo "#SBATCH --job-name=tblastn_${refsp}" >>  ${pathScripts}/bsub_script_tblastn
+	echo "#SBATCH --output=${pathScripts}/std_output_tblastn_${refsp}.txt" >>  ${pathScripts}/bsub_script_tblastn
+	echo "#SBATCH --error=${pathScripts}/std_error_tblastn_${refsp}.txt" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --mem=5G" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_tblastn
