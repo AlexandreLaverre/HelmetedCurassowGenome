@@ -76,7 +76,7 @@ else
 	echo "#SBATCH --output=${pathScripts}/std_output_tblastn_${refsp}.txt" >>  ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --error=${pathScripts}/std_error_tblastn_${refsp}.txt" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_tblastn
-	echo "#SBATCH --mem=5G" >> ${pathScripts}/bsub_script_tblastn
+	echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_tblastn
     fi
