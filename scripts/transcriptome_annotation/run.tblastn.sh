@@ -8,6 +8,7 @@ export refsp=$3
 export source=$4
 export cluster=$5
 export threads=$6
+export hours=$7
 
 #########################################################################
 
@@ -92,7 +93,7 @@ else
 	echo "#SBATCH --error=${pathScripts}/std_error_tblastn_${refsp}.txt" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_tblastn
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_tblastn
-	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_tblastn
+	echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_tblastn
     fi
 
     echo "tblastn -num_threads ${threads} -query ${pathProteinSequences}/${protfile} -db ${pathTranscriptomeAssembly}/${suffix} -out ${pathResults}/${refsp}_vs_${suffix}.tblastn.out -evalue 0.001 -outfmt \"6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps\"">> ${pathScripts}/bsub_script_tblastn
