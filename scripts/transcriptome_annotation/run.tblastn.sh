@@ -50,7 +50,7 @@ fi
 
 #########################################################################
 
-export protfile=`ls ${pathProteinSequences} | grep ${refsp} | grep fa`
+export protfile=`ls ${pathProteinSequences} | grep ${refsp}\. | grep fa`
 
 if [ -e ${pathProteinSequences}/${protfile} ]; then
     echo "using as an input "${pathProteinSequences}/${protfile}
