@@ -18,6 +18,11 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
+if [ ${cluster} = "in2p3" ]; then
+    export path=/sps/biometr/necsulea/HelmetedCurassowGenome
+fi
+
+
 export pathProteinSequences=${path}/data/protein_sequences/${source}/primary_transcripts
 export pathTranscriptomeAssembly=${path}/results/transcriptome_assembly/${target}
 export pathResults=${path}/results/transcriptome_assembly/${target}/tblastn_results
