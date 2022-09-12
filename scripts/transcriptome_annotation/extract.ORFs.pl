@@ -57,7 +57,8 @@ sub readTBlastN{
     my $minprotfr=$_[2];
     my $proteinlengths=$_[3];
     my $maxeval=$_[4];
-    my $orf=$_[5];
+    my $maxgapfraction=$_[5];
+    my $orf=$_[6];
 
     open(my $input, $path);
     my $line=<$input>;
@@ -74,24 +75,42 @@ sub readTBlastN{
 
 	my $qid=$s[0];
 	my $tid=$s[1];
+	my $alnlen=$s[3]+0;
 	my $qstart=$s[6]+0;
 	my $qend=$s[7]+0;
 	my $tstart=$s[8]+0;
 	my $tend=$s[9]+0;
 	my $evalue=$s[10]+0.0;
+	my $totgaps=$s[12]+0; ## custom tblastn format
+
+	my $strand="+";
+
+	if($tstart>$tend){
+	    $tstart=$s[9]+0;
+	    $tend=$s[8]+0;
+	    $strand="-";
+	}
 
 	my $qlen=$qend-$qstart+1;
 	my $tlen=$tend-$tstart+1;
 	
 	if($evalue < $maxeval){
 	    if($tlen%3==0){
-		if($tlen==(3*$qlen)){
+		my $gapfr=($totgaps+0.0)/($alnlen+0.0); ## gaps are in amino acids, as is alignment length
+
+		if($gapfr>1){
+		    print "Weird ! gap fraction is larger than 1.\n";
+		    print $line."\n";
+		    exit(1);
+		}
+		
+		if($gapfr<$maxgapfraction){
 		    if($tlen>=$minorflen){
 			if(exists $proteinlengths->{$qid}){
 			    my $thisprotfr=($qlen+0.0)/($proteinlengths->{$qid}+0.0);
 			    
 			    if($thisprotfr>=$minprotfr){
-				my $orfid=$tid.":".$tstart.":".$tend;
+				my $orfid=$tid.":".$tstart.":".$tend.":".$strand;
 
 				if(!exists $orf->{$orfid}){
 				    $orf->{$orfid}=1;
@@ -110,6 +129,7 @@ sub readTBlastN{
 		    $nbgapped++;
 		}
 	    } else{
+		print "not modulo 3 in ".$line."\n";
 		$nbmod3++;
 	    }
 	} else{
@@ -121,7 +141,7 @@ sub readTBlastN{
     
     close($input);
 
-    print "Excluded ".$nbgapped." gapped entries.\n";
+    print "Excluded ".$nbgapped." gapped entries (gap fraction larger than ".$maxgapfraction.").\n";
     print "Excluded ".$nblargeeval." entries with large e-value.\n";
     print "Excluded ".$nbmod3." entries that are not modulo 3.\n";
     print "Excluded ".$nbsmallorf." entries that had small ORFs.\n";
@@ -142,12 +162,14 @@ sub extractConnectedORFs{
 	my $tx=$s[0];
 	my $start=$s[1]+0;
 	my $end=$s[2]+0;
-
+	my $strand=$s[3];
+	
 	if(exists $orfsbytx{$tx}){
 	    push(@{$orfsbytx{$tx}{"start"}}, $start);
 	    push(@{$orfsbytx{$tx}{"end"}}, $end);
+	    push(@{$orfsbytx{$tx}{"strand"}}, $strand);
 	} else{
-	    $orfsbytx{$tx}={"start"=>[$start], "end"=>[$end]};
+	    $orfsbytx{$tx}={"start"=>[$start], "end"=>[$end], "strand"=>[$strand]};
 	}
     }
 
@@ -158,30 +180,34 @@ sub extractConnectedORFs{
 	    for(my $i=0; $i<($nbo-1); $i++){
 		my $start1=${$orfsbytx{$tx}{"start"}}[$i];
 		my $end1=${$orfsbytx{$tx}{"end"}}[$i];
-		my $id1=$tx.":".$start1.":".$end1;
+		my $strand1=${$orfsbytx{$tx}{"strand"}}[$i];
+		my $id1=$tx.":".$start1.":".$end1.":".$strand1;
 		
 		for(my $j=($i+1); $j<$nbo; $j++){
 		    my $start2=${$orfsbytx{$tx}{"start"}}[$j];
 		    my $end2=${$orfsbytx{$tx}{"end"}}[$j];
-		    my $id2=$tx.":".$start2.":".$end2;
+		    my $strand2=${$orfsbytx{$tx}{"strand"}}[$j];
+		    my $id2=$tx.":".$start2.":".$end2.":".$strand2;
 
-		    my $M=max($start1, $start2);
-		    my $m=min($end1, $end2);
-
-		    if($M <= $m){
-			my $diffstart=abs($start1-$start2);
-
-			if($diffstart%3==0){
-			    if(exists $connected->{$id1}){
-				$connected->{$id1}{$id2}=1;
-			    } else{
-				$connected->{$id1}={$id1=>1, $id2=>1};
-			    }
-
-			    if(exists $connected->{$id2}){
-				$connected->{$id2}{$id1}=1;
-			    } else{
-				$connected->{$id2}={$id1=>1, $id2=>1};
+		    if($strand1 eq $strand2){
+			my $M=max($start1, $start2);
+			my $m=min($end1, $end2);
+			
+			if($M <= $m){
+			    my $diffstart=abs($start1-$start2);
+			    
+			    if($diffstart%3==0){
+				if(exists $connected->{$id1}){
+				    $connected->{$id1}{$id2}=1;
+				} else{
+				    $connected->{$id1}={$id1=>1, $id2=>1};
+				}
+				
+				if(exists $connected->{$id2}){
+				    $connected->{$id2}{$id1}=1;
+				} else{
+				    $connected->{$id2}={$id1=>1, $id2=>1};
+				}
 			    }
 			}
 		    }
@@ -262,6 +288,54 @@ sub addToCluster{
 
 ################################################################################
 
+sub extractLargestORF{
+    my $clusters=$_[0];
+    my $largestorf=$_[1];
+
+    foreach my $index (keys %{$clusters}){
+	my %txid;
+	my %strands;
+	my @starts;
+	my @ends;
+
+	foreach my $orfid (keys %{$clusters->{$index}}){
+	    my @s=split(":", $orfid);
+	    my $tx=$s[0];
+	    my $start=$s[1]+0;
+	    my $end=$s[2]+0;
+	    my $strand=$s[3];
+
+	    $txid{$tx}=1;
+	    $strands{$strand}=1;
+
+	    push(@starts, $start);
+	    push(@ends, $end);
+	}
+
+	my $nbtx=keys %txid;
+	my $nbstrands=keys %strands;
+
+	if($nbtx==1 && $nbstrands==1){
+	    my @alltx=keys %txid;
+	    my $commontxid=$alltx[0];
+	    
+	    my @allstrands=keys %strands;
+	    my $commonstrand=$allstrands[0];
+	    
+	    my $minstart=min @starts;
+	    my $maxend=max @ends;
+
+	    $largestorf->{$index}={"txid"=>$commontxid, "strand"=>$commonstrand, "start"=>$minstart, "end"=>$maxend};
+	    
+	} else{
+	    print "Weird! different transcripts and strands for cluster.\n";
+	    exit(1);
+	}
+    }
+}
+
+################################################################################
+
 sub printHelp{
 
     my $parnames=$_[0];
@@ -289,10 +363,11 @@ $parameters{"pathsTBlastNResults"}="NA";
 $parameters{"minORFLength"}="NA";
 $parameters{"minProteinFraction"}="NA";
 $parameters{"maxEValue"}="NA";
+$parameters{"maxGapFraction"}="NA";
 $parameters{"pathOutput"}="NA";
 
 my %defaultvalues;
-my @defaultpars=("speciesList", "pathsFastaProteins", "pathsTBlastNResults", "minORFLength", "minProteinFraction", "maxEValue", "pathOutput");
+my @defaultpars=("speciesList", "pathsFastaProteins", "pathsTBlastNResults", "minORFLength", "minProteinFraction", "maxEValue", "maxGapFraction", "pathOutput");
 
 my %numericpars;
 
@@ -399,6 +474,9 @@ print "minimum protein length fraction: ".$minprotfr."\n";
 my $maxeval=$parameters{"maxEValue"}+0.0;
 print "maximum e-value: ".$maxeval."\n";
 
+my $maxgapfr=$parameters{"maxGapFraction"}+0.0;
+print "maximum gap fraction: ".$maxgapfr."\n";
+
 my %orf;
 
 for(my $i=0; $i<$nbsp; $i++){
@@ -407,7 +485,7 @@ for(my $i=0; $i<$nbsp; $i++){
 
     print "Reading tblastn results from ".$path." for ".$sp."\n";
     
-    readTBlastN($path, $minorflen, $minprotfr, $proteinlengths{$sp}, $maxeval, \%orf);
+    readTBlastN($path, $minorflen, $minprotfr, $proteinlengths{$sp}, $maxeval, $maxgapfr, \%orf);
 
     my $nborf=keys %orf;
 
@@ -438,6 +516,33 @@ extractClusters(\%connectedorf, \%orfclust, \%clustid);
 my $nbclust=keys %orfclust;
 
 print "There are ".$nbclust." ORF clusters.\n";
+
+print "Done.\n";
+
+###################################################################################
+
+print "Extracting largest ORFs for clusters...\n";
+
+my %largestorf;
+
+extractLargestORF(\%orfclust, \%largestorf);
+
+print "Done.\n";
+
+###################################################################################
+
+print "Writing output...\n";
+
+open(my $output, ">".$parameters{"pathOutput"});
+
+print $output "TranscriptID\tStrand\tStart\tEnd\tIndividualORFs\n";
+
+foreach my $clustid (keys %orfclust){
+    print $output $largestorf{$clustid}{"txid"}."\t".$largestorf{$clustid}{"strand"}."\t".$largestorf{$clustid}{"start"}."\t".$largestorf{$clustid}{"end"}."\t".join(";",keys %{$orfclust{$clustid}})."\n";
+	
+}
+
+close($output);
 
 print "Done.\n";
 
