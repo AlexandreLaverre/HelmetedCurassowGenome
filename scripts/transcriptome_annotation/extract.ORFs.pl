@@ -131,6 +131,137 @@ sub readTBlastN{
 
 ################################################################################
 
+sub extractConnectedORFs{
+    my $orfs=$_[0];
+    my $connected=$_[1];
+
+    my %orfsbytx;
+
+    foreach my $id (keys %{$orfs}){
+	my @s=split(":", $id);
+	my $tx=$s[0];
+	my $start=$s[1]+0;
+	my $end=$s[2]+0;
+
+	if(exists $orfsbytx{$tx}){
+	    push(@{$orfsbytx{$tx}{"start"}}, $start);
+	    push(@{$orfsbytx{$tx}{"end"}}, $end);
+	} else{
+	    $orfsbytx{$tx}={"start"=>[$start], "end"=>[$end]};
+	}
+    }
+
+    foreach my $tx (keys %orfsbytx){
+	my $nbo=@{$orfsbytx{$tx}{"start"}};
+
+	if($nbo>=2){
+	    for(my $i=0; $i<($nbo-1); $i++){
+		my $start1=${$orfsbytx{$tx}{"start"}}[$i];
+		my $end1=${$orfsbytx{$tx}{"end"}}[$i];
+		my $id1=$tx.":".$start1.":".$end1;
+		
+		for(my $j=($i+1); $j<$nbo; $j++){
+		    my $start2=${$orfsbytx{$tx}{"start"}}[$j];
+		    my $end2=${$orfsbytx{$tx}{"end"}}[$j];
+		    my $id2=$tx.":".$start2.":".$end2;
+
+		    my $M=max($start1, $start2);
+		    my $m=min($end1, $end2);
+
+		    if($M <= $m){
+			my $diffstart=abs($start1-$start2);
+
+			if($diffstart%3==0){
+			    if(exists $connected->{$id1}){
+				$connected->{$id1}{$id2}=1;
+			    } else{
+				$connected->{$id1}={$id1=>1, $id2=>1};
+			    }
+
+			    if(exists $connected->{$id2}){
+				$connected->{$id2}{$id1}=1;
+			    } else{
+				$connected->{$id2}={$id1=>1, $id2=>1};
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }
+}
+
+##############################################################
+
+sub extractClusters{
+    my $refconnected=$_[0];
+    my $refclusters=$_[1];
+    my $refclustid=$_[2];
+
+    my $nbconnected=keys %{$refconnected};
+
+    my $round=0;
+
+    while($nbconnected>0){
+	
+	foreach my $key (keys %{$refconnected}){
+	    addToCluster($refconnected,$refclusters,$refclustid,$key);
+	}
+	
+	$round++;
+	
+	$nbconnected=keys %{$refconnected};
+    }
+}
+
+##############################################################
+
+sub addToCluster{
+    my $refconnected=$_[0];
+    my $refclusters=$_[1];
+    my $refclustid=$_[2];
+    my $key=$_[3];
+
+    if(exists $refconnected->{$key}){
+	
+	## find the cluster that contains this key
+	
+	my $indexcluster="NA";
+	
+	if(exists $refclustid->{$key}){
+	    $indexcluster=$refclustid->{$key};
+	}
+	
+	## if there isn't any
+	
+	if($indexcluster eq "NA"){
+	    my $nbclusters=keys %{$refclusters};
+	    $indexcluster=$nbclusters+1;
+	    $refclusters->{$indexcluster}={$key=>1};
+	    $refclustid->{$key}=$indexcluster;
+	}
+		
+	foreach my $connection (keys %{$refconnected->{$key}}){
+
+	    ## check if this island is already in the cluster
+	    
+	    if(!(exists $refclusters->{$indexcluster}{$connection})){
+		$refclusters->{$indexcluster}{$connection}=1;
+		$refclustid->{$connection}=$indexcluster;
+		addToCluster($refconnected,$refclusters,$refclustid,$connection);
+	    }
+	}
+
+	## after we've checked all of its connections, remove it from the connected islands
+
+	delete $refconnected->{$key};
+    }
+    
+}
+
+
+################################################################################
+
 sub printHelp{
 
     my $parnames=$_[0];
@@ -275,7 +406,7 @@ for(my $i=0; $i<$nbsp; $i++){
     my $path=$pathsblast[$i];
 
     print "Reading tblastn results from ".$path." for ".$sp."\n";
-
+    
     readTBlastN($path, $minorflen, $minprotfr, $proteinlengths{$sp}, $maxeval, \%orf);
 
     my $nborf=keys %orf;
@@ -283,6 +414,31 @@ for(my $i=0; $i<$nbsp; $i++){
     print "There are ".$nborf." ORFs after reading data for ".$sp."\n";
 }
     
+print "Done.\n";
+
+###################################################################################
+
+print "Extracting connected ORFs...\n";
+
+my %connectedorf;
+
+extractConnectedORFs(\%orf, \%connectedorf);
+
+print "Done.\n";
+
+###################################################################################
+
+print "Extracting ORF clusters...\n";
+
+my %orfclust;
+my %clustid;
+
+extractClusters(\%connectedorf, \%orfclust, \%clustid);
+
+my $nbclust=keys %orfclust;
+
+print "There are ".$nbclust." ORF clusters.\n";
+
 print "Done.\n";
 
 ###################################################################################
