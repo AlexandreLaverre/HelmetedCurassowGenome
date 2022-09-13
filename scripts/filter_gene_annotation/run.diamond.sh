@@ -59,7 +59,7 @@ fi
 
 #########################################################################
 
-if [ -e ${pathResults}/GeMoMa_vs_${refsp}.diamond.blastp.out ]; then
+if [ -e ${pathResults}/diamond_results/GeMoMa_vs_${refsp}.diamond.blastp.out ]; then
     echo "already done"
 else
     echo "#!/bin/bash" > ${pathScripts}/bsub_script_diamond
@@ -71,7 +71,7 @@ else
 	echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_diamond
 	echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_diamond
 	echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_diamond
-	echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_diamond
+	echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_diamond
     fi
 
     if [ ${cluster} = "in2p3" ]; then
