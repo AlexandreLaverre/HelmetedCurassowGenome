@@ -25,12 +25,6 @@ export pathScripts=${path}/scripts/gene_annotation_quality
 
 ##############################################################
 
-if [ ${annot} = "BRAKER_Ensembl103_multithread" ]; then
-    export pathGTF=${pathResults}/braker.gtf
-fi
-
-##############################################################
-
 if [ ${annot} = "GeMoMa" ]; then
     export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/${annot}/combined
     export pathGTF=${pathResults}/filtered_predictions.gtf
