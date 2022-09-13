@@ -84,7 +84,7 @@ else
 	echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_diamond
     fi
 
-    echo "diamond blastp --db ${pathProteinSequences}/${prefix} --query ${pathResults}/filtered_predictions_formatted.faa --out ${pathResults}/diamond_results/GeMoMa_vs_${refsp}.diamond.blastp.out --evalue 0.001 --outfmt \"6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps\"" >> ${pathScripts}/bsub_script_diamond
+    echo "diamond blastp --db ${pathProteinSequences}/${prefix} --query ${pathResults}/filtered_predictions_formatted.faa --out ${pathResults}/diamond_results/GeMoMa_vs_${refsp}.diamond.blastp.out --evalue 0.001 --outfmt 6 qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore gaps" >> ${pathScripts}/bsub_script_diamond
 
     if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
 	sbatch ${pathScripts}/bsub_script_diamond
