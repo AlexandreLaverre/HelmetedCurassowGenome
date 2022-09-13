@@ -1,7 +1,8 @@
 #!/bin/bash
 
-export assembly=$1
-export cluster=$2
+export sp=$1
+export assembly=$2
+export cluster=$3
 
 #########################################################################
 
@@ -14,21 +15,28 @@ if [ ${cluster} = "cloud" ]; then
     export pathTools=/mnt/mydatalocal/Tools
 fi
 
-
-export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
-export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa/combined
+export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/GeMoMa/combined
 export pathScripts=${path}/scripts/gene_annotation
 
 #########################################################################
 
 if [ ${assembly} = "MEGAHIT" ]; then
+    export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
 fi
 
 #########################################################################
 
 if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
+    export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
     export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed_sm.fa
+fi
+
+#########################################################################
+
+if [ ${assembly} = "NCBI" ]; then
+    export pathGenomeSequences=${path}/data/genome_sequences/${assembly}
+    export pathAssembly=${pathGenomeSequences}/${sp}.fa
 fi
 
 #########################################################################
