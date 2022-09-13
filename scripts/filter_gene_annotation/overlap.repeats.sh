@@ -21,7 +21,7 @@ fi
 
 export pathRepeatMasker=${path}/results/repeats/${sp}/${assembly}/RepeatMasker/CombinedRepeatAnnotations.txt
 export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/${annot}
-export pathScripts=${path}/scripts/gene_annotation_quality
+export pathScripts=${path}/scripts/filter_gene_annotation
 
 ##############################################################
 
