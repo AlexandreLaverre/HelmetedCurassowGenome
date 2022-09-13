@@ -24,6 +24,7 @@ if [ ${cluster} = "in2p3" ]; then
     export path=/sps/biometr/necsulea/HelmetedCurassowGenome
 fi
 
+export pathScripts=${path}/scripts/filter_gene_annotation
 export pathProteinSequences=${path}/data/protein_sequences/${source}/primary_transcripts
 export pathResults=${path}/results/genome_annotation/${target}/${assembly}/GeMoMa/combined
 
