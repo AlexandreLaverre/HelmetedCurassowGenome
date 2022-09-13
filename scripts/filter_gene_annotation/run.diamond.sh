@@ -43,7 +43,7 @@ if [ -e ${pathProteinSequences}/${protfile} ]; then
     if [ -e ${pathProteinSequences}/${prefix}.dmnd ]; then
 	echo "diamond database exists"
     else
-	diamond makedb --in ${pathProteinSequences}/${protfile} -d ${pathProteinSequences}/${prefix}
+	diamond makedb --ignore-warnings --in ${pathProteinSequences}/${protfile} -d ${pathProteinSequences}/${prefix}
     fi
 else
     echo "cannot find protein sequence file for "${refsp}
