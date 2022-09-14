@@ -54,8 +54,8 @@ if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --error=${pathScripts}/std_error_filter_diamond_${target}.txt" >> ${pathScripts}/bsub_script_filter_diamond
     echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_filter_diamond
     echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_filter_diamond
-    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_filter_diamond
-    echo "#SBATCH --time=24:00:00" >> ${pathScripts}/bsub_script_filter_diamond
+    echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_filter_diamond
+    echo "#SBATCH --time=1:00:00" >> ${pathScripts}/bsub_script_filter_diamond
 fi
 
 if [ ${cluster} = "in2p3" ]; then
@@ -63,8 +63,8 @@ if [ ${cluster} = "in2p3" ]; then
     echo "#SBATCH --output=${pathScripts}/std_output_filter_diamond_${refsp}.txt" >>  ${pathScripts}/bsub_script_filter_diamond
     echo "#SBATCH --error=${pathScripts}/std_error_filter_diamond_${refsp}.txt" >> ${pathScripts}/bsub_script_filter_diamond
     echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_filter_diamond
-    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_filter_diamond
-    echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_filter_diamond
+    echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_filter_diamond
+    echo "#SBATCH --time=1:00:00" >> ${pathScripts}/bsub_script_filter_diamond
 fi
 
 echo "perl ${pathScripts}/filter.diamond.results.pl --speciesList=${speciesList} --pathsFastaProteins=${pathsFastaProteins} --pathsDiamondResults=${pathsDiamondResults}  --minProteinFraction=0.5 --maxEValue=0.001 --maxGapFraction=0.1 --pathOutput=${pathResults}/SignificantHits_MinProteinFraction0.5_MaxEvalue0.001_MaxGapGraction0.1.txt">> ${pathScripts}/bsub_script_filter_diamond
