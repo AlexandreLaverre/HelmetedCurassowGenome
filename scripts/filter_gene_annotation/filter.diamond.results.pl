@@ -49,7 +49,6 @@ sub readFasta{
     close($input);
 }
 
-
 ################################################################################
 
 sub readDiamondResults{
@@ -101,7 +100,7 @@ sub readDiamondResults{
 	    
 	    if($gapfr<$maxgapfraction){
 		if(exists $proteinlengths->{$tid}){
-		    my $thisprotfr=($alnlen+0.0)/($proteinlengths->{$tid}+0.0);
+		    my $thisprotfr=($alnlen-$totgaps+0.0)/($proteinlengths->{$tid}+0.0);
 		    
 		    if($thisprotfr>=$minprotfr){
 			if(!exists $kept->{$qid}){
@@ -132,7 +131,6 @@ sub readDiamondResults{
     
 }
 
-
 ################################################################################
 
 sub printHelp{
@@ -156,15 +154,16 @@ sub printHelp{
 
 my %parameters;
 
-$parameters{"pathFastaProteins"}="NA";
-$parameters{"pathDiamondResults"}="NA";
+$parameters{"speciesList"}="NA";
+$parameters{"pathsFastaProteins"}="NA";
+$parameters{"pathsDiamondResults"}="NA";
 $parameters{"minProteinFraction"}="NA";
 $parameters{"maxEValue"}="NA";
 $parameters{"maxGapFraction"}="NA";
 $parameters{"pathOutput"}="NA";
 
 my %defaultvalues;
-my @defaultpars=("pathFastaProteins", "pathDiamondResults", "minProteinFraction", "maxEValue", "maxGapFraction", "pathOutput");
+my @defaultpars=("speciesList","pathsFastaProteins", "pathsDiamondResults", "minProteinFraction", "maxEValue", "maxGapFraction", "pathOutput");
 
 my %numericpars;
 
@@ -225,7 +224,7 @@ print "Reading protein sequences...\n";
 
 my @species=split(",", $parameters{"speciesList"});
 my @pathsfasta=split(",", $parameters{"pathsFastaProteins"});
-my @pathsblast=split(",", $parameters{"pathsTBlastNResults"});
+my @pathsblast=split(",", $parameters{"pathsDiamondResults"});
 
 my $nbsp=@species;
 my $nbfasta=@pathsfasta;
@@ -262,9 +261,6 @@ print "Done.\n";
 
 print "Reading and filtering tblastn results...\n";
 
-my $minorflen=$parameters{"minORFLength"}+0.0;
-print "minimum ORF length: ".$minorflen."\n";
-
 my $minprotfr=$parameters{"minProteinFraction"}+0.0;
 print "minimum protein length fraction: ".$minprotfr."\n";
 
@@ -274,7 +270,7 @@ print "maximum e-value: ".$maxeval."\n";
 my $maxgapfr=$parameters{"maxGapFraction"}+0.0;
 print "maximum gap fraction: ".$maxgapfr."\n";
 
-my %orf;
+my %kepttranscripts;
 
 for(my $i=0; $i<$nbsp; $i++){
     my $sp=$species[$i];
@@ -282,48 +278,13 @@ for(my $i=0; $i<$nbsp; $i++){
 
     print "Reading tblastn results from ".$path." for ".$sp."\n";
     
-    readTBlastN($path, $minorflen, $minprotfr, $proteinlengths{$sp}, $maxeval, $maxgapfr, \%orf);
+    readDiamondResults($path, $minprotfr, $proteinlengths{$sp}, $maxeval, $maxgapfr, \%kepttranscripts);
 
-    my $nborf=keys %orf;
+    my $nbkept=keys %kepttranscripts;
 
-    print "There are ".$nborf." ORFs after reading data for ".$sp."\n";
+    print "There are ".$nbkept." transcripts after reading data for ".$sp."\n";
 }
     
-print "Done.\n";
-
-###################################################################################
-
-print "Extracting connected ORFs...\n";
-
-my %connectedorf;
-
-extractConnectedORFs(\%orf, \%connectedorf);
-
-print "Done.\n";
-
-###################################################################################
-
-print "Extracting ORF clusters...\n";
-
-my %orfclust;
-my %clustid;
-
-extractClusters(\%connectedorf, \%orfclust, \%clustid);
-
-my $nbclust=keys %orfclust;
-
-print "There are ".$nbclust." ORF clusters.\n";
-
-print "Done.\n";
-
-###################################################################################
-
-print "Extracting largest ORFs for clusters...\n";
-
-my %largestorf;
-
-extractLargestORF(\%orfclust, \%largestorf);
-
 print "Done.\n";
 
 ###################################################################################
@@ -332,11 +293,10 @@ print "Writing output...\n";
 
 open(my $output, ">".$parameters{"pathOutput"});
 
-print $output "TranscriptID\tStrand\tStart\tEnd\tIndividualORFs\n";
+print $output "TranscriptID\n";
 
-foreach my $clustid (keys %orfclust){
-    print $output $largestorf{$clustid}{"txid"}."\t".$largestorf{$clustid}{"strand"}."\t".$largestorf{$clustid}{"start"}."\t".$largestorf{$clustid}{"end"}."\t".join(";",keys %{$orfclust{$clustid}})."\n";
-	
+foreach my $id (keys %kepttranscripts){
+    print $output $id."\n";
 }
 
 close($output);
