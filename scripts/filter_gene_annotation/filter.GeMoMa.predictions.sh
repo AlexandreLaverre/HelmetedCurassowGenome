@@ -25,6 +25,8 @@ export pathDiamondResults=${pathResults}/diamond_results/SignificantHits_MinProt
 
 #########################################################################
 
-perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathDiamondResults=${pathDiamondResults} --minProteinLength=100 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.5 --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5.gtf --pathOutputFasta=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5.faa 
+## quantile(chicken protein lengths, p=0.01) = 68 
+
+perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathDiamondResults=${pathDiamondResults} --minProteinLength=70 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.5 --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5.gtf --pathOutputFasta=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5.faa 
 
 #########################################################################

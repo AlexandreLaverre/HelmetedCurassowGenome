@@ -18,6 +18,6 @@ export pathScripts=${path}/scripts/gene_annotation
 
 #########################################################################
 
-perl ${pathScripts}/rename.GeMoMa.transcripts.pl --pathInputGTF=${pathResults}/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.gtf --pathOutputGTF=${pathResults}/final_annotations.gtf
+perl ${pathScripts}/rename.GeMoMa.transcripts.pl --pathInputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5.gtf --pathOutputGTF=${pathResults}/final_annotations.gtf
 
 #########################################################################
