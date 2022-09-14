@@ -235,9 +235,9 @@ sub readOverlapRepeats{
 
 #################################################################################
 
-sub readOrthoGroups{
+sub readDiamondResults{
     my $pathin=$_[0];
-    my $orthogroups=$_[1];
+    my $kept=$_[1];
 
     open(my $input, $pathin);
     
@@ -256,19 +256,10 @@ sub readOrthoGroups{
 	chomp $line;
 	my @s=split("\t", $line);
 
-	my $genes=$s[$header{"Pauxi_pauxi"}];
-	my @genes=split(", ", $genes);
-
-	my $nbg=@genes;
-
-	if($nbg==1){
-	    foreach my $g (@genes){
-		if($g ne ""){
-		    $orthogroups->{$g}=1;
-		}
-	    }
-	}
+	my $txid=$s[$header{"TranscriptID"}];
 	
+	$kept->{$txid}=1;
+		
 	$line=<$input>;
     }
     
@@ -302,7 +293,7 @@ sub printHelp{
 my %parameters;
 $parameters{"pathAnnotGTF"}="NA";
 $parameters{"pathProteins"}="NA";
-$parameters{"pathOrthoGroups"}="NA";
+$parameters{"pathDiamondResults"}="NA";
 $parameters{"minProteinLength"}="NA";
 $parameters{"pathOverlapRepeats"}="NA";
 $parameters{"maxFractionRepeats"}="NA";
@@ -310,7 +301,7 @@ $parameters{"source"}="NA";
 $parameters{"pathOutputGTF"}="NA";
 $parameters{"pathOutputFasta"}="NA";
 
-my @defaultpars=("pathAnnotGTF", "pathProteins", "pathOrthoGroups", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta");
+my @defaultpars=("pathAnnotGTF", "pathProteins", "pathDiamondResults", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta");
 
 
 my %defaultvalues;
@@ -379,23 +370,24 @@ print "Done.\n";
 
 ##############################################################
 
-my $pathOrtho=$parameters{"pathOrthoGroups"};
+my $pathDiamond=$parameters{"pathDiamondResults"};
 
-my %orthogroups;
+my %kept;
 
-my $nbog=keys %orthogroups;
+if(-e $pathDiamond){
 
-if(-e $pathOrtho){
-
-    print "Reading orthogroups...\n";
+    print "Reading results of the diamond filter...\n";
         
-    readOrthoGroups($pathOrtho, \%orthogroups);
+    readDiamondResults($pathDiamond, \%kept);
     
-    my $nbo=keys %orthogroups;
+    my $nbkept=keys %kept;
     
-    print "Found ".$nbo." genes in orthogroups.\n";
+    print "Found ".$nbkept." transcripts.\n";
     
     print "Done.\n";
+} else{
+    print "Cannot find diamond results, exiting.\n";
+    exit(1);
 }
 
 ##############################################################
@@ -429,6 +421,7 @@ print "maximum fraction repeats: ".$maxrep."\n";
 my $nbtooshort=0;
 my $nbwithstop=0;
 my $nbwithrep=0;
+my $nbdiamond=0;
 
 foreach my $tx (@alltranscripts){
     if(!exists $proteins{$tx}){
@@ -437,10 +430,11 @@ foreach my $tx (@alltranscripts){
     }
 
     my $gene=$transcripts{$tx}{"gene"};
-
-    ## we only delete transcripts from genes that are not in orthogroups - if we have the orthogroups
-    
-    if(!exists $orthogroups{$gene}){ 
+ 
+    if(!exists $kept{$tx}){
+	delete $transcripts{$tx};
+	$nbdiamond++;
+    } else{
 	my $seq=$proteins{$tx};
 	my $len=length $seq;
 	
@@ -470,6 +464,7 @@ foreach my $tx (@alltranscripts){
     }
 }
 
+print "Deleted ".$nbdiamond." transcripts that had no diamond hits.\n";
 print "Deleted ".$nbtooshort." transcripts that were too short.\n";
 print "Deleted ".$nbwithstop." transcripts with stop/X codons.\n";
 print "Deleted ".$nbwithrep." transcripts with repeats.\n";

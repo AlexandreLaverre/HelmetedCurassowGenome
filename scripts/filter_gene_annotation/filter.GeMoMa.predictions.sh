@@ -1,7 +1,8 @@
 #!/bin/bash
 
-export assembly=$1
-export cluster=$2
+export sp=$1
+export assembly=$2
+export cluster=$3
 
 #########################################################################
 
@@ -14,17 +15,16 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 
-export pathGenomeAssembly=${path}/results/genome_assembly/${assembly}
-export pathResults=${path}/results/genome_annotation/${assembly}/GeMoMa/combined
-export pathOrthoFinder=${pathResults}/OrthoFinder_filtered/OrthoFinder
-export pathScripts=${path}/scripts/gene_annotation
+export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
+export pathResults=${path}/results/genome_annotation/${sp}/${assembly}/GeMoMa/combined
+export pathScripts=${path}/scripts/filter_gene_annotation
 
 #########################################################################
 
-export pathOrthoGroups=`ls ${pathOrthoFinder}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv `
+export pathDiamondResults=${pathResults}/diamond_results/SignificantHits_MinProteinFraction0.25_MaxEvalue0.001_MaxGapGraction0.1.txt
 
 #########################################################################
 
-perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathOrthoGroups=${pathOrthoGroups} --minProteinLength=100 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.5 --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.gtf --pathOutputFasta=${pathResults}/filtered_predictions_orthogroups_minLength100_maxFractionRepeats0.5.faa 
+perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathDiamondResults=${pathDiamondResults} --minProteinLength=100 --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=0.5 --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5.gtf --pathOutputFasta=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5.faa 
 
 #########################################################################
