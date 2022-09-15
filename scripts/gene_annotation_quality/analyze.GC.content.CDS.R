@@ -43,25 +43,30 @@ species=c(ensemblspecies, newspecies)
 ################################################################################
 
 for(sp in ensemblspecies){
-  print(sp)
+    print(sp)
 
-  path=grep(paste(sp, "\\.",sep=""), ensemblpaths, value=T)
-  cds=read.fasta(paste(pathEnsembl, path, sep=""), seqtype="DNA", forceDNAtolower=FALSE)
+    if(file.exists(paste(pathFigures, "GCContent_CDS_",sp,"_Ensembl103.pdf",sep=""))){
+        print("already done")
+    } else{
 
-  cds.gc3=unlist(lapply(cds, GC3))
-  cds.gc=unlist(lapply(cds, GC))
+        path=grep(paste(sp, "\\.",sep=""), ensemblpaths, value=T)
+        cds=read.fasta(paste(pathEnsembl, path, sep=""), seqtype="DNA", forceDNAtolower=FALSE)
 
-  xlim=c(0,1)
-  d.gc3=density(cds.gc3, bw=0.015)
-  d.gc=density(cds.gc, bw=0.015)
-  ylim=range(c(d.gc3$y, d.gc$y))
+        cds.gc3=unlist(lapply(cds, GC3))
+        cds.gc=unlist(lapply(cds, GC))
 
-  pdf(file=paste(pathFigures, "GCContent_CDS_",sp,"_Ensembl103.pdf",sep=""), width=6,height=4)
-  par(mar=c(4.1,4.5,2.1,1.1))
-  plot(d.gc3, xlim=xlim, ylim=ylim, col="red", xlab="GC content", ylab="density", main=sp)
-  lines(d.gc, col="black")
-  legend("topright",lty=1, col=c("red", "black"), legend=c("GC3", "GC"), inset=0.01)
-  dev.off()
+        xlim=c(0,1)
+        d.gc3=density(cds.gc3, bw=0.015)
+        d.gc=density(cds.gc, bw=0.015)
+        ylim=range(c(d.gc3$y, d.gc$y))
+
+        pdf(file=paste(pathFigures, "GCContent_CDS_",sp,"_Ensembl103.pdf",sep=""), width=6,height=4)
+        par(mar=c(4.1,4.5,2.1,1.1))
+        plot(d.gc3, xlim=xlim, ylim=ylim, col="red", xlab="GC content", ylab="density", main=sp)
+        lines(d.gc, col="black")
+        legend("topright",lty=1, col=c("red", "black"), legend=c("GC3", "GC"), inset=0.01)
+        dev.off()
+    }
 }
 
 for(parset in c("filtered_predictions", "filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.25", "filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5", "filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.25","filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5")){
@@ -70,42 +75,52 @@ for(parset in c("filtered_predictions", "filtered_predictions_minDiamondProteinF
     for(sp in newspecies){
         print(sp)
 
-        assembly=assemblies[sp]
-        cds=read.fasta(paste(pathAnnot, sp, "/", assembly, "/GeMoMa/combined/",parset,".cds.fa", sep=""), seqtype="DNA", forceDNAtolower=FALSE)
+        if(file.exists(paste(pathFigures, "GCContent_CDS_",sp,"_",parset,".pdf",sep=""))){
+            print("already done")
+        } else{
+            assembly=assemblies[sp]
+            cds=read.fasta(paste(pathAnnot, sp, "/", assembly, "/GeMoMa/combined/",parset,".cds.fa", sep=""), seqtype="DNA", forceDNAtolower=FALSE)
 
-        cds.gc3=unlist(lapply(cds, GC3))
-        cds.gc=unlist(lapply(cds, GC))
+            cds.gc3=unlist(lapply(cds, GC3))
+            cds.gc=unlist(lapply(cds, GC))
 
-        xlim=c(0,1)
-        d.gc3=density(cds.gc3, bw=0.015)
-        d.gc=density(cds.gc, bw=0.015)
-        ylim=range(c(d.gc3$y, d.gc$y))
+            xlim=c(0,1)
+            d.gc3=density(cds.gc3, bw=0.015)
+            d.gc=density(cds.gc, bw=0.015)
+            ylim=range(c(d.gc3$y, d.gc$y))
 
-        pdf(file=paste(pathFigures, "GCContent_CDS_",sp,"_",parset,".pdf",sep=""), width=6,height=4)
-        par(mar=c(4.1,4.5,2.1,1.1))
-        plot(d.gc3, xlim=xlim, ylim=ylim, col="red", xlab="GC content", ylab="density", main=sp)
-        lines(d.gc, col="black")
-        legend("topright",lty=1, col=c("red", "black"), legend=c("GC3", "GC"), inset=0.01)
-        dev.off()
+            pdf(file=paste(pathFigures, "GCContent_CDS_",sp,"_",parset,".pdf",sep=""), width=6,height=4)
+            par(mar=c(4.1,4.5,2.1,1.1))
+            plot(d.gc3, xlim=xlim, ylim=ylim, col="red", xlab="GC content", ylab="density", main=sp)
+            lines(d.gc, col="black")
+            legend("topright",lty=1, col=c("red", "black"), legend=c("GC3", "GC"), inset=0.01)
+            dev.off()
+        }
     }
 
     for(sp in setdiff(newspecies, c("Pauxi_pauxi", "Basiliscus_vittatus"))){
-        cds=read.fasta(paste(pathNCBI, sp, ".cds.fa", sep=""), seqtype="DNA", forceDNAtolower=FALSE)
+        print(sp)
 
-        cds.gc3=unlist(lapply(cds, GC3))
-        cds.gc=unlist(lapply(cds, GC))
+        if(file.exists(paste(pathFigures, "GCContent_CDS_",sp,"_NCBI.pdf",sep=""))){
+            print("already done")
+        } else{
+            cds=read.fasta(paste(pathNCBI, sp, ".cds.fa", sep=""), seqtype="DNA", forceDNAtolower=FALSE)
 
-        xlim=c(0,1)
-        d.gc3=density(cds.gc3, bw=0.015)
-        d.gc=density(cds.gc, bw=0.015)
-        ylim=range(c(d.gc3$y, d.gc$y))
+            cds.gc3=unlist(lapply(cds, GC3))
+            cds.gc=unlist(lapply(cds, GC))
 
-        pdf(file=paste(pathFigures, "GCContent_CDS_",sp,"_NCBI.pdf",sep=""), width=6,height=4)
-        par(mar=c(4.1,4.5,2.1,1.1))
-        plot(d.gc3, xlim=xlim, ylim=ylim, col="red", xlab="GC content", ylab="density", main=sp)
-        lines(d.gc, col="black")
-        legend("topright",lty=1, col=c("red", "black"), legend=c("GC3", "GC"), inset=0.01)
-        dev.off()
+            xlim=c(0,1)
+            d.gc3=density(cds.gc3, bw=0.015)
+            d.gc=density(cds.gc, bw=0.015)
+            ylim=range(c(d.gc3$y, d.gc$y))
+
+            pdf(file=paste(pathFigures, "GCContent_CDS_",sp,"_NCBI.pdf",sep=""), width=6,height=4)
+            par(mar=c(4.1,4.5,2.1,1.1))
+            plot(d.gc3, xlim=xlim, ylim=ylim, col="red", xlab="GC content", ylab="density", main=sp)
+            lines(d.gc, col="black")
+            legend("topright",lty=1, col=c("red", "black"), legend=c("GC3", "GC"), inset=0.01)
+            dev.off()
+        }
     }
 }
 
