@@ -15,7 +15,7 @@ if [ ${cluster} = "cloud" ]; then
 fi
 
 export pathAssembly=${path}/data/genome_sequences/NCBI/${sp}.fa
-export pathAnnot=${path}/data/genome_annotation/NCBI/
+export pathAnnot=${path}/data/genome_annotations/NCBI/
 export pathScripts=${path}/scripts/gene_annotation_quality
 
 #########################################################################
