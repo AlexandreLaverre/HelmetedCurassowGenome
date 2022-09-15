@@ -47,7 +47,7 @@ proteins=list()
 
 for(sp in ensemblspecies){
   print(sp)
-  
+
   path=grep(paste(sp, "\\.",sep=""), ensemblpaths, value=T)
   proteins[[sp]]=read.fasta(paste(pathEnsembl, path, sep=""), seqtype="AA")
 }
@@ -61,46 +61,46 @@ for(sp in species){
 
 ################################################################################
 
-for(parset in c("formatted", "minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5", "minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.25","minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5")){
+for(parset in c("formatted", "minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.25", "minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5", "minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.25","minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5")){
   print(parset)
 
   for(sp in newspecies){
     print(sp)
-    
+
     assembly=assemblies[sp]
     proteins[[sp]]=read.fasta(paste(pathAnnot, sp, "/", assembly, "/GeMoMa/combined/filtered_predictions_",parset,".faa", sep=""), seqtype="AA")
     freqaa[[sp]]=as.numeric(table(factor(unlist(proteins[[sp]]), levels=a())))
   }
-  
+
   ################################################################################
-  
+
   freqaadf=t(as.data.frame(freqaa))
   colnames(freqaadf)=a()
   rownames(freqaadf)=names(proteins)
-  
+
   freqaadf=freqaadf[,which(colnames(freqaadf)!="*")]
-  
+
    ################################################################################
 
   print("AFC")
-  
+
   afc <- dudi.coa(freqaadf, scann = FALSE, nf = 5)
-  
+
   pdf(paste(pathFigures, "COA_AminoAcidComposition_taxonomy_",parset,".pdf",sep=""), width=6, height=6)
-  
+
   par(mar=c(4.5, 5.1, 2.1, 1.1))
 
   ylim=range(afc$li[,2])
   ylim[2]=ylim[2]+diff(ylim)/10
-  
+
   plot(afc$li[,1],afc$li[,2], pch = 19, main = "correspondence analysis, first factorial map", xlab = "", ylab ="",las = 1, type="n", ylim=ylim)
-  
+
   mtext(paste0("F1 (", round(100*afc$eig[1]/sum(afc$eig)), "% explained variance)"), side=1, line=3)
   mtext(paste0("F2 (", round(100*afc$eig[2]/sum(afc$eig)), "% explained variance)"), side=2, line=3.5)
-  
+
   smallx=diff(range(afc$li[,1]))/100
   smally=diff(range(afc$li[,2]))/100
-  
+
   points(afc$li[ensbirds,1],afc$li[ensbirds, 2], pch=21, col="indianred", bg="indianred", cex=1.2)
   points(afc$li[otherbirds,1],afc$li[otherbirds, 2], pch=21, col="brown", bg="brown", cex=1.2)
   points(afc$li[crocodile,1],afc$li[crocodile,2], pch=21, col="gray40", bg="gray40", cex=1.2)
@@ -108,12 +108,12 @@ for(parset in c("formatted", "minDiamondProteinFraction0.25_minLength100_maxFrac
   points(afc$li[squamates,1],afc$li[squamates,2], pch=21, col="seagreen", bg="seagreen", cex=1.2)
   points(afc$li[tuatara,1],afc$li[tuatara,2], pch=21, col="green", bg="green", cex=1.2)
   points(afc$li[mammals,1],afc$li[mammals,2], pch=21, col="orange", bg="orange", cex=1.2)
-  
+
   points(afc$li["Pauxi_pauxi",1],afc$li["Pauxi_pauxi",2], pch=21, bg="red", col="red", cex=1.1)
   points(afc$li["Basiliscus_vittatus",1],afc$li["Basiliscus_vittatus",2], pch=21, bg="blue", col="blue", cex=1.1)
-  
+
   legend("topleft", legend=c("helmeted curassow", "brown basilisc", "Ensembl birds", "GeMoMa birds", "crocodile", "turtles", "squamates",  "tuatara", "mammals"), pch=21, pt.bg=c("red", "blue", "indianred", "brown", "gray40", "steelblue", "seagreen", "green", "orange"), col=c("red", "blue", "indianred", "brown", "gray40", "steelblue", "seagreen", "green", "orange"), inset=0.01)
-  
+
   dev.off()
 
 }
