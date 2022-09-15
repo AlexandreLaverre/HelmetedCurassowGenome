@@ -42,7 +42,7 @@ species=c(ensemblspecies, newspecies)
 
 ################################################################################
 
-for(sp in ensbirds){
+for(sp in ensemblspecies){
   print(sp)
 
   path=grep(paste(sp, "\\.",sep=""), ensemblpaths, value=T)
@@ -67,7 +67,7 @@ for(sp in ensbirds){
 for(parset in c("filtered_predictions", "filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.25", "filtered_predictions_minDiamondProteinFraction0.25_minLength100_maxFractionRepeats0.5", "filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.25","filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5")){
     print(parset)
 
-    for(sp in otherbirds){
+    for(sp in newspecies){
         print(sp)
 
         assembly=assemblies[sp]
@@ -89,7 +89,7 @@ for(parset in c("filtered_predictions", "filtered_predictions_minDiamondProteinF
         dev.off()
     }
 
-    for(sp in setdiff(otherbirds, c("Pauxi_pauxi"))){
+    for(sp in setdiff(newspecies, c("Pauxi_pauxi", "Basiliscus_vittatus"))){
         cds=read.fasta(paste(pathNCBI, sp, ".cds.fa", sep=""), seqtype="DNA", forceDNAtolower=FALSE)
 
         cds.gc3=unlist(lapply(cds, GC3))
