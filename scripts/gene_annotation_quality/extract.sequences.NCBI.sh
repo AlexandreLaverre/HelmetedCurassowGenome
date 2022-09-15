@@ -11,7 +11,6 @@ fi
 
 if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools
 fi
 
 export pathAssembly=${path}/data/genome_sequences/NCBI/${sp}.fa
