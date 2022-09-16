@@ -50,11 +50,12 @@ for minlen in 70 100
 do
     for maxrep in 0.25 0.5
     do
-
-	perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathDiamondResults=${pathDiamondResults} --minProteinLength=${minlen} --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=${maxrep} --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.gtf --pathOutputFasta=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.faa
-
-	gffread -S -x ${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.cds.fa -g ${pathAssembly} ${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.gtf
-	
+	for maxstop in 0.1 0.2
+	do
+	    perl ${pathScripts}/filter.GeMoMa.predictions.pl --pathAnnotGTF=${pathResults}/filtered_predictions.gtf --pathProteins=${pathResults}/filtered_predictions.faa --pathDiamondResults=${pathDiamondResults} --minProteinLength=${minlen} --pathOverlapRepeats=${pathResults}/overlap_repeats.txt --maxFractionRepeats=${maxrep} --maxXStopFraction=${maxstop} --source=GeMoMa --pathOutputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.gtf --pathOutputFasta=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.faa
+	    
+	    gffread -S -x ${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.cds.fa -g ${pathAssembly} ${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.gtf
+	done
     done
 done
 #########################################################################

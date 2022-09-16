@@ -297,11 +297,12 @@ $parameters{"pathDiamondResults"}="NA";
 $parameters{"minProteinLength"}="NA";
 $parameters{"pathOverlapRepeats"}="NA";
 $parameters{"maxFractionRepeats"}="NA";
+$parameters{"maxXStopFraction"}="NA";
 $parameters{"source"}="NA";
 $parameters{"pathOutputGTF"}="NA";
 $parameters{"pathOutputFasta"}="NA";
 
-my @defaultpars=("pathAnnotGTF", "pathProteins", "pathDiamondResults", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "source",  "pathOutputGTF", "pathOutputFasta");
+my @defaultpars=("pathAnnotGTF", "pathProteins", "pathDiamondResults", "minProteinLength", "pathOverlapRepeats", "maxFractionRepeats", "maxXStopFraction", "source",  "pathOutputGTF", "pathOutputFasta");
 
 
 my %defaultvalues;
@@ -418,6 +419,10 @@ my $maxrep=$parameters{"maxFractionRepeats"}+0.0;
 
 print "maximum fraction repeats: ".$maxrep."\n";
 
+my $maxx=$parameters{"maxXStopFraction"}+0.0;
+
+print "maximum proportion of X (N-containing) or stop codons: ".$maxx."\n";
+
 my $nbtooshort=0;
 my $nbwithstop=0;
 my $nbwithrep=0;
@@ -444,7 +449,7 @@ foreach my $tx (@alltranscripts){
 	} else{
 	    my $propstop=computePropStop($seq);
 	    
-	    if($propstop>0){
+	    if($propstop>$maxx){
 		$nbwithstop++;
 		delete $transcripts{$tx};
 	    } else{
