@@ -31,11 +31,13 @@ for minlen in 70 100
 do
     for maxrep in 0.25 0.5
     do
-
-	perl ${pathScripts}/compare.annotations.pl --pathAnnot1=${pathNCBI}/${sp}.gtf --pathAnnot2=${pathGeMoMa}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.gtf --pathOutput=${pathGeMoMa}/NCBI_vs_filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.txt
-
-	perl ${pathScripts}/compare.annotations.pl --pathAnnot2=${pathNCBI}/${sp}.gtf --pathAnnot1=${pathGeMoMa}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}.gtf --pathOutput=${pathGeMoMa}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_vs_NCBI.txt
-	
+	for maxstop in 0.1 0.2
+	do
+	    perl ${pathScripts}/compare.annotations.pl --pathAnnot1=${pathNCBI}/${sp}.gtf --pathAnnot2=${pathGeMoMa}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.gtf --pathOutput=${pathGeMoMa}/NCBI_vs_filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.txt
+	    
+	    perl ${pathScripts}/compare.annotations.pl --pathAnnot2=${pathNCBI}/${sp}.gtf --pathAnnot1=${pathGeMoMa}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}.gtf --pathOutput=${pathGeMoMa}/filtered_predictions_minDiamondProteinFraction0.25_minLength${minlen}_maxFractionRepeats${maxrep}_maxXStop${maxstop}_vs_NCBI.txt
+	done
     done
 done
+
 #############################################################################
