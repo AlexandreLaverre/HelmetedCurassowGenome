@@ -14,7 +14,7 @@ if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/gene_families
+export pathResults=${path}/results/gene_families/OrthoFinder
 
 ##########################################################################
 
@@ -47,7 +47,7 @@ fi
     
 ##########################################################################
 
-echo "orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -a ${threads} -I 2 -S mmseqs -A muscle -M msa -y -T ${type}" >>  ${pathScripts}/bsub_script_orthofinder
+echo "orthofinder -f ${pathResults} -o ${pathResults}/${type} -t ${threads} -a ${threads} -I 2 -S mmseqs -A muscle -M msa -y -T ${type}" >>  ${pathScripts}/bsub_script_orthofinder
 
 ##########################################################################
 
