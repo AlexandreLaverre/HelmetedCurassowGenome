@@ -25,3 +25,10 @@ Parus_major	Ensembl
 Serinus_canaria	Ensembl
 Strigops_habroptila	Ensembl
 Coturnix_japonica	Ensembl
+Anolis_carolinensis	Ensembl
+Podarcis_muralis	Ensembl
+Pogona_vitticeps	Ensembl
+Pseudonaja_textilis	Ensembl
+Salvator_merianae	Ensembl
+Naja_naja	Ensembl
+Notechis_scutatus	Ensembl
