@@ -152,7 +152,7 @@ sub printHelp{
     my $parvalues=$_[1];
 
     print "\n";
-    print "This script formats protein sequences to display transcript and gene name.\n";
+    print "This script formats sequences to display transcript and gene name.\n";
     print "\n";
 
     print "Options:\n";
@@ -170,10 +170,10 @@ sub printHelp{
 
 my %parameters;
 $parameters{"pathAnnotGTF"}="NA";
-$parameters{"pathProteins"}="NA";
+$parameters{"pathSequences"}="NA";
 $parameters{"pathOutput"}="NA";
 
-my @defaultpars=("pathAnnotGTF", "pathProteins",  "pathOutput");
+my @defaultpars=("pathAnnotGTF", "pathSequences",  "pathOutput");
 
 
 my %defaultvalues;
@@ -233,10 +233,10 @@ print "Done.\n";
 
 ##############################################################
 
-print "Reading proteins...\n";
+print "Reading sequences...\n";
 
-my %proteins;
-readFasta($parameters{"pathProteins"}, \%proteins);
+my %sequences;
+readFasta($parameters{"pathSequences"}, \%sequences);
 
 print "Done.\n";
 
@@ -249,7 +249,7 @@ open(my $output, ">".$parameters{"pathOutput"});
 foreach my $tx (keys %transcripts){
     my $gene=$transcripts{$tx}{"gene"};
     my $name=$tx." gene:".$gene." transcript:".$tx;
-    my $seq=$proteins{$tx};
+    my $seq=$sequences{$tx};
 
     writeSequence($seq, $name, $output);
 }
