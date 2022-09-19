@@ -53,6 +53,7 @@ perl ${pathScripts}/combine.annotations.pl --pathAnnot1=${pathAnnot}/${sp}.gtf -
 ## extract fasta files
 
 gffread -S -x ${pathResults}/combined_annotations_${assembly}_GeMoMa.cds.fa -g ${pathAssembly} ${pathResults}/combined_annotations_${assembly}_GeMoMa.gtf
+
 gffread -S -y ${pathResults}/combined_annotations_${assembly}_GeMoMa.faa -g ${pathAssembly} ${pathResults}/combined_annotations_${assembly}_GeMoMa.gtf
 
 #############################################################################
