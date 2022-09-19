@@ -8,34 +8,56 @@ export threads=$3
 
 if [ ${cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
 fi
 
-export pathResults=${path}/results/coding_gene_evolution/
+if [ ${cluster} = "pbil" ]; then
+    export path=/beegfs/data/${USER}/HelmetedCurassowGenome
+fi
+
+export pathResults=${path}/results/gene_families
 
 ##########################################################################
-
-ulimit -n 50000
 
 ## OrthoFinder 2.5.4
 ## MAFFT v7.453
-## fasttree ubuntu package 2.1.11-1
-## IQ-TREE multicore version 1.6.12 for Linux 64-bit built Mar 23 2020
+## mmqseqs 2 
+## IQ-TREE multicore version 1.6.12 for Linux 64-bit 
 
 ##########################################################################
 
-if [ ${type} = "fasttree" ]; then
-    orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type}
+if [ ${cluster} = "cloud" ]; then
+    ulimit -n 50000
 fi
 
 ##########################################################################
 
-## we use previously inferred species tree
+echo "#!/bin/bash" > ${pathScripts}/bsub_script_orthofinder
 
-if [ ${type} = "iqtree" ]; then
-    #  orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree_rooted.txt
+##########################################################################
 
-    orthofinder -fg ${pathResults}/OrthoFinder_${type}/Results_Nov16 -t ${threads} -I 2 -M msa -y -T ${type} -s ${pathResults}/species_tree_rooted.txt
+if [ ${cluster} = "pbil" ]; then
+    echo "#SBATCH --job-name=orthofinder_${type}" >>  ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --output=${pathScripts}/std_output_orthofinder.txt" >>  ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --error=${pathScripts}/std_error_orthofinder.txt" >> ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --partition=bigmem" >> ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --mem=64G" >> ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --time=168:00:00" >> ${pathScripts}/bsub_script_orthofinder
+fi
+    
+##########################################################################
+
+echo "orthofinder -f ${pathResults} -o ${pathResults}/OrthoFinder_${type} -t ${threads} -a ${threads} -I 2 -S mmseqs -A muscle -M msa -y -T ${type}" >>  ${pathScripts}/bsub_script_orthofinder
+
+##########################################################################
+
+if [ ${cluster} = "pbil" ]; then
+    sbatch ${pathScripts}/bsub_script_orthofinder
+fi
+
+if [ ${cluster} = "cloud" ]; then
+    chmod a+x ${pathScripts}/bsub_script_orthofinder
+    ${pathScripts}/bsub_script_orthofinder
 fi
 
 ##########################################################################
