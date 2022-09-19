@@ -113,13 +113,13 @@ sub readGTF{
 			      }
 			  }
 		      }
-		      else{
-			  $nbunstranded++;
-		      }
+		  }
+		  else{
+		      $nbunstranded++;
 		  }
 	      }
 	}
-	
+    	
 	$line=<$input>;
     }
     
