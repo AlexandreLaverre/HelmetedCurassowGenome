@@ -19,8 +19,6 @@ export pathScripts=${path}/scripts/filter_gene_annotation
 
 #########################################################################
 
-perl ${pathScripts}/rename.GeMoMa.transcripts.pl --pathInputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5.gtf --pathOutputGTF=${pathResults}/final_annotations.gtf
-
-cp ${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.5.faa ${pathResults}/final_annotations.faa
+perl ${pathScripts}/rename.GeMoMa.transcripts.pl --pathInputGTF=${pathResults}/filtered_predictions_minDiamondProteinFraction0.25_minLength70_maxFractionRepeats0.25_maxXStop0.1.gtf --pathOutputGTF=${pathResults}/filtered_GeMoMa_annotations.gtf
 
 #########################################################################
