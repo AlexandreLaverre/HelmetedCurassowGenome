@@ -15,6 +15,7 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 export pathResults=${path}/results/gene_families/OrthoFinder
+export pathScripts=${path}/scripts/gene_families
 
 ##########################################################################
 
