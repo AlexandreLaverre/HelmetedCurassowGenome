@@ -207,7 +207,7 @@ while($line){
 	if(exists $newnames{$geneid}{$txid}){
 	    my $nn=$newnames{$geneid}{$txid};
 	    
-	    print $output join("\t", @s[0..7])."\tgene_id \"".$geneid."-GeMoMa.""\"; transcript_id \"".$nn."\";\n"
+	    print $output join("\t", @s[0..7])."\tgene_id \"".$geneid."-GeMoMa\"; transcript_id \"".$nn."\";\n";
 	} else{
 	    print "Weird, cannot find new name for ".$geneid."\t".$txid."\n";
 	}
