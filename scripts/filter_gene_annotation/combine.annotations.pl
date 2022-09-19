@@ -60,71 +60,69 @@ sub readGTF{
 
 		      if($txid eq "NA"){
 			  print "could not find transcript in ".$line."\n";
-			  exit(1);
-		      }
-
-		      if($geneid eq "NA"){
-			  print "could not find gene in ".$line."\n";
-			  exit(1);
-		      }
-
-		      my $exonid=$chr.",".$start.",".$end.",".$strand;
-
-		      ## transcript source
-
-		      if(exists $txsource->{$txid}){
-			  if($txsource->{$txid} ne $source){
-			      print "Weird! saw multiple annotation sources for ".$txid.": ".$source.", ".$txsource->{$txid}."\n";
-			      exit(1);
-			  }
 		      } else{
-			  $txsource->{$txid}=$source;
-		      }
-
-		      ## fill in exon coords
-
-		      $exoncoords->{$exonid}={"chr"=>$chr,"start"=>$start, "end"=>$end, "strand"=>$strand};
-
-		      ## exon - tx correspondence
-
-		      if(exists $exontx->{$exonid}){
-			  $exontx->{$exonid}{$txid}=1;
-		      }
-		      else{
-			  $exontx->{$exonid}={$txid=>1};
-		      }
-
-		      if(exists $genetx->{$geneid}){
-			  $genetx->{$geneid}{$txid}=1;
-		      }
-		      else{
-			  $genetx->{$geneid}={$txid=>1};
-		      }
-
-		      if(exists $txgene->{$txid}){
-			  if($txgene->{$txid} ne $geneid){
-			      print "Weird! ".$txid." is associated to more than one gene: ".$geneid. " ".$txgene->{$txid}."\n";
+			  if($geneid eq "NA"){
+			      print "could not find gene id in ".$line."\n";
+			  } else{
+			      my $exonid=$chr.",".$start.",".$end.",".$strand;
+			      
+			      ## transcript source
+			      
+			      if(exists $txsource->{$txid}){
+				  if($txsource->{$txid} ne $source){
+				      print "Weird! saw multiple annotation sources for ".$txid.": ".$source.", ".$txsource->{$txid}."\n";
+				      exit(1);
+				  }
+			      } else{
+				  $txsource->{$txid}=$source;
+			      }
+			      
+			      ## fill in exon coords
+			      
+			      $exoncoords->{$exonid}={"chr"=>$chr,"start"=>$start, "end"=>$end, "strand"=>$strand};
+			      
+			      ## exon - tx correspondence
+			      
+			      if(exists $exontx->{$exonid}){
+				  $exontx->{$exonid}{$txid}=1;
+			      }
+			      else{
+				  $exontx->{$exonid}={$txid=>1};
+			      }
+			      
+			      if(exists $genetx->{$geneid}){
+				  $genetx->{$geneid}{$txid}=1;
+			      }
+			      else{
+				  $genetx->{$geneid}={$txid=>1};
+			      }
+			      
+			      if(exists $txgene->{$txid}){
+				  if($txgene->{$txid} ne $geneid){
+				      print "Weird! ".$txid." is associated to more than one gene: ".$geneid. " ".$txgene->{$txid}."\n";
+				  }
+			      } else{
+				  $txgene->{$txid}=$geneid;
+			      }
+			      
+			      if(exists $txex->{$txid}){
+				  $txex->{$txid}{$exonid}=1;
+			      }
+			      else{
+				  $txex->{$txid}={$exonid=>1};
+			      }
 			  }
-		      } else{
-			  $txgene->{$txid}=$geneid;
-		      }
-
-		      if(exists $txex->{$txid}){
-			  $txex->{$txid}{$exonid}=1;
 		      }
 		      else{
-			  $txex->{$txid}={$exonid=>1};
+			  $nbunstranded++;
 		      }
-		  }
-		  else{
-		      $nbunstranded++;
 		  }
 	      }
 	}
-
+	
 	$line=<$input>;
     }
-
+    
     close($input);
 
     print "We discarded ".$nbunstranded." exons with undefined strand.\n";
