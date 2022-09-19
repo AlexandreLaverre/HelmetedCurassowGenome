@@ -11,7 +11,7 @@ fi
 
 if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
-    export pathTools=/beegfs/home/necsulea/OrthoFinder/tools
+    export pathTools=/beegfs/home/necsulea/Tools/OrthoFinder/tools
 fi
 
 export pathEnsemblProteins=${path}/data/protein_sequences/Ensembl103
@@ -64,13 +64,14 @@ done
 ## Basiliscus and Pauxi
 
 for sp in Pauxi_pauxi Basiliscus_vittatus
-
-if [ -e ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations.faa ]; then
-    echo "primary transcripts already done"
-else
-    python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/filtered_GeMoMa_annotations.faa
-fi
-
-ln -s ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations.faa ${pathResults}/${sp}.fa
+do
+    if [ -e ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations.faa ]; then
+	echo "primary transcripts already done"
+    else
+	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/filtered_GeMoMa_annotations.faa
+    fi
+    
+    ln -s ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations.faa ${pathResults}/${sp}.fa
+done
 
 ##########################################################################
