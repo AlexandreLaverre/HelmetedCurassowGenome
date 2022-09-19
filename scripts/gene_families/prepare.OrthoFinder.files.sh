@@ -16,7 +16,7 @@ fi
 
 export pathEnsemblProteins=${path}/data/protein_sequences/Ensembl103
 export pathGeMoMa=${path}/results/genome_annotation
-export pathResults=${path}/results/gene_families
+export pathResults=${path}/results/gene_families/OrthoFinder
 export pathScripts=${path}/scripts/gene_families
 
 ##########################################################################
@@ -50,13 +50,13 @@ done
 
 for sp in `grep NCBI ${pathScripts}/species_list.txt | cut -f 1`
 do
-    if [ -e ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/primary_transcripts/combined_annotations_NCBI_GeMoMa.faa ]; then
+    if [ -e ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/primary_transcripts/combined_annotations_NCBI_GeMoMa_formatted.faa ]; then
 	echo "primary transcripts already done"
     else
-	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/combined_annotations_NCBI_GeMoMa.faa
+	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/combined_annotations_NCBI_GeMoMa_formatted.faa
     fi
     
-    ln -s ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/primary_transcripts/combined_annotations_NCBI_GeMoMa.faa ${pathResults}/${sp}.fa
+    ln -s ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/primary_transcripts/combined_annotations_NCBI_GeMoMa_formatted.faa ${pathResults}/${sp}.fa
 done
 
 ##########################################################################
@@ -65,13 +65,13 @@ done
 
 for sp in Pauxi_pauxi Basiliscus_vittatus
 do
-    if [ -e ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations.faa ]; then
+    if [ -e ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations_formatted.faa ]; then
 	echo "primary transcripts already done"
     else
-	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/filtered_GeMoMa_annotations.faa
+	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/filtered_GeMoMa_annotations_formatted.faa
     fi
     
-    ln -s ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations.faa ${pathResults}/${sp}.fa
+    ln -s ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations_formatted.faa ${pathResults}/${sp}.fa
 done
 
 ##########################################################################
