@@ -40,8 +40,8 @@ if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --job-name=orthofinder_${type}" >>  ${pathScripts}/bsub_script_orthofinder
     echo "#SBATCH --output=${pathScripts}/std_output_orthofinder.txt" >>  ${pathScripts}/bsub_script_orthofinder
     echo "#SBATCH --error=${pathScripts}/std_error_orthofinder.txt" >> ${pathScripts}/bsub_script_orthofinder
-    echo "#SBATCH --partition=bigmem" >> ${pathScripts}/bsub_script_orthofinder
-    echo "#SBATCH --mem=64G" >> ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_orthofinder
+    echo "#SBATCH --mem=31G" >> ${pathScripts}/bsub_script_orthofinder
     echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_orthofinder
     echo "#SBATCH --time=168:00:00" >> ${pathScripts}/bsub_script_orthofinder
 fi
