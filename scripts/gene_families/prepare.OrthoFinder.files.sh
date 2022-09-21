@@ -5,8 +5,8 @@ export cluster=$1
 ##########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/mnt/mydatalocal/Tools/OrthoFinder/tools
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
+    export pathTools=/ifb/data/mydatalocal/Tools/OrthoFinder/tools
 fi
 
 if [ ${cluster} = "pbil" ]; then

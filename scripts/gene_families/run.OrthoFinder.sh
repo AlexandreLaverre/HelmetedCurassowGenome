@@ -7,7 +7,7 @@ export threads=$3
 ##########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/mnt/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
 if [ ${cluster} = "pbil" ]; then
