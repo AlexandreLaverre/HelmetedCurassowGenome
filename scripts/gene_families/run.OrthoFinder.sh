@@ -23,6 +23,7 @@ export pathScripts=${path}/scripts/gene_families
 ## MAFFT v7.453
 ## mmqseqs 2 
 ## IQ-TREE multicore version 1.6.12 for Linux 64-bit 
+## diamond version 2.0.14
 
 ##########################################################################
 
@@ -48,7 +49,7 @@ fi
     
 ##########################################################################
 
-echo "orthofinder -f ${pathResults} -o ${pathResults}/${type} -t ${threads} -a ${threads} -I 2 -S mmseqs -A muscle -M msa -y -T ${type}" >>  ${pathScripts}/bsub_script_orthofinder
+echo "orthofinder -f ${pathResults} -o ${pathResults}/${type} -t ${threads} -a ${threads} -I 2 -S diamond -A muscle -M msa -y -T ${type}" >>  ${pathScripts}/bsub_script_orthofinder
 
 ##########################################################################
 
