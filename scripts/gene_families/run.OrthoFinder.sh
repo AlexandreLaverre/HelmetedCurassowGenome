@@ -24,7 +24,7 @@ export pathScripts=${path}/scripts/gene_families
 ## mmqseqs 2 
 ## IQ-TREE multicore version 1.6.12 for Linux 64-bit 
 ## diamond version 2.0.14
-
+## MUSCLE v3.8.1551 
 ##########################################################################
 
 if [ ${cluster} = "cloud" ]; then
