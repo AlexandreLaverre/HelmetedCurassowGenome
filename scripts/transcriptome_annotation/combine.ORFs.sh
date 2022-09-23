@@ -5,8 +5,7 @@
 export target=$1
 export assembly=$2
 export cluster=$3
-export threads=$4
-export hours=$5
+export hours=$4
 
 #########################################################################
 
@@ -44,8 +43,8 @@ if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --output=${pathScripts}/std_output_orf_${ref}_${target}.txt" >>  ${pathScripts}/bsub_script_orf
     echo "#SBATCH --error=${pathScripts}/std_error_orf_${ref}_${target}.txt" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --mem=32G" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_orf
 fi
 
@@ -54,7 +53,7 @@ if [ ${cluster} = "in2p3" ]; then
     echo "#SBATCH --output=${pathScripts}/std_output_orf_${refsp}_${target}.txt" >>  ${pathScripts}/bsub_script_orf
     echo "#SBATCH --error=${pathScripts}/std_error_orf_${refsp}_${target}.txt" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_orf
 fi
 
