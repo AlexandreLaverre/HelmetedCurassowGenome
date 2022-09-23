@@ -4,14 +4,15 @@
 
 export target=$1
 export assembly=$2
-export source=$3
-export cluster=$4
-export threads=$5
-export hours=$6
+export refsp=$3
+export source=$4
+export cluster=$5
+export threads=$6
+export hours=$7
 
 #########################################################################
 
-if [ ${cluster} = "pbil" ]; then
+if [ ${cluster} = "pbil" ]||[ ${cluster} = "pbildeb" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
@@ -30,30 +31,19 @@ export pathScripts=${path}/scripts/transcriptome_annotation
 
 #########################################################################
 
-export speciesList=""
-export pathsFastaProteins=""
-export pathsTBlastNResults=""
+export protfile=`ls ${pathProteinSequences} | grep "${refsp}\." | grep fa`
 
-for file in `ls ${pathResults} `
-do
-    export sp=`basename ${file} _vs_${assembly}.tblastn.out`
-    export protfile=`ls ${pathProteinSequences} | grep "${sp}\." | grep fa`
-
-    export speciesList=${sp},${speciesList}
-    export pathsFastaProteins=${pathProteinSequences}/${protfile},${pathsFastaProteins}
-    export pathsTBlastNResults=${pathResults}/${file},${pathsTBlastNResults}
-
-    echo ${sp} ${protfile}
-done   
+export pathFastaProteins=${pathProteinSequences}/${protfile}
+export pathTBlastNResults=${pathResults}/${refsp}_vs_${assembly}.tblastn.out
 
 #########################################################################
 
 echo "#!/bin/bash" > ${pathScripts}/bsub_script_orf
 
 if [ ${cluster} = "pbil" ]; then
-    echo "#SBATCH --job-name=orf_${target}" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --output=${pathScripts}/std_output_orf_${target}.txt" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --error=${pathScripts}/std_error_orf_${target}.txt" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --job-name=orf_${ref}_${target}" >>  ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --output=${pathScripts}/std_output_orf_${ref}_${target}.txt" >>  ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --error=${pathScripts}/std_error_orf_${ref}_${target}.txt" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_orf
@@ -62,20 +52,20 @@ fi
 
 if [ ${cluster} = "in2p3" ]; then
     echo "#SBATCH --job-name=orf_${refsp}" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --output=${pathScripts}/std_output_orf_${refsp}.txt" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --error=${pathScripts}/std_error_orf_${refsp}.txt" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --output=${pathScripts}/std_output_orf_${refsp}_${target}.txt" >>  ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --error=${pathScripts}/std_error_orf_${refsp}_${target}.txt" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --cpus-per-task=${threads}" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_orf
 fi
 
-echo "perl ${pathScripts}/extract.ORFs.pl --speciesList=${speciesList} --pathsFastaProteins=${pathsFastaProteins} --pathsTBlastNResults=${pathsTBlastNResults} --minORFLength=300 --minProteinFraction=0.25 --maxEValue=0.001 --maxGapFraction=0.1 --pathOutput=${pathResults}/CombinedORFs.txt">> ${pathScripts}/bsub_script_orf
+echo "perl ${pathScripts}/extract.ORFs.pl  --pathFastaProteins=${pathFastaProteins} --pathTBlastNResults=${pathTBlastNResults} --minORFLength=300 --minProteinFraction=0.25 --maxEValue=0.001 --maxGapFraction=0.1 --pathOutput=${pathResults}/${refsp}_ORFs.txt">> ${pathScripts}/bsub_script_orf
 
 if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
     sbatch ${pathScripts}/bsub_script_orf
 fi
 
-if [ ${cluster} = "cloud" ]; then
+if [ ${cluster} = "cloud" ]||[ ${cluster} = "pbildeb" ]; then
     chmod a+x ${pathScripts}/bsub_script_orf
     ${pathScripts}/bsub_script_orf
 fi

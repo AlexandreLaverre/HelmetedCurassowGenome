@@ -357,9 +357,8 @@ sub printHelp{
 
 my %parameters;
 
-$parameters{"speciesList"}="NA";
-$parameters{"pathsFastaProteins"}="NA";
-$parameters{"pathsTBlastNResults"}="NA";
+$parameters{"pathFastaProteins"}="NA";
+$parameters{"pathTBlastNResults"}="NA";
 $parameters{"minORFLength"}="NA";
 $parameters{"minProteinFraction"}="NA";
 $parameters{"maxEValue"}="NA";
@@ -367,7 +366,7 @@ $parameters{"maxGapFraction"}="NA";
 $parameters{"pathOutput"}="NA";
 
 my %defaultvalues;
-my @defaultpars=("speciesList", "pathsFastaProteins", "pathsTBlastNResults", "minORFLength", "minProteinFraction", "maxEValue", "maxGapFraction", "pathOutput");
+my @defaultpars=("pathFastaProteins", "pathTBlastNResults", "minORFLength", "minProteinFraction", "maxEValue", "maxGapFraction", "pathOutput");
 
 my %numericpars;
 
@@ -426,37 +425,21 @@ print "\n";
 
 print "Reading protein sequences...\n";
 
-my @species=split(",", $parameters{"speciesList"});
-my @pathsfasta=split(",", $parameters{"pathsFastaProteins"});
-my @pathsblast=split(",", $parameters{"pathsTBlastNResults"});
-
-my $nbsp=@species;
-my $nbfasta=@pathsfasta;
-my $nbblast=@pathsblast;
-
-if($nbsp!=$nbfasta || $nbsp!=$nbblast){
-    print "Weird! saw ".$nbsp." species, ".$nbfasta." fasta files, ".$nbblast." blast files.\n";
-    exit(1);
-}
+my $pathfasta=$parameters{"pathsFastaProteins"};
+my $pathblast=$parameters{"pathsTBlastNResults"};
 
 my %proteinlengths;
 
-for(my $i=0; $i<$nbsp; $i++){
-    my $sp=$species[$i];
-    my $path=$pathsfasta[$i];
+my %proteins;
+readFasta($pathfasta, \%proteins);
 
-    my %proteins;
-    readFasta($path, \%proteins);
+my $nbprot=keys %proteins;
 
-    my $nbprot=keys %proteins;
+print "There are ".$nbprot." proteins\n";
 
-    print "There are ".$nbprot." proteins for ".$sp."\n";
-
-    $proteinlengths{$sp}={};
-    foreach my $id (keys %proteins){
-	my $length=length $proteins{$id};
-	$proteinlengths{$sp}{$id}=$length;
-    }
+foreach my $id (keys %proteins){
+    my $length=length $proteins{$id};
+    $proteinlengths{$id}=$length;
 }
 
 print "Done.\n";
@@ -479,18 +462,13 @@ print "maximum gap fraction: ".$maxgapfr."\n";
 
 my %orf;
 
-for(my $i=0; $i<$nbsp; $i++){
-    my $sp=$species[$i];
-    my $path=$pathsblast[$i];
+print "Reading tblastn results from ".$pathblast.".\n";
 
-    print "Reading tblastn results from ".$path." for ".$sp."\n";
-    
-    readTBlastN($path, $minorflen, $minprotfr, $proteinlengths{$sp}, $maxeval, $maxgapfr, \%orf);
+readTBlastN($pathblast, $minorflen, $minprotfr, \%proteinlengths, $maxeval, $maxgapfr, \%orf);
 
-    my $nborf=keys %orf;
+my $nborf=keys %orf;
 
-    print "There are ".$nborf." ORFs after reading data for ".$sp."\n";
-}
+print "There are ".$nborf." ORFs.\n";
     
 print "Done.\n";
 
