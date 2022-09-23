@@ -425,8 +425,8 @@ print "\n";
 
 print "Reading protein sequences...\n";
 
-my $pathfasta=$parameters{"pathsFastaProteins"};
-my $pathblast=$parameters{"pathsTBlastNResults"};
+my $pathfasta=$parameters{"pathFastaProteins"};
+my $pathblast=$parameters{"pathTBlastNResults"};
 
 my %proteinlengths;
 
