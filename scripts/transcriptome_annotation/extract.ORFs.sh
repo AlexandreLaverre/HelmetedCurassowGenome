@@ -38,6 +38,13 @@ export pathTBlastNResults=${pathResults}/${refsp}_vs_${assembly}.tblastn.out
 
 #########################################################################
 
+if [ -e ${pathResults}/${refsp}_ORFs.txt ]; then
+    echo ${refsp}" already done"
+    exit
+fi
+
+#########################################################################
+
 echo "#!/bin/bash" > ${pathScripts}/bsub_script_orf
 
 if [ ${cluster} = "pbil" ]; then
