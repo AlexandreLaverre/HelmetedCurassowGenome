@@ -40,8 +40,8 @@ echo "#!/bin/bash" > ${pathScripts}/bsub_script_orf
 
 if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --job-name=orf_${ref}_${target}" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --output=${pathScripts}/std_output_orf_${ref}_${target}.txt" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --error=${pathScripts}/std_error_orf_${ref}_${target}.txt" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --output=${pathScripts}/std_output_orf_${target}.txt" >>  ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --error=${pathScripts}/std_error_orf_${target}.txt" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --partition=normal" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --mem=32G" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_orf
@@ -50,14 +50,14 @@ fi
 
 if [ ${cluster} = "in2p3" ]; then
     echo "#SBATCH --job-name=orf_${refsp}" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --output=${pathScripts}/std_output_orf_${refsp}_${target}.txt" >>  ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --error=${pathScripts}/std_error_orf_${refsp}_${target}.txt" >> ${pathScripts}/bsub_script_orf
-    echo "#SBATCH --mem=2G" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --output=${pathScripts}/std_output_orf_${target}.txt" >>  ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --error=${pathScripts}/std_error_orf_${target}.txt" >> ${pathScripts}/bsub_script_orf
+    echo "#SBATCH --mem=32G" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --cpus-per-task=1" >> ${pathScripts}/bsub_script_orf
     echo "#SBATCH --time=${hours}:00:00" >> ${pathScripts}/bsub_script_orf
 fi
 
-echo "perl ${pathScripts}/combine.ORFs.pl  --pathsORFs=${pathsORFs} --pathOutput=${pathResults}/CombinedORFs.txt">> ${pathScripts}/bsub_script_orf
+echo "perl ${pathScripts}/combine.ORFs.pl  --pathsORFs=${pathsORFs} --pathOutput=${pathTranscriptomeAssembly}/CombinedORFs.txt">> ${pathScripts}/bsub_script_orf
 
 if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
     sbatch ${pathScripts}/bsub_script_orf
