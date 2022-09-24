@@ -47,7 +47,7 @@ if [ ${cluster} = "in2p3" ]; then
     echo "#SBATCH --time=1:00:00" >> ${pathScripts}/bsub_script_orf
 fi
 
-echo "perl ${pathScripts}/extract.ORF.sequences.pl  --pathORFs=${pathResults}/CombinedORFs.txt --pathContigs=${pathResults}/Trinity.fasta --pathGenticCode=${pathScripts}/standard_genetic_code.txt --pathOutputCDS=${pathResults}/CombinedORFs_CDS.fa  --pathOutputProtein=${pathResults}/CombinedORFs_Proteins.fa">> ${pathScripts}/bsub_script_orf
+echo "perl ${pathScripts}/extract.ORF.sequences.pl  --pathORFs=${pathResults}/CombinedORFs.txt --pathContigs=${pathResults}/Trinity.fasta --pathGeneticCode=${pathScripts}/standard_genetic_code.txt --pathOutputCDS=${pathResults}/CombinedORFs_CDS.fa  --pathOutputProtein=${pathResults}/CombinedORFs_Proteins.fa">> ${pathScripts}/bsub_script_orf
 
 if [ ${cluster} = "pbil" ]||[ ${cluster} = "in2p3" ]; then
     sbatch ${pathScripts}/bsub_script_orf
