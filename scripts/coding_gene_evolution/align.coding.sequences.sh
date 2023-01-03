@@ -20,7 +20,7 @@ export pathScripts=${path}/scripts/coding_gene_evolution
 ##########################################################################
 
 echo "#!/bin/bash" > ${pathScripts}/log/bsub_prank_${start}_${end}
-echo redo=0
+export redo=0
 
 if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --job-name=prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
