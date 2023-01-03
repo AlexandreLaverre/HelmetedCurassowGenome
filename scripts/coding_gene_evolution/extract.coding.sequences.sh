@@ -16,9 +16,18 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 export pathCDS=${path}/data/coding_sequences
-export pathAnnot=${path}/results/genome_annotation/MEGAHIT_RAGOUT/GeMoMa/combined
+export pathGeMoMa=${path}/results/genome_annotation
+export pathGeneFamilies=${path}/results/gene_families/OrthoFinder/iqtree
 export pathResults=${path}/results/coding_gene_evolution
 export pathScripts=${path}/scripts/coding_gene_evolution
+
+##########################################################################
+
+if [ -e ${pathResults} ]; then
+    echo "output path already there"
+else
+    mkdir -p ${pathResults}
+fi
 
 ##########################################################################
 
@@ -43,68 +52,34 @@ done
 
 ## add NCBI species
 
-export speciesList=Penelope_pileata,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013396635.1_ASM1339663v1_cds_from_genomic.fna.gz,${pathsCDS}
+for sp in `grep NCBI ${pathScripts}/species_list.txt | cut -f 1`
+do
+    if [ -e ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/primary_transcripts/combined_annotations_NCBI_GeMoMa_formatted.cds.fa ]; then
+	echo "primary transcripts already done"
+    else
+	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/combined_annotations_NCBI_GeMoMa_formatted.cds.fa
+    fi
+
+    export speciesList=${sp},${speciesList}
+    export pathsCDS=${pathGeMoMa}/${sp}/NCBI/GeMoMa/combined/primary_transcripts/combined_annotations_NCBI_GeMoMa_formatted.cds.fa,${pathsCDS}
+done
 
 ##########################################################################
 
-export speciesList=Alectura_lathami,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013399715.1_ASM1339971v1_cds_from_genomic.fna.gz,${pathsCDS} 
+## Basiliscus and Pauxi
 
-##########################################################################
+for sp in Pauxi_pauxi Basiliscus_vittatus
+do
+    if [ -e ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations_formatted.cds.fa ]; then
+	echo "primary transcripts already done"
+    else
+	python ${pathTools}/primary_transcript.py ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/filtered_GeMoMa_annotations_formatted.cds.fa
+    fi
 
-export speciesList=Casuarius_casuarius,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013396415.1_ASM1339641v1_cds_from_genomic.fna.gz,${pathsCDS}
+    export speciesList=${sp},${speciesList}
+    export pathsCDS=${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations_formatted.cds.fa,${pathsCDS}
+done
 
-##########################################################################
-
-export speciesList=Anseranas_semipalmata,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013399115.1_ASM1339911v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-export speciesList=Balearica_regulorum,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCF_000709895.1_ASM70989v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-export speciesList=Grus_americana,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013390085.1_ASM1339008v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-export speciesList=Bucorvus_abyssinicus,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013398885.1_ASM1339888v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-export speciesList=Buceros_rhinoceros,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_000710305.1_ASM71030v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-export speciesList=Upupa_epops,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013397515.1_ASM1339751v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-export speciesList=Rhinopomastus_cyanomelas,${speciesList}
-export pathsCDS=${pathCDS}/NCBI/GCA_013400115.1_ASM1340011v1_cds_from_genomic.fna.gz,${pathsCDS}
-
-##########################################################################
-
-## Pauxi pauxi
-
-if [ -e ${pathAnnot}/primary_transcripts/final_annotations_formatted.cds.fa ]; then
-    echo "primary transcripts already there for Pauxi pauxi"
-else
-    python ${pathTools}/primary_transcript.py ${pathAnnot}/final_annotations_formatted.cds.fa
-fi
-
-export speciesList=Pauxi_pauxi,${speciesList}
-export pathsCDS=${pathAnnot}/primary_transcripts/final_annotations_formatted.cds.fa,${pathsCDS}
-
-##########################################################################
 ##########################################################################
 
 if [ -e ${pathResults}/CDS ]; then
@@ -113,7 +88,7 @@ else
     mkdir ${pathResults}/CDS
 fi
 
-export pathOrthogroups=`ls ${pathResults}/OrthoFinder_iqtree/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
+export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
 
 echo "path ortho" ${pathOrthogroups}
 
@@ -121,7 +96,7 @@ dos2unix ${pathOrthogroups}
 
 ##########################################################################
 
-perl ${pathScripts}/extract.coding.sequences.pl --speciesList=${speciesList} --pathsCDS=${pathsCDS}  --pathOrthogroups=${pathOrthogroups} --requiredSpecies=Pauxi_pauxi --minNbSpecies=5 --dirOutput=${pathResults}/CDS
+perl ${pathScripts}/extract.coding.sequences.pl --speciesList=${speciesList} --pathsCDS=${pathsCDS}  --pathOrthogroups=${pathOrthogroups} --requiredSpecies=NA --minNbSpecies=5 --dirOutput=${pathResults}/CDS
 
 ##########################################################################
 ##########################################################################

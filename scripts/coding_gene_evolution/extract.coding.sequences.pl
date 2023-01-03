@@ -324,10 +324,20 @@ print "Done.\n";
 
 print "Reading orthogroups...\n";
 
-my @required=split(",", $parameters{"requiredSpecies"});
-my $nbreq=@required;
+my @required;
 
-print "There are ".$nbreq." required species: ".join(", ",@required)."\n";
+my $parreq=$parameters{"requiredSpecies"};
+
+if($parreq ne "NA"){
+    @required=split(",", );
+    
+    my $nbreq=@required;
+    
+    print "There are ".$nbreq." required species: ".join(", ",@required)."\n";
+}
+else{
+    print "There are no required species.\n";
+}
 
 my $minnb=$parameters{"minNbSpecies"}+0;
 
