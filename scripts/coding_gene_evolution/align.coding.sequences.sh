@@ -14,8 +14,6 @@ if [ ${cluster} = "in2p3" ]; then
     export path=/sps/biometr/necsulea/HelmetedCurassowGenome
 fi
 
-export pathCDS=${path}/data/coding_sequences
-export pathAnnot=${path}/results/genome_annotation/MEGAHIT_RAGOUT/GeMoMa/combined
 export pathResults=${path}/results/coding_gene_evolution
 export pathScripts=${path}/scripts/coding_gene_evolution
 
