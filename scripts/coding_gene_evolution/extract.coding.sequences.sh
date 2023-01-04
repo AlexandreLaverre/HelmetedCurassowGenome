@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export cluster=$1
+export dataset=$2
 
 ##########################################################################
 
@@ -18,7 +19,7 @@ fi
 export pathCDS=${path}/data/coding_sequences
 export pathGeMoMa=${path}/results/genome_annotation
 export pathGeneFamilies=${path}/results/gene_families/OrthoFinder/iqtree
-export pathResults=${path}/results/coding_gene_evolution
+export pathResults=${path}/results/coding_gene_evolution/${dataset}
 export pathScripts=${path}/scripts/coding_gene_evolution
 
 ##########################################################################
@@ -88,7 +89,13 @@ else
     mkdir ${pathResults}/CDS
 fi
 
-export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
+if [ ${dataset} = "all_species" ]; then
+    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
+fi
+
+if [ ${dataset} = "birds" ]; then
+    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
+fi
 
 echo "path ortho" ${pathOrthogroups}
 

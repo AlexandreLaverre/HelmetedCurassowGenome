@@ -2,6 +2,7 @@
 
 export nmax=$1
 export cluster=$2
+export dataset=$3
 
 ##########################################################################
 
@@ -14,7 +15,7 @@ do
 
     echo ${start} ${end}
     
-    ./align.coding.sequences.sh ${start} ${end} ${cluster}
+    ./align.coding.sequences.sh ${start} ${end} ${cluster} ${dataset}
     
     export start=$[$start+1000]
 done
