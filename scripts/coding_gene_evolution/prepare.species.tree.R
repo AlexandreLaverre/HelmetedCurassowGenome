@@ -24,7 +24,6 @@ for(dataset in c("all_species", "birds")){
         rooted=root(filtered, outgroup=c("Struthio_camelus_australis", "Casuarius_casuarius", "Dromaius_novaehollandiae"))
     }
 
-
     write.tree(rooted, file=paste(pathResults,dataset, "/species_tree.txt",sep=""))
 }
 
