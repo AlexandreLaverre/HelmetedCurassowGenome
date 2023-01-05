@@ -183,7 +183,7 @@ sub readDiamondResults{
 	    my $fraln1=($alnlen+0.0)/$len1;
 	    my $fraln2=($alnlen+0.0)/$len2;
 
-	    if($pcid>=$minpcid && $fraln1>=$minalnfr && $fraln2>=$minalnfr){
+	    if($pcid>=$minpcid && ($fraln1>=$minalnfr || $fraln2>=$minalnfr)){
 		if(exists $connected->{$id1}){
 		    $connected->{$id1}{$id2}=1;
 		} else{
@@ -343,7 +343,7 @@ print "Extracting representative ORFs and writing output...\n";
 
 open(my $outputclust, ">".$parameters{"pathOutputClusters"});
 open(my $outputcds, ">".$parameters{"pathOutputCDS"});
-open(my $outputprotein, ">".$parameters{"pathOutputProtein"});
+open(my $outputprotein, ">".$parameters{"pathOutputProteins"});
 
 print $outputclust "IDCluster\tClusterMembers\tRepresentativeORF\n";
 
@@ -353,36 +353,44 @@ foreach my $idclust (keys %clusters){
 
     foreach my $idprot (keys %{$clusters{$idclust}}){
 	if(exists $proteins{$idprot}){
-	    my $len=length $proteins{$idprot};
-
+	    my $seqprot=$proteins{$idprot};
+	    my $len=length $seqprot;
+	    
 	    if(exists $protlength{$len}){
 		push(@{$protlength{$len}}, $idprot);
 	    } else{
 		$protlength{$len}=[$idprot];
 	    }
-	} else{
+	}
+	else{
 	    print "Weird! cannot find ".$idprot." in proteins.\n";
 	    exit(1);
 	}
     }
 
-    my @uniquelengths=keys %protlength;
-    my $maxlen = max @uniquelengths;
+    my $nbkept=keys %protlength;
 
-    my @idmax=@{$protlength{$maxlen}};
-    my $repid=$idmax[0];
-
-    print $outputclust $idclust."\t".join(",", keys %{$clusters{$idclust}})."\t".$repid."\n";
-
-
-    if(exists $cds{$repid} && exists $proteins{$repid}){
-	my $repcds=$cds{$repid};
-	my $repprot=$proteins{$repid};
+    if($nbkept>0){
+	my @uniquelengths=keys %protlength;
+	my $maxlen = max @uniquelengths;
 	
-	writeSequence($repcds, $repid, $outputcds);
-	writeSequence($repprot, $repid, $outputprotein);
+	my @idmax=@{$protlength{$maxlen}};
+	my $repid=$idmax[0];
+	
+	print $outputclust $idclust."\t".join(",", keys %{$clusters{$idclust}})."\t".$repid."\n";
+		
+	if(exists $cds{$repid} && exists $proteins{$repid}){
+	    my $repcds=$cds{$repid};
+	    my $repprot=$proteins{$repid};
+	    
+	    writeSequence($repcds, $repid, $outputcds);
+	    writeSequence($repprot, $repid, $outputprotein);
+	} else{
+	    print "Weird! cannot find ".$repid." in proteins or CDS sequences.\n";
+	    exit(1);
+	}
     } else{
-	print "Weird! cannot find ".$repid." in proteins or CDS sequences.\n";
+	print "Weird, cluster ".$idclust." had no sequences.\n";
 	exit(1);
     }
 }
