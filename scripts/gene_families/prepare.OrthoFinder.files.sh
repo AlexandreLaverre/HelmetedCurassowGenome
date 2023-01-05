@@ -16,7 +16,8 @@ fi
 
 export pathEnsemblProteins=${path}/data/protein_sequences/Ensembl103
 export pathGeMoMa=${path}/results/genome_annotation
-export pathResults=${path}/results/gene_families/OrthoFinder
+export pathTrinity=${path}/results/transcriptome_assembly
+export pathResults=${path}/results/gene_families/OrthoFinder/all_species
 export pathScripts=${path}/scripts/gene_families
 
 ##########################################################################
@@ -72,6 +73,15 @@ do
     fi
     
     ln -s ${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations_formatted.faa ${pathResults}/${sp}.fa
+done
+
+##########################################################################
+
+## chameleons 
+
+for sp in Chamaeleo_calyptratus Chamaeleo_chamaeleon_recticrista
+do
+    ln -s ${pathTrinity}/${sp}/CombinedORFs_RepresentativeORF_Proteins.fa ${pathResults}/${sp}.fa
 done
 
 ##########################################################################

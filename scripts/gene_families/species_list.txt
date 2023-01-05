@@ -32,3 +32,5 @@ Pseudonaja_textilis	Ensembl
 Salvator_merianae	Ensembl
 Naja_naja	Ensembl
 Notechis_scutatus	Ensembl
+Chamaeleo_calyptratus	Trinity
+Chamaeleo_chamaeleon_recticrista	Trinity
