@@ -14,7 +14,7 @@ if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/gene_families/OrthoFinder
+export pathResults=${path}/results/gene_families/OrthoFinder/all_species
 export pathScripts=${path}/scripts/gene_families
 
 ##########################################################################
