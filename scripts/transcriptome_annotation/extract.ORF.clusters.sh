@@ -4,8 +4,6 @@
 
 export target=$1
 export cluster=$2
-export threads=$3
-export hours=$4
 
 #########################################################################
 
