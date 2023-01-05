@@ -21,8 +21,6 @@ if [ ${cluster} = "in2p3" ]; then
     export path=/sps/biometr/necsulea/HelmetedCurassowGenome
 fi
 
-export assembly="Trinity"
-
 export pathResults=${path}/results/transcriptome_assembly/${target}
 export pathScripts=${path}/scripts/transcriptome_annotation
 
