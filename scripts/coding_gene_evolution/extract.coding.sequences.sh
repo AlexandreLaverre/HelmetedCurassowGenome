@@ -90,7 +90,7 @@ else
     mkdir ${pathResults}/CDS
 fi
 
-if [ ${spset} = "without_chameleons" ]; then
+if [ ${geneset} = "without_chameleons" ]; then
     if [ ${dataset} = "all_species" ]; then
 	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
     fi
@@ -101,7 +101,7 @@ if [ ${spset} = "without_chameleons" ]; then
 fi
 
 
-if [ ${spset} = "all_species" ]; then
+if [ ${geneset} = "all_species" ]; then
     if [ ${dataset} = "all_species" ]; then
 	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
     fi
