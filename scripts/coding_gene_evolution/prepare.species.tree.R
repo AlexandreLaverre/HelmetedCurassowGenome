@@ -31,7 +31,7 @@ for(spset in c("all_species", "without_chameleons")){
     }
     
     if(dataset=="birds"){
-      filtered=drop.tip(tree, intersect(c("Salvator_merianae", "Podarcis_muralis", "Pogona_vitticeps", "Basiliscus_vittatus", "Anolis_carolinensis", "Naja_naja", "Notechis_scutatus", "Pseudonaja_textilis", "Chamaeleo_chamaeleon_recticrista","Chamaeleo_calyptratus")), tree$tip.label))
+      filtered=drop.tip(tree, intersect(c("Salvator_merianae", "Podarcis_muralis", "Pogona_vitticeps", "Basiliscus_vittatus", "Anolis_carolinensis", "Naja_naja", "Notechis_scutatus", "Pseudonaja_textilis", "Chamaeleo_chamaeleon_recticrista","Chamaeleo_calyptratus"), tree$tip.label))
       rooted=root(filtered, outgroup=c("Struthio_camelus_australis", "Casuarius_casuarius", "Dromaius_novaehollandiae"))
     }
     
