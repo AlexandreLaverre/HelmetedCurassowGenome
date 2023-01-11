@@ -3,7 +3,8 @@
 export nmax=$1
 export step=$2
 export cluster=$3
-export dataset=$4
+export spset=$4
+export dataset=$5
 
 ##########################################################################
 
@@ -16,7 +17,7 @@ do
 
     echo ${start} ${end}
     
-    ./align.coding.sequences.sh ${start} ${end} ${cluster} ${dataset}
+    ./align.coding.sequences.sh ${start} ${end} ${cluster} ${spset} ${dataset}
     
     export start=$[$start+$step]
 done

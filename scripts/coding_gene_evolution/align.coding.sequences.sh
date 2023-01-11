@@ -3,7 +3,8 @@
 export start=$1
 export end=$2
 export cluster=$3
-export dataset=$4
+export spset=$4
+export dataset=$5
 
 ##########################################################################
 
@@ -15,7 +16,7 @@ if [ ${cluster} = "in2p3" ]; then
     export path=/sps/biometr/necsulea/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/coding_gene_evolution/${dataset}
+export pathResults=${path}/results/coding_gene_evolution/${spset}/${dataset}
 export pathScripts=${path}/scripts/coding_gene_evolution
 
 ##########################################################################
