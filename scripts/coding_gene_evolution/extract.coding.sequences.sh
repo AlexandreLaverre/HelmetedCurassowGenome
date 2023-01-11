@@ -19,6 +19,7 @@ fi
 
 export pathCDS=${path}/data/coding_sequences
 export pathGeMoMa=${path}/results/genome_annotation
+export pathTrinity=${path}/results/transcriptome_assembly
 export pathGeneFamilies=${path}/results/gene_families/OrthoFinder/${geneset}/iqtree
 export pathResults=${path}/results/coding_gene_evolution/${geneset}/${dataset}
 export pathScripts=${path}/scripts/coding_gene_evolution
@@ -80,6 +81,17 @@ do
 
     export speciesList=${sp},${speciesList}
     export pathsCDS=${pathGeMoMa}/${sp}/MEGAHIT_RAGOUT/GeMoMa/combined/primary_transcripts/filtered_GeMoMa_annotations_formatted.cds.fa,${pathsCDS}
+done
+
+
+##########################################################################
+
+## chameleons
+
+for sp in Chamaeleo_calyptratus Chamaeleo_chamaeleon_recticrista
+do
+    export speciesList=${sp},${speciesList}
+    export pathsCDS=${pathTrinity}/${sp}/CombinedORFs_RepresentativeORF_CDS.fa,${pathsCDS} 
 done
 
 ##########################################################################
