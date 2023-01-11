@@ -1,7 +1,8 @@
 #!/bin/bash
 
 export cluster=$1
-export dataset=$2
+export geneset=$2
+export dataset=$3
 
 ##########################################################################
 
@@ -18,8 +19,8 @@ fi
 
 export pathCDS=${path}/data/coding_sequences
 export pathGeMoMa=${path}/results/genome_annotation
-export pathGeneFamilies=${path}/results/gene_families/OrthoFinder/iqtree
-export pathResults=${path}/results/coding_gene_evolution/${dataset}
+export pathGeneFamilies=${path}/results/gene_families/OrthoFinder/${geneset}/iqtree
+export pathResults=${path}/results/coding_gene_evolution/${geneset}/${dataset}
 export pathScripts=${path}/scripts/coding_gene_evolution
 
 ##########################################################################
@@ -89,12 +90,25 @@ else
     mkdir ${pathResults}/CDS
 fi
 
-if [ ${dataset} = "all_species" ]; then
-    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
+if [ ${spset} = "without_chameleons" ]; then
+    if [ ${dataset} = "all_species" ]; then
+	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
+    fi
+    
+    if [ ${dataset} = "birds" ]; then
+	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
+    fi
 fi
 
-if [ ${dataset} = "birds" ]; then
-    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
+
+if [ ${spset} = "all_species" ]; then
+    if [ ${dataset} = "all_species" ]; then
+	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
+    fi
+    
+    if [ ${dataset} = "birds" ]; then
+	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
+    fi
 fi
 
 echo "path ortho" ${pathOrthogroups}
