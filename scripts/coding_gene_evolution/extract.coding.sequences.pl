@@ -29,8 +29,11 @@ sub readFasta{
 	    chomp $line;
 	    my $info=substr $line,1;
 	    my @s=split(" ",$info);
+	  
+	    ## replace ":" with "_" because orthofinder does that
 
-	    my $id=$s[0]; ## if we couldn't find protein_id or gene_id, we keep CDS id
+	    my @t=split(":", $s[0]);
+	    my $id=join("_", @t);
 	    
 	    foreach my $item (@s){
 		my $prefix1=substr $item, 0, 5;
