@@ -27,8 +27,8 @@ export redo=0
 if [ ${cluster} = "pbil" ]; then
     echo "#SBATCH --job-name=prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
     echo "#SBATCH --partition=normal" >>${pathScripts}/log/bsub_prank_${start}_${end}
-    echo "#SBATCH --output=${pathScripts}/log/std_out_prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
-    echo "#SBATCH --error=${pathScripts}/log/std_err_prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "#SBATCH --output=${pathScripts}/log/std_out_prank_${start}_${end}_${spset}_${dataset}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "#SBATCH --error=${pathScripts}/log/std_err_prank_${start}_${end}_${spset}_${dataset}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
     echo "#SBATCH --cpus-per-task=1" >>  ${pathScripts}/log/bsub_prank_${start}_${end}
     echo "#SBATCH --time=2:00:00" >>  ${pathScripts}/log/bsub_prank_${start}_${end}
     echo "#SBATCH --mem=20G" >> ${pathScripts}/log/bsub_prank_${start}_${end}
@@ -37,8 +37,10 @@ fi
 
 if [ ${cluster} = "in2p3" ]; then
     echo "#SBATCH --job-name=prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
-    echo "#SBATCH --output=${pathScripts}/log/std_out_prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
-    echo "#SBATCH --error=${pathScripts}/log/std_err_prank_${start}_${end}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "#SBATCH --output=${pathScripts}/log/std_out_prank_${start}_${end}_${spset}_${dataset}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "#SBATCH --error=${pathScripts}/log/std_err_prank_${start}_${end}_${spset}_${dataset}" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "#SBATCH --mem=5G" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+    echo "#SBATCH --time=12:00:00" >> ${pathScripts}/log/bsub_prank_${start}_${end}
     echo "#SBATCH --cpus-per-task=1" >>  ${pathScripts}/log/bsub_prank_${start}_${end}
 fi
 
