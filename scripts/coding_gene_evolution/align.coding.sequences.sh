@@ -48,20 +48,25 @@ for file in `ls ${pathResults}/CDS | grep unaln | sed -n "${start},${end}p;${end
 do
     export prefix=`basename ${file} .unaln.fa`
 
-    if [ -e ${pathResults}/CDS/${prefix}.aln.best.fas ]; then
-	echo "already done"
-    else
-	export redo=1
-	echo "prank -codon -once -f=fasta -t=${pathResults}/CDS/${prefix}.tree -d=${pathResults}/CDS/${file} -o=${pathResults}/CDS/${prefix}.aln" >> ${pathScripts}/log/bsub_prank_${start}_${end}
-    fi
+    export nbsp=`grep -c ">" ${pathResults}/CDS/${prefix}.unaln.fa`
 
-     if [ -e ${pathResults}/CDS/${prefix}.aln.phy ]; then
-	echo "already done"
-     else
+    if [ $nbsp -gt 1 ]; then
+    	if [ -e ${pathResults}/CDS/${prefix}.aln.best.fas ]; then
+	    echo "already done"
+	else
+	    export redo=1
+	    echo "prank -codon -once -f=fasta -t=${pathResults}/CDS/${prefix}.tree -d=${pathResults}/CDS/${file} -o=${pathResults}/CDS/${prefix}.aln" >> ${pathScripts}/log/bsub_prank_${start}_${end}
+	fi
+	
+	if [ -e ${pathResults}/CDS/${prefix}.aln.phy ]; then
+	    echo "already done"
+	else
 	 export redo=1
 	 echo "prank -convert -f=phylips -d=${pathResults}/CDS/${prefix}.aln.best.fas -o=${pathResults}/CDS/${prefix}.aln"  >> ${pathScripts}/log/bsub_prank_${start}_${end}
-     fi
-    
+	fi
+    else
+	echo "only one species for "${prefix}
+    fi
 done
 
 ##########################################################################
