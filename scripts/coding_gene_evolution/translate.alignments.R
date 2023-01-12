@@ -4,11 +4,20 @@ library(seqinr)
 
 ########################################################################
 
-translate_alignment <- function(seq){
-  startpos=seq(from=1, to=length(seq), by=3)
+all.codons=toupper(words(3))
+all.aa=unlist(lapply(all.codons, function(x) translate(s2c(x))))
+all.aa[which(all.aa=="*")]="X"
 
-  protein=unlist(lapply(startpos, function(x) {codon=seq[x:(x+2)]; if(all(codon=="-")){return("-")} else{return(translate(codon))}}))
+all.codons=c(all.codons, "---")
+all.aa=c(all.aa, "-")
+names(all.aa)=all.codons
 
+translate_alignment <- function(sequence){
+
+  startpos=seq(from=1, to=nchar(sequence), by=3)
+  codons=sapply(startpos, function(x) substr(sequence, x, (x+2)))
+  protein=paste(all.aa[codons],collapse="")
+  
   return(protein)
 }
 
@@ -34,17 +43,19 @@ for(spset in c("all_species", "without_chameleons")){
     nbdone=0
     
     for(file in files){
-            
-      aln=read.fasta(paste(pathResults,"CDS/",file,sep=""))
-      
-      proteins=lapply(aln, translate_alignment)
-      
-      write.fasta(proteins, names=names(proteins), file.out=paste(pathResults,"translated_alignments/",file,sep=""))
-      
-      nbdone=nbdone+1
-      
-      if(nbdone%%100==0){
-        print(nbdone)
+      if(!file.exists(paste(pathResults,"translated_alignments/",file,sep=""))){
+        aln=read.fasta(paste(pathResults,"CDS/",file,sep=""), as.string=T)
+              
+        proteins=lapply(aln, translate_alignment)
+        
+        write.fasta(proteins, names=names(proteins), file.out=paste(pathResults,"translated_alignments/",file,sep=""), as.string=T)
+        
+        nbdone=nbdone+1
+
+        if(nbdone%%100==0){
+          print(nbdone)
+          stop()
+        }
       }
     }
   }
