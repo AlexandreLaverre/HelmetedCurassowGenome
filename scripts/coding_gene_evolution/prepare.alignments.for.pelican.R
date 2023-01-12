@@ -29,12 +29,12 @@ for(spset in c("all_species", "without_chameleons")){
         if(dir.exists(pathOutput)){
             print("path output already there")
         } else{
-            system(paste("mkdr ",pathOutput))
+            system(paste("mkdir ",pathOutput))
         }
 
         ###########################################################################
 
-        names=read.table(paste(pathAnnot, "GeneNames_Ensembl103.txt", sep=""), h=T, stringsAsFactors=F)
+        names=read.table(paste(pathAnnot, "GeneNames_Ensembl103.txt", sep=""), h=T, stringsAsFactors=F, sep="\t")
         rownames(names)=names[,1]
 
         ###########################################################################
@@ -57,19 +57,26 @@ for(spset in c("all_species", "without_chameleons")){
 
             if(file.exists(pathIn)){
                 id.chicken=orthogroups[i,"Gallus_gallus"]
-                id.chicken=unlist(strsplit(".", id.chicken))[1]
 
-                if(id.chicken%in%rownames(names)){
-                    name.chicken=names[id.chicken, 2]
+                if(id.chicken!=""){
+                    id.chicken=unlist(strsplit(id.chicken, split="\\."))[1]
 
-                    if(length(grep("/",name.chicken))!=0){
-                        name.chicken=str_replace(name.chicken, '/', '_')
-                    }
+                    print(id.chicken)
 
-                    if(!is.na(name.chicken) & name.chicken!=""){
-                        system(paste("cp ",pathIn, " ",pathOutput, "/",id.chicken,"_",name.chicken,".fa",sep=""))
+                    if(id.chicken%in%rownames(names)){
+                        name.chicken=names[id.chicken, 2]
+
+                        if(length(grep("/",name.chicken))!=0){
+                            name.chicken=str_replace(name.chicken, '/', '_')
+                        }
+
+                        if(!is.na(name.chicken) & name.chicken!=""){
+                            system(paste("cp ",pathIn, " ",pathOutput, "/",id.chicken,"_",name.chicken,".fa",sep=""))
+                        } else{
+                            system(paste("cp ",pathIn, " ",pathOutput, "/",id.chicken,".fa",sep=""))
+                        }
                     } else{
-                        system(paste("cp ",pathIn, " ",pathOutput, "/",id.chicken,".fa",sep=""))
+                        system(paste("cp ",pathIn, " ",pathOutput, "/",hog,"_",og,".fa",sep=""))
                     }
                 } else{
                     system(paste("cp ",pathIn, " ",pathOutput, "/",hog,"_",og,".fa",sep=""))
