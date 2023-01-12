@@ -54,7 +54,6 @@ for(spset in c("all_species", "without_chameleons")){
 
         if(nbdone%%100==0){
           print(nbdone)
-          stop()
         }
       }
     }
