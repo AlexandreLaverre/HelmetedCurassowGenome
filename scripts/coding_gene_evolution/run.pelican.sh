@@ -30,11 +30,11 @@ export OMP_NUM_THREADS=1
 
 ## annotate tree
 
-singularity exec -B ${path} ${pathTools}/pelican.sif pelican tree-parsimony-annotation --output ${pathResults}/pelican_annotated_tree_${phenannot}.txt --tree ${pathResults}/species_tree_nobootstrap.txt --annotation ${pathResults}/phenotype_data_${phenannot}.txt
+singularity exec -B ${path} ${pathTools}/pelican.sif pelican tree-annotation parsimony --output ${pathResults}/pelican_annotated_tree_${phenannot}.txt --tree ${pathResults}/species_tree_nobootstrap.txt --annotation ${pathResults}/phenotype_data_${phenannot}.txt
 
 ##########################################################################
 
-singularity exec -B ${path} ${pathTools}/pelican.sif pelican scan --multinomial-filter 0.001 --threads ${threads} --translate --tree ${pathResults}/pelican_annotated_tree_${phenannot}.txt --alignment ${pathResults}/data_for_pelican --output ${pathResults}/pelican_output_${phenannot} --progress-bar
+singularity exec -B ${path} ${pathTools}/pelican.sif pelican scan discrete --multinomial-filter 0.001 --threads ${threads} --alphabet=nuc --name=${phenannot} --tree ${pathResults}/pelican_annotated_tree_${phenannot}.txt --alignment ${pathResults}/data_for_pelican --output ${pathResults}/pelican_output_${phenannot} --progress-bar
 
 ##########################################################################
 
