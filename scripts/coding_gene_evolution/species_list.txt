@@ -32,3 +32,7 @@ Pseudonaja_textilis	Ensembl
 Salvator_merianae	Ensembl
 Naja_naja	Ensembl
 Notechis_scutatus	Ensembl
+Chamaeleo_chamaeleon_recticrista	Trinity
+Chamaeleo_calyptratus	Trinity
+Basiliscus_vittatus	MEGAHIT_RAGOUT
+Pauxi_pauxi	MEGAHIT_RAGOUT
