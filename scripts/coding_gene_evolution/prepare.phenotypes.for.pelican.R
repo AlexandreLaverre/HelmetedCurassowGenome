@@ -35,15 +35,15 @@ for(spset in c("all_species", "without_chameleons")){
             write.tree(full.tree, paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))
         }
 
-        for(phenotype in c("all_species", "by_category")){
+        for(phenotype in c("general", "by_category")){
 
             all.species=full.tree$tip.label
 
             phenotype.data=data.frame("species"=all.species, "trait"=rep(NA, length(all.species)))
-            phenotype.data$trait[which(!(phenotype.data$species%in%helmeted))]="non-helmeted"
+            phenotype.data$trait[which(!(phenotype.data$species%in%protuberance))]="no_protuberance"
 
             if(phenotype == "general"){
-                phenotype.data$trait[which(phenotype.data$species%in%helmeted)]="helmeted"
+                phenotype.data$trait[which(phenotype.data$species%in%protuberance)]="protuberance"
             }
 
             if(phenotype == "by_category"){
