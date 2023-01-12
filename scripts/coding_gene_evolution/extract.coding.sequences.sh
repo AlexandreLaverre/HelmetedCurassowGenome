@@ -102,26 +102,19 @@ else
     mkdir ${pathResults}/CDS
 fi
 
-if [ ${geneset} = "without_chameleons" ]; then
-    if [ ${dataset} = "all_species" ]; then
-	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
-    fi
-    
-    if [ ${dataset} = "birds" ]; then
-	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
-    fi
+
+if [ ${dataset} = "all_species" ]; then
+    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
 fi
 
-
-if [ ${geneset} = "all_species" ]; then
-    if [ ${dataset} = "all_species" ]; then
-	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N0.tsv`
-    fi
-    
-    if [ ${dataset} = "birds" ]; then
-	export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
-    fi
+if [ ${dataset} = "birds" ]; then
+    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N2.tsv`
 fi
+
+if [ ${dataset} = "squamates" ]; then
+    export pathOrthogroups=`ls ${pathGeneFamilies}/*/Phylogenetic_Hierarchical_Orthogroups/N1.tsv`
+fi
+
 
 echo "path ortho" ${pathOrthogroups}
 

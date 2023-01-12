@@ -9,7 +9,7 @@ library(ape)
 #########################################################################
 
 for(spset in c("all_species", "without_chameleons")){
-  for(dataset in c("all_species", "birds")){
+  for(dataset in c("all_species", "birds", "squamates")){
     
     full.tree=read.tree(paste(pathResults,spset,"/", dataset, "/species_tree.txt",sep=""))
     full.tree$node.label <- NULL
