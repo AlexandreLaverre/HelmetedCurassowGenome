@@ -15,13 +15,13 @@ birds=c("Struthio_camelus_australis", "Casuarius_casuarius", "Dromaius_novaeholl
 protuberance=c("Anseranas_semipalmata", "Anser_cygnoides", "Numida_meleagris", "Casuarius_casuarius", "Balearica_regulorum", "Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi", "Basiliscus_vittatus", "Chamaeleo_calyptratus")
 
 ## Balearica has a helmet and a hump, it is in two categories
-## Casuarius has a single helmet that overlaps with beak and with top of skull
+## Casuarius has a single helmet that overlaps with beak and with top of skull, developmental origin different from Pauxi & Bucerotidae
 
-beak_and_skull_top=c("Casuarius_casuarius")
-upper_beak=c("Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi")
-dorsal_neurocranium=c("Numida_meleagris",  "Anseranas_semipalmata", "Balearica_regulorum")
-frontal_area=c("Anser_cygnoides", "Balearica_regulorum")
-dorsal_area=c("Basiliscus_vittatus", "Chamaeleo_calyptratus")
+beak_and_skull_top=c("Casuarius_casuarius") ## MES_NAS
+upper_beak=c("Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi") ## PMX
+dorsal_neurocranium=c("Numida_meleagris",  "Anseranas_semipalmata", "Balearica_regulorum") ## FRO
+frontal_area=c("Anser_cygnoides", "Balearica_regulorum") ## PFNA
+dorsal_area=c("Basiliscus_vittatus", "Chamaeleo_calyptratus") ## ?
 
 ###########################################################################
 
