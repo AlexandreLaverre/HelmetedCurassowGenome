@@ -3,7 +3,7 @@
 
 library(stringr)
 
-pathAnnot="../../data/ensembl_annotations/Chicken/"
+pathAnnot="../../data/ensembl_annotations/"
 
 ###########################################################################
 
@@ -17,7 +17,7 @@ for(spset in c("all_species", "without_chameleons")){
         pathOrthoGroups="../../results/gene_families/OrthoFinder/without_chameleons/iqtree/Results_Sep21/Phylogenetic_Hierarchical_Orthogroups/"
     }
 
-    for(dataset in c("birds", "all_species")){
+    for(dataset in c("birds", "all_species", "squamates")){
 
         pathResults=paste("../../results/coding_gene_evolution/",spset, "/", dataset,sep="")
 
@@ -34,17 +34,28 @@ for(spset in c("all_species", "without_chameleons")){
 
         ###########################################################################
 
-        names=read.table(paste(pathAnnot, "GeneNames_Ensembl103.txt", sep=""), h=T, stringsAsFactors=F, sep="\t")
-        rownames(names)=names[,1]
-
-        ###########################################################################
-
         if(dataset == "all_species"){
             orthogroups=read.table(paste(pathOrthoGroups, "N0.tsv",sep=""), h=T, stringsAsFactors=F, sep="\t")
+            refsp="Gallus_gallus"
+
+            names=read.table(paste(pathAnnot, "Chicken/GeneNames_Ensembl103.txt", sep=""), h=T, stringsAsFactors=F, sep="\t")
+            rownames(names)=names[,1]
         }
 
         if(dataset == "birds"){
             orthogroups=read.table(paste(pathOrthoGroups, "N2.tsv",sep=""), h=T, stringsAsFactors=F, sep="\t")
+            refsp="Gallus_gallus"
+
+            names=read.table(paste(pathAnnot, "Chicken/GeneNames_Ensembl103.txt", sep=""), h=T, stringsAsFactors=F, sep="\t")
+            rownames(names)=names[,1]
+        }
+
+        if(dataset == "squamates"){
+            orthogroups=read.table(paste(pathOrthoGroups, "N1.tsv",sep=""), h=T, stringsAsFactors=F, sep="\t")
+            refsp="Anolis_carolinensis"
+
+            names=read.table(paste(pathAnnot, "Anolis_carolinensis/GeneNames_Ensembl103.txt", sep=""), h=T, stringsAsFactors=F, sep="\t")
+            rownames(names)=names[,1]
         }
 
         ###########################################################################
@@ -56,24 +67,24 @@ for(spset in c("all_species", "without_chameleons")){
             pathIn=paste(pathCDS, hog,"_",og,".aln.best.fas",sep="")
 
             if(file.exists(pathIn)){
-                id.chicken=orthogroups[i,"Gallus_gallus"]
+                id.ref=orthogroups[i,refsp]
 
-                if(id.chicken!=""){
-                    id.chicken=unlist(strsplit(id.chicken, split="\\."))[1]
+                if(!is.na(id.ref) & id.ref!=""){
+                    id.ref=unlist(strsplit(id.ref, split="\\."))[1]
 
-                    print(id.chicken)
+                    print(id.ref)
 
-                    if(id.chicken%in%rownames(names)){
-                        name.chicken=names[id.chicken, 2]
+                    if(id.ref%in%rownames(names)){
+                        name.ref=names[id.ref, 2]
 
-                        if(length(grep("/",name.chicken))!=0){
-                            name.chicken=str_replace(name.chicken, '/', '_')
+                        if(length(grep("/",name.ref))!=0){
+                            name.ref=str_replace(name.ref, '/', '_')
                         }
 
-                        if(!is.na(name.chicken) & name.chicken!=""){
-                            system(paste("cp ",pathIn, " ",pathOutput, "/",id.chicken,"_",name.chicken,".fa",sep=""))
+                        if(!is.na(name.ref) & name.ref!=""){
+                            system(paste("cp ",pathIn, " ",pathOutput, "/",id.ref,"_",name.ref,".fa",sep=""))
                         } else{
-                            system(paste("cp ",pathIn, " ",pathOutput, "/",id.chicken,".fa",sep=""))
+                            system(paste("cp ",pathIn, " ",pathOutput, "/",id.ref,".fa",sep=""))
                         }
                     } else{
                         system(paste("cp ",pathIn, " ",pathOutput, "/",hog,"_",og,".fa",sep=""))
