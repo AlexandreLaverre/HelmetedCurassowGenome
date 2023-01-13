@@ -7,7 +7,7 @@ pathAnnot="../../data/ensembl_annotations/"
 
 ###########################################################################
 
-for(spset in c("all_species", "without_chameleons")){
+for(spset in c("all_species")){ ## other option is "without_chameleons"
 
     if(spset=="all_species"){
         pathOrthoGroups="../../results/gene_families/OrthoFinder/all_species/iqtree/Results_Jan05/Phylogenetic_Hierarchical_Orthogroups/"
