@@ -1,0 +1,237 @@
+#! /usr/bin/env python
+
+# Execute via run_Snakemake.sh or with following command :
+# snakemake -j 100 --config RefSp=${RefSp} GenomeName=${GenomeName} Prefix=${Prefix} InterestFile=${InterestFile} pathHAL=${pathHAL} NbPart=${NbPart} Cluster=${Cluster} --rerun-incomplete --cluster "sbatch -p normal -N 1 -o /beegfs/data/alaverre/Regulatory_landscape/test/result/${sp_origin}2other/${sp_origin}2${sp_target}/log_files/slurm.out_${data} -e /beegfs/data/alaverre/Regulatory_landscape/test/result/h${sp_origin}2${sp_target}/log_files/slurm.err_${data} -c {params.threads} --mem={params.mem} -t {params.time}"
+
+SpName = config["SpName"]
+RefSp = config["RefSp"]
+Prefix = config["Prefix"]
+InterestFile = config["InterestFile"]
+pathHAL = config["pathHAL"]
+minAlign = float(config["minAlign"])
+NbPart = int(config["NbPart"])
+Cluster = config["Cluster"]
+
+###################################################################################################
+
+PathPython = "/beegfs/data/soft/bioconda/bin/python"
+PathR = "/beegfs/data/soft/R-3.5.2/bin/Rscript"
+
+if Cluster == "cloud":
+    path = "/mnt/mydatalocal/IPLOSS"
+    localrules: all, SplitBed, Hal2Maf, gzip, MafByElem, DropDuplicates, Maf2Phylip, DropShorts
+                ,KeepRepresentative, PruneTrees, phyML, CombineTrees
+else:
+    path = "/beegfs/data/alaverre/IPLOSS"
+    #localrules: all , SplitBed, KeepRepresentative, CombineTrees
+    localrules: all, SplitBed, Hal2Maf, gzip, MafByElem, DropDuplicates, Maf2Phylip, DropShorts, KeepRepresentative, PruneTrees, phyML, CombineTrees
+
+pathScripts = path + "/scripts/conserved_element_evolution"
+pathInputs = path + "/results/NoncodingElements_Evolution/" + SpName 
+pathResults = pathInputs + "/" + Prefix
+
+SpeciesTree = pathInputs + "/SpeciesTree.nh"
+Species = open(pathInputs + "/Genomes.txt", "r")
+Species_list = Species.readline().strip('\n').split(",")
+Species_list.remove(str(RefSp))
+TargetGenomes = ','.join(Species_list)
+
+workdir: pathResults
+
+###################################################################################################
+rule all:
+    input :
+        expand(pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_CombineTrees_done", ID_part=range(100,(100+NbPart))) #pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_CombineTrees_done"
+
+rule SplitBed:
+    message: "Make several lists of pairs to parallelize from the Interest BED File"
+    input: InterestFile = InterestFile
+    output: BedParts = pathResults+ "/BEDs/" + Prefix + "_part{ID_part}.bed"
+    shell:
+        """
+        mkdir -p {pathResults}/BEDs/
+        split -d -n l/{NbPart} --additional-suffix=.bed {input.InterestFile} {pathResults}/BEDs/{Prefix}_part1
+        touch {output.BedParts}
+        """
+
+rule Hal2Maf:
+    message: "Extract large MAF from HAL alignment"
+    input: BedParts = pathResults+ "/BEDs/" + Prefix + "_part{ID_part}.bed"
+    output: 
+        MafParts = pathResults+ "/MAFs/Parts/" + Prefix + "_part{ID_part}.maf",
+        Hal2MafDone = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_hal2maf_done"
+    params: time = "20:00:00", mem = "10G", threads = "1"
+    shell:
+        """
+        mkdir -p {pathResults}/MAFs/Parts/
+        hal2maf --refGenome {RefSp} --refTargets {input.BedParts} --targetGenomes {TargetGenomes} --noDupes {pathHAL} {output.MafParts}
+	touch {output.Hal2MafDone}
+        """
+
+rule gzip:
+    input: 
+        MafParts = pathResults+ "/MAFs/Parts/" + Prefix + "_part{ID_part}.maf",
+        Hal2MafDone = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_hal2maf_done"
+    output: MafParts = pathResults+ "/MAFs/Parts/" + Prefix + "_part{ID_part}.maf.gz"
+    params: time = "1:00:00", mem = "1G", threads = "1"
+    shell: """gzip {input.MafParts}"""
+
+
+rule MafByElem:
+    message: "Extract MAF for each element and discard element without alignment"
+    input:
+        BedParts = pathResults + "/BEDs/" + Prefix + "_part{ID_part}.bed",
+        MafParts = pathResults+ "/MAFs/Parts/" + Prefix + "_part{ID_part}.maf.gz"
+    output:
+        MafByElemFolder = directory(pathResults+ "/MAFs/ByElem/" + Prefix + "_part{ID_part}/"),
+        Done = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_maf_by_elem_done"
+    params: time = "20:00:00", mem = "5G", threads = "1"
+    shell:
+        """
+        mkdir -p {output.MafByElemFolder}
+        mafsInRegion {input.BedParts} -outDir {output.MafByElemFolder} {input.MafParts}
+        for file in `ls {output.MafByElemFolder}`
+        do
+        export nblines=$(wc -l {output.MafByElemFolder}/${{file}} | cut -f 1 -d " ")
+        if [ ${{nblines}} = 1 ]; then
+        rm ${{file}}
+        echo ${{file}} >> {output.MafByElemFolder}/no_alignment.txt
+        fi
+        done
+        touch {output.Done}
+        """
+
+rule DropDuplicates:
+    message: "Discard MAF with duplicates"
+    input:
+        MafByElemFolder = pathResults+ "/MAFs/ByElem/" + Prefix + "_part{ID_part}/",
+        MafByElemDone = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_maf_by_elem_done"
+    output:
+        MafNoDupes = directory(pathResults + "/MAFs/NoDupes/" + Prefix + "_part{ID_part}/"),
+        Done = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_drop_duplicates_done"
+    params: time = "5:00:00", mem = "5G", threads = "1"
+    shell:
+        """
+        mkdir -p {output.MafNoDupes}
+        mkdir -p {pathResults}/Count_by_species/
+        {PathPython} {pathScripts}/drop.duplicated.maf.py {pathResults} {input.MafByElemFolder} {Prefix}
+        touch {output.Done}
+        """
+
+rule Maf2Phylip:
+    message: "Convert MAF to Phylip"
+    input:
+        MafNoDupes = pathResults + "/MAFs/NoDupes/" + Prefix + "_part{ID_part}/",
+        DropDuplicateDone = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_drop_duplicates_done"
+    output:
+        PhylipFolder = directory(pathResults + "/PHYLIPs/NoDupes/" + Prefix + "_part{ID_part}/"),
+        Done = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_maf2phylip_done"
+    params: time = "5:00:00", mem = "5G", threads = "1"
+    shell:
+        """
+        mkdir -p {output.PhylipFolder}
+        for MAF in `ls {input.MafNoDupes}` 
+        do
+        export prefix="${{MAF%.*}}"
+        msa_view --missing-as-indels -i MAF -o PHYLIP {input.MafNoDupes}/${{MAF}} > {output.PhylipFolder}/${{prefix}}.phylip
+        done
+        touch {output.Done} 
+        """
+
+rule DropShorts:
+    message: "Discard sequences with an alignment size lower than {minAlign} %"
+    input:
+        PhylipFolder = pathResults + "/PHYLIPs/NoDupes/" + Prefix + "_part{ID_part}/",
+        MAF2PhylipDone = pathScripts+ "/log/" + SpName + "_" + Prefix + "/part{ID_part}_maf2phylip_done"
+    output:
+        PhylipNoShorts = directory(pathResults + "/PHYLIPs/NoShorts/" + Prefix + "_part{ID_part}/"),
+        CountSeq= pathResults + "/Count_by_species/" + Prefix + "_part{ID_part}_FilteredPhylip.txt",
+        Done = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_DropShorts_done"
+    params: time="5:00:00", mem="5G", threads="1"
+    shell:
+        """
+        mkdir -p {output.PhylipNoShorts}
+        {PathPython} {pathScripts}/drop.short.sequences.py {pathResults} {input.PhylipFolder} {Prefix} {minAlign}
+        touch {output.CountSeq}
+        touch {output.Done} 
+        """
+
+rule KeepRepresentative:
+    message:
+        "Keep sequences with a sufficient number of representative species by group. "
+        "Return a file listing all corresponding PHYLIP"
+    input:
+        CountSeq = pathResults + "/Count_by_species/" + Prefix + "_part{ID_part}_FilteredPhylip.txt",
+        DropShortsDone = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_DropShorts_done"
+    output:
+        FilteredPhylipList = pathResults + "/PHYLIPs/AllFilteredLists/" + Prefix + "_part{ID_part}.txt"
+    shell:
+        """
+        mkdir -p {pathResults}/PHYLIPs/AllFilteredLists/
+        {PathR} {pathScripts}/keep.representative.R {input.CountSeq} {output.FilteredPhylipList}
+        """
+
+rule PruneTrees:
+    message: "Prune the Species Tree to match the corresponding remaining species in each alignment"
+    input:
+        FilteredPhylipList=pathResults + "/PHYLIPs/AllFilteredLists/" + Prefix + "_part{ID_part}.txt",
+        FilteredPhylip= pathResults + "/PHYLIPs/NoShorts/" + Prefix + "_part{ID_part}/"
+    output:
+        TreeByElem = directory(pathResults + "/SpeciesTrees/" + Prefix + "_part{ID_part}/"),
+        Done = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_PruneTrees_done"
+    params: time = "20:00:00", mem = "1G", threads = "1"
+    shell:
+        """
+        mkdir -p {output.TreeByElem}
+        for ID in `cat {input.FilteredPhylipList}`
+        do
+        export species=`cut -f 1 -d " " {input.FilteredPhylip}/${{ID}}.rphylip | grep "_" | tr "\n" " " `
+        gotree prune -r -i {SpeciesTree} -o {output.TreeByElem}/${{ID}}.nh ${{species}}
+        done
+        touch {output.Done} 
+        """
+
+rule phyML:
+    message: "Run phyML for filtered phylip and corresponding species tree."
+    input:
+        FilteredPhylipList=pathResults + "/PHYLIPs/AllFilteredLists/" + Prefix + "_part{ID_part}.txt",
+        FilteredPhylip= pathResults + "/PHYLIPs/NoShorts/" + Prefix + "_part{ID_part}/",
+        TreeByElem = pathResults + "/SpeciesTrees/" + Prefix + "_part{ID_part}/",
+        PruneTreesDone = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_PruneTrees_done"
+    output:
+        PathphyML = directory(pathResults + "/phyML/" + Prefix + "_part{ID_part}/"),
+        phyMLOutput = pathScripts + "/log/phyML_output/" + Prefix + "_part{ID_part}.txt",
+        Done = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_phyML_done"
+    params: time="48:00:00",mem="5G",threads="1"
+    shell:
+        """
+        mkdir -p {output.PathphyML}
+        mkdir -p {pathScripts}/log/phyML_output/
+        for ID in `cat {input.FilteredPhylipList}`
+        do
+        phyml --quiet --model GTR -o lr --input {input.FilteredPhylip}/${{ID}}.rphylip  --inputtree {input.TreeByElem}/${{ID}}.nh &> {output.phyMLOutput}
+        mv {input.FilteredPhylip}/${{ID}}*phyml* {output.PathphyML}
+        done
+        touch {output.Done} 
+        """
+
+rule CombineTrees:
+    message: "Merge all phyML resulting tree for RERconverge input"
+    input:
+        PathphyML = pathResults + "/phyML/" + Prefix + "_part{ID_part}/",
+        phyMLDone = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_phyML_done"
+    output:
+        CombinedTrees = pathResults + "/phyML/" + Prefix + "_part{ID_part}_CombineTrees.txt",
+        Done = pathScripts + "/log/" + SpName + "_" + Prefix + "/part{ID_part}_CombineTrees_done"
+    shell:
+        """
+        touch {output.CombinedTrees}
+        for file in `ls {input.PathphyML}/*tree*`
+        do
+	    export ID=$(basename ${{file%.rphylip*}})
+	    export tree=`cat ${{file}}`
+	    echo -e ${{ID}}"\t"${{tree}} >> {output.CombinedTrees}
+        done
+        touch {output.Done} 
+        """
+
