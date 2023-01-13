@@ -35,7 +35,7 @@ for(spset in c("all_species", "without_chameleons")){
             write.tree(full.tree, paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))
         }
 
-        for(phenotype in c("general", "by_category")){
+        for(phenotype in c("general", "upper_beak", "dorsal_neurocranium", "frontal_area", "dorsal_area")){
 
             all.species=full.tree$tip.label
 
@@ -44,13 +44,10 @@ for(spset in c("all_species", "without_chameleons")){
 
             if(phenotype == "general"){
                 phenotype.data$trait[which(phenotype.data$species%in%protuberance)]="protuberance"
-            }
-
-            if(phenotype == "by_category"){
-                phenotype.data$trait[which(phenotype.data$species%in%upper_beak)]="upper_beak"
-                phenotype.data$trait[which(phenotype.data$species%in%dorsal_neurocranium)]="dorsal_neurocranium"
-                phenotype.data$trait[which(phenotype.data$species%in%frontal_area)]="frontal_area"
-                phenotype.data$trait[which(phenotype.data$species%in%dorsal_area)]="dorsal_area"
+            } else{
+                splist=get(phenotype, envir=globalenv())
+                phenotype.data$trait[which(phenotype.data$species%in%splist)]=phenotype
+                phenotype.data$trait[which(phenotype.data$species%in%setdiff(protuberance, splist))]="other_protuberance"
             }
 
             write.table(phenotype.data, file=paste(pathResults, "/phenotype_data_",phenotype,".txt",sep=""), row.names=F, col.names=T, sep="\t", quote=F)
