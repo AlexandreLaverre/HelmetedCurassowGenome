@@ -30,7 +30,11 @@ export OMP_NUM_THREADS=1
 
 ## annotate tree
 
-singularity exec -B ${path} ${pathTools}/pelican.sif pelican tree-annotation parsimony --output ${pathResults}/pelican_annotated_tree_${phenannot}.txt --tree ${pathResults}/species_tree_nobootstrap.txt --annotation ${pathResults}/phenotype_data_${phenannot}.txt
+if [ -e ${pathResults}/phenotype_data_${phenannot}.txt ]; then
+    echo "annotated tree already there"
+else
+    singularity exec -B ${path} ${pathTools}/pelican.sif pelican tree-annotation parsimony --output ${pathResults}/pelican_annotated_tree_${phenannot}.txt --tree ${pathResults}/species_tree_nobootstrap.txt --annotation ${pathResults}/phenotype_data_${phenannot}.txt
+fi
 
 ##########################################################################
 
