@@ -15,8 +15,8 @@ birds=c("Struthio_camelus_australis", "Casuarius_casuarius", "Dromaius_novaeholl
 protuberance=c("Anseranas_semipalmata", "Anser_cygnoides", "Numida_meleagris", "Casuarius_casuarius", "Balearica_regulorum", "Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi", "Basiliscus_vittatus", "Chamaeleo_calyptratus")
 
 upper_beak=c("Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi")
-dorsal_neurocranium=c("Numida_meleagris", "Casuarius_casuarius")
-frontal_area=c("Anseranas_semipalmata", "Anser_cygnoides", "Balearica_regulorum")
+dorsal_neurocranium=c("Numida_meleagris", "Casuarius_casuarius", "Anseranas_semipalmata", "Balearica_regulorum")
+frontal_area=c("Anser_cygnoides", "Balearica_regulorum")
 dorsal_area=c("Basiliscus_vittatus", "Chamaeleo_calyptratus")
 
 ###########################################################################
