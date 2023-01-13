@@ -22,7 +22,7 @@ export pathGeMoMa=${path}/results/genome_annotation
 export pathTrinity=${path}/results/transcriptome_assembly
 export pathGeneFamilies=${path}/results/gene_families/OrthoFinder/${geneset}/iqtree
 export pathResults=${path}/results/coding_gene_evolution/${geneset}/${dataset}
-export pathScripts=${path}/scripts/coding_gene_evolution
+export pathScripts=${path}/scripts/coding_sequence_alignment
 
 ##########################################################################
 

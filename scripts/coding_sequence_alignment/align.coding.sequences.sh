@@ -17,7 +17,7 @@ if [ ${cluster} = "in2p3" ]; then
 fi
 
 export pathResults=${path}/results/coding_gene_evolution/${spset}/${dataset}
-export pathScripts=${path}/scripts/coding_gene_evolution
+export pathScripts=${path}/scripts/coding_sequence_alignment
 
 ##########################################################################
 
