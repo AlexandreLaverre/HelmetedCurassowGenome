@@ -32,11 +32,11 @@ with open(IDList, 'r') as f:
 
         # Keep sequences with low number of GAP
         for seq in align:
-            if seq.count("-")/align_length < float(minLength):
-                ids.append(id)
-                seqs.append(seq)
+            if seq.seq.count("-")/align_length < float(minLength):
+                ids.append(seq.id)
+                seqs.append(seq.seq)
 
-        records = (SeqRecord(Seq(s), id=i) for (i, s) in zip(ids, seqs))
+        records = (SeqRecord(s, id=i) for (i, s) in zip(ids, seqs))
 
         if len(ids) > 1:
             with open(pathFiltered + ID + ".rphylip", "w") as OutFile:
