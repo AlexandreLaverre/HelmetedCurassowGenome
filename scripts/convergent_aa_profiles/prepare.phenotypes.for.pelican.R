@@ -21,7 +21,7 @@ dorsal_area=c("Basiliscus_vittatus", "Chamaeleo_calyptratus")
 
 ###########################################################################
 
-for(spset in c("all_species", "without_chameleons")){
+for(spset in c("all_species")){ ## other option is "without_chameleons"
     for(dataset in c("all_species", "birds", "squamates")){
 
         pathResults=paste("../../results/coding_gene_evolution/",spset, "/",dataset, sep="")
