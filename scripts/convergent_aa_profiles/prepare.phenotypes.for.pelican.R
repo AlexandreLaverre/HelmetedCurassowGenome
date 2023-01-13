@@ -14,8 +14,12 @@ birds=c("Struthio_camelus_australis", "Casuarius_casuarius", "Dromaius_novaeholl
 
 protuberance=c("Anseranas_semipalmata", "Anser_cygnoides", "Numida_meleagris", "Casuarius_casuarius", "Balearica_regulorum", "Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi", "Basiliscus_vittatus", "Chamaeleo_calyptratus")
 
+## Balearica has a helmet and a hump, it is in two categories
+## Casuarius has a single helmet that overlaps with beak and with top of skull
+
+beak_and_skull_top=c("Casuarius_casuarius")
 upper_beak=c("Bucorvus_abyssinicus", "Buceros_rhinoceros", "Pauxi_pauxi")
-dorsal_neurocranium=c("Numida_meleagris", "Casuarius_casuarius", "Anseranas_semipalmata", "Balearica_regulorum")
+dorsal_neurocranium=c("Numida_meleagris",  "Anseranas_semipalmata", "Balearica_regulorum")
 frontal_area=c("Anser_cygnoides", "Balearica_regulorum")
 dorsal_area=c("Basiliscus_vittatus", "Chamaeleo_calyptratus")
 
@@ -35,7 +39,7 @@ for(spset in c("all_species")){ ## other option is "without_chameleons"
             write.tree(full.tree, paste(pathResults, "/species_tree_nobootstrap.txt",sep=""))
         }
 
-        for(phenotype in c("general", "upper_beak", "dorsal_neurocranium", "frontal_area", "dorsal_area")){
+        for(phenotype in c("general", "upper_beak", "dorsal_neurocranium", "frontal_area", "dorsal_area", "beak_and_skull_top")){
 
             all.species=full.tree$tip.label
 
