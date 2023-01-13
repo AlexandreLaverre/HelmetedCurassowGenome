@@ -13,10 +13,11 @@ all.aa=c(all.aa, "-")
 names(all.aa)=all.codons
 
 translate_alignment <- function(sequence){
-
-  startpos=seq(from=1, to=nchar(sequence), by=3)
-  codons=sapply(startpos, function(x) substr(sequence, x, (x+2)))
-  protein=paste(all.aa[codons],collapse="")
+    startpos=seq(from=1, to=nchar(sequence), by=3)
+    codons=sapply(startpos, function(x) substr(sequence, x, (x+2)))
+    aa=all.aa[codons]
+    aa[which(is.na(aa))]="X"
+    protein=paste(aa,collapse="")
 
   return(protein)
 }
@@ -47,6 +48,12 @@ for(spset in c("all_species", "without_chameleons")){
         aln=read.fasta(paste(pathResults,"CDS/",file,sep=""), as.string=T, forceDNAtolower=FALSE)
 
         proteins=lapply(aln, translate_alignment)
+
+        len=unlist(lapply(proteins, nchar))
+
+        if(length(unique(len))>1){
+            stop("alignments do not have the same length")
+        }
 
         write.fasta(proteins, names=names(proteins), file.out=paste(pathResults,"translated_alignments/",file,sep=""), as.string=T)
 
