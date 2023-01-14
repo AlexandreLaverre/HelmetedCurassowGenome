@@ -24,9 +24,6 @@ with open(IDList, 'r') as f:
         ids = []
         seqs = []
 
-        print(ID)
-        print(PathAlign + ID + ".aln.best.fas")
-
         align = AlignIO.read(PathAlign + ID + ".aln.best.fas", "fasta")
         align_length = align.get_alignment_length()
 
