@@ -69,6 +69,7 @@ rule PruneTrees:
         FilteredAlign= pathResults + "/FilteredAlign/" + Prefix + "_part{ID_part}/"
     output:
         TreeByElem = directory(pathResults + "/SpeciesTrees/" + Prefix + "_part{ID_part}/"),
+        Error = pathScripts + "/log/" + Prefix + "/part{ID_part}_PruneTrees_error.txt",
         Done = pathScripts + "/log/" + Prefix + "/part{ID_part}_PruneTrees_done"
     params: time = "20:00:00", mem = "1G", threads = "1"
     shell:
@@ -77,8 +78,13 @@ rule PruneTrees:
         for ID in `cat {input.IDList}`
         do
         export species=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" | tr "\n" " " `
-        export len=${{#species[@]}}
+        export len=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" -c `
+        if (( ${{len}} < 4 ))
+        then
+        echo ${{ID}} >> {output.Error}
+        else
         gotree prune -r -i {SpeciesTree} -o {output.TreeByElem}/${{ID}}.nh ${{species}}
+        fi
         done
         touch {output.Done} 
         """
