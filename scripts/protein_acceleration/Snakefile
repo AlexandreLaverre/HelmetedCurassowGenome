@@ -79,9 +79,13 @@ rule PruneTrees:
         do
         export species=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" | tr "\n" " " `
         export len=${{#species[@]}}
+<<<<<<< HEAD
         if (( ${{len}} < 4 ))
         then
         echo ${{ID}} >> {output.Error}
+=======
+        if (( ${{len}} < 4 )); then echo ${{ID}} >> {output.Error}
+>>>>>>> bd8f8cb (Exception for alignment with less than 4 species)
         else
         gotree prune -r -i {SpeciesTree} -o {output.TreeByElem}/${{ID}}.nh ${{species}}
         fi
