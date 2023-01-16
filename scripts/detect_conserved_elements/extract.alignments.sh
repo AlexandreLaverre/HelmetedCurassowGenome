@@ -37,7 +37,7 @@ fi
 if [ ${dataset} = "protuberance" ]; then
     export targetGenomes="Casuarius_casuarius,Numida_meleagris,Anseranas_semipalmata,Anser_cygnoid,Balearica_regulorum,Bucorvus_abyssinicus,Buceros_rhinoceros,Pauxi_pauxi"
 
-    export refGenome="Numida_meleagris"
+    export refGenome="Pauxi_pauxi"
 fi
 
 #########################################################################
