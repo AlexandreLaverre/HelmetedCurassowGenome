@@ -34,13 +34,11 @@ if [ ${dataset} = "no_protuberance" ]; then
     export refGenome="Anas_platyrhynchos_platyrhynchos"
 fi
 
-
 if [ ${dataset} = "protuberance" ]; then
     export targetGenomes="Casuarius_casuarius,Numida_meleagris,Anseranas_semipalmata,Anser_cygnoid,Balearica_regulorum,Bucorvus_abyssinicus,Buceros_rhinoceros,Pauxi_pauxi"
 
-    export refGenome="Pauxi_pauxi"
+    export refGenome="Numida_meleagris"
 fi
-
 
 #########################################################################
 
