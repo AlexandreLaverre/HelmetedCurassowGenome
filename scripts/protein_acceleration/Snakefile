@@ -67,13 +67,13 @@ rule CleanAlign:
     input:
         IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt",
         AlignDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_GetAlign_done",
-        Align = directory(pathResults + "/Alignments/" + Prefix + "_part{ID_part}/")
+        AlignPath = pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output:
         Done = pathScripts + "/log/" + Prefix + "/part{ID_part}_Clean_done"
     singularity: "/beegfs/home/tricou/singularity_image/hmm.sif"
     shell:
         """
-        cd {input.Align}
+        cd {input.AlignPath}
         export AlignList=`ls *.fas`
         HmmCleaner.pl ${{AlignList}}
         
@@ -89,7 +89,7 @@ rule DropShort_Fasta2Phylip:
     input:
         CleanDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_Clean_done",
         IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt",
-        Align= directory(pathResults + "/Alignments/" + Prefix + "_part{ID_part}/")
+        AlignPath= pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output:
         FilteredAlign = directory(pathResults + "/FilteredAlign/" + Prefix + "_part{ID_part}/"),
         CountSeq= pathResults + "/Count_by_species/" + Prefix + "_part{ID_part}_FilteredAlign.txt",
@@ -98,7 +98,7 @@ rule DropShort_Fasta2Phylip:
     shell:
         """
         mkdir -p {output.FilteredAlign}
-        {PathPython} {pathScripts}/filter_alignment_phyML.py {input.Align} {input.IDList} {pathResults} {minAlign}
+        {PathPython} {pathScripts}/filter_alignment_phyML.py {input.AlignPath} {input.IDList} {pathResults} {minAlign}
         touch {output.CountSeq}
         touch {output.Done} 
         """
