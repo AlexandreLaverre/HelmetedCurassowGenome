@@ -93,8 +93,8 @@ class Parameters:
                 self.B1 = 51
             if self.B1 > 100:
                 self.B1 = 100
-            if self.B2 < 85:
-                self.B2 = 85
+            if self.B2 < 51:
+                self.B2 = 51
             if self.B2 > 100:
                 self.B2 = 100
             # From Gblocks paper, "conserved (>=IS and < FS)"
