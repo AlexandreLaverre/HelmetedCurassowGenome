@@ -24,7 +24,7 @@ with open(IDList, 'r') as f:
         ids = []
         seqs = []
 
-        align = AlignIO.read(PathAlign + ID + ".aln.best.fas", "fasta")
+        align = AlignIO.read(PathAlign + ID + ".aln.best_hmm.fasta.fsa", "fasta")
         align_length = align.get_alignment_length()
 
         # Keep sequences with low number of GAP

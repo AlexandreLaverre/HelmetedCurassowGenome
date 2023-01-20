@@ -12,12 +12,12 @@ Cluster = config["Cluster"]
 
 if Cluster == "cloud":
     path = "/mnt/mydatalocal/IPLOSS"
-    localrules: all, SplitBed,DropShort_Fasta2Phylip, PruneTrees, phyML, CombineTrees
+    localrules: all, SplitBed, GetAlignments, CleanAlign, DropShort_Fasta2Phylip, PruneTrees, phyML, CombineTrees
 else:
     path = "/beegfs/data/alaverre/HelmetedCurassowGenome"
     PathPython = "/beegfs/data/soft/bioconda/bin/python"
     PathR = "/beegfs/data/soft/R-3.5.2/bin/Rscript"
-    localrules: all, SplitBed, DropShort_Fasta2Phylip, PruneTrees, CombineTrees
+    localrules: all, SplitBed, GetAlignments, CleanAlign, DropShort_Fasta2Phylip, PruneTrees, CombineTrees
 
 pathScripts = path + "/scripts/protein_acceleration"
 pathResults = path + "/results/protein_acceleration/" + Prefix
@@ -31,8 +31,9 @@ workdir: pathResults
 ###################################################################################################
 rule all:
     input :
-        expand(pathScripts + "/log/" + Prefix + "/part{ID_part}_CombineTrees_done", ID_part=range(100,(100+NbPart)))
+        expand(pathScripts + "/log/" + Prefix + "/part{ID_part}_PruneTrees_done", ID_part=range(100,(100+NbPart)))
 
+#pathScripts + "/log/" + Prefix + "/part{ID_part}_CombineTrees_done"
 rule SplitBed:
     message: "Make several lists of pairs to parallelize from the Interest File"
     input: pathAlign = pathAlign
@@ -40,15 +41,54 @@ rule SplitBed:
     shell:
         """
         mkdir -p {pathResults}/IDLists/
-        find {input.pathAlign} -name *fas | sed 's!.*/!!' | sed 's/.aln.best.fas//g' > {pathResults}/IDLists/{Prefix}.txt
+        find {input.pathAlign} -name *fas | head -n 20 | sed 's!.*/!!' | sed 's/.aln.best.fas//g' > {pathResults}/IDLists/{Prefix}.txt
         split -d -n l/{NbPart} --additional-suffix=.txt {pathResults}/IDLists/{Prefix}.txt {pathResults}/IDLists/{Prefix}_part1
         touch {output.IDList}
         """
 
-rule DropShort_Fasta2Phylip:
-    message: "Discard sequences with an alignment size lower than {minAlign} %"
+rule GetAlignments:
+    message: "Copy alignment from original folder for HMMCleaner"
+    input: IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt"
+    output:
+        Align = directory(pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"),
+        Done = pathScripts + "/log/" + Prefix + "/part{ID_part}_GetAlign_done"
+    shell:
+        """
+        mkdir -p {output.Align}
+        while read -r line;
+        do
+        cp {pathAlign}/${{line}}.aln.best.fas {output.Align};
+        done < {input.IDList}
+        touch {output.Done} 
+        """
+
+rule CleanAlign:
+    message: "Clean alignments"
     input:
-        IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt"
+        IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt",
+        AlignDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_GetAlign_done",
+        Align = directory(pathResults + "/Alignments/" + Prefix + "_part{ID_part}/")
+    output:
+        Done = pathScripts + "/log/" + Prefix + "/part{ID_part}_Clean_done"
+    singularity: "/beegfs/home/tricou/singularity_image/singularity.sif"
+    shell:
+        """
+        cd {input.Align}
+        export AlignList=`ls *.fas`
+        HmmCleaner.pl ${{AlignList}}
+        
+        for ID in `cat {input.IDList}`
+        do 
+        {PathPython} {pathScripts}/GBlocks.py ${{ID}}.aln.best_hmm.fasta --t=p --b1=51 --b2=70 --b3=10 --b4=2 --b5=a
+        done
+        touch {output.Done} 
+        """
+
+rule DropShort_Fasta2Phylip:
+    message: "Discard sequences with a proportion of GAP >= {minAlign}"
+    input:
+        IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt",
+        Align= directory(pathResults + "/Alignments/" + Prefix + "_part{ID_part}/")
     output:
         FilteredAlign = directory(pathResults + "/FilteredAlign/" + Prefix + "_part{ID_part}/"),
         CountSeq= pathResults + "/Count_by_species/" + Prefix + "_part{ID_part}_FilteredAlign.txt",
@@ -57,7 +97,7 @@ rule DropShort_Fasta2Phylip:
     shell:
         """
         mkdir -p {output.FilteredAlign}
-        {PathPython} {pathScripts}/filter_alignment_phyML.py {pathAlign} {input.IDList} {pathResults} {minAlign}
+        {PathPython} {pathScripts}/filter_alignment_phyML.py {input.Align} {input.IDList} {pathResults} {minAlign}
         touch {output.CountSeq}
         touch {output.Done} 
         """
@@ -79,10 +119,15 @@ rule PruneTrees:
         do
         export species=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" | tr "\n" " " `
         export len=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" -c `
-	touch {output.Error}
+	    
+	    # Excluding alignment with less than 4 sequences
+	    touch {output.Error}
         if (( ${{len}} < 4 ))
         then
         echo ${{ID}} >> {output.Error}
+        grep -v ${{ID}} {input.IDList} > {input.IDList}2
+        mv {input.IDList}2 {input.IDList}
+        
         else
         gotree prune -r -i {SpeciesTree} -o {output.TreeByElem}/${{ID}}.nh ${{species}}
         fi
