@@ -11,7 +11,7 @@ if [ ${Cluster} = "cloud" ]; then
     export path=/mnt/mydatalocal/HelmetedCurassowGenome
 fi
 
-if [ ${Cluster} = "pbil" ]; then
+if [ ${Cluster} = "local" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
