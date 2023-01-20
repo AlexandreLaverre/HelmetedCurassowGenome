@@ -137,8 +137,8 @@ def FastaCount(FN):
 
 def RunGblocks(P):
     COMMAND = ["Gblocks", P.IFN, "-e=.fsa", "-t=" + P.TYPE]
-    MinConSeqs = max(round((P.B1 / 100) * P.NUMSEQS), (P.NUMSEQS/2)+1)
-    MinFlank = max(round((P.B2 / 100) * P.NUMSEQS), (P.NUMSEQS/2)+1)
+    MinConSeqs = max(round((P.B1 / 100) * P.NUMSEQS), int((P.NUMSEQS/2)+1))
+    MinFlank = max(round((P.B2 / 100) * P.NUMSEQS), int((P.NUMSEQS/2)+1))
     COMMAND.extend(["-b1=" + str(MinConSeqs), "-b2=" + str(MinFlank)])
     COMMAND.extend(["-b3=" + str(P.B3), "-b4=" + str(P.B4), "-b5=" + P.B5, "-b6=" + P.B6, "-v=" + str(P.V)])
     print(COMMAND)
