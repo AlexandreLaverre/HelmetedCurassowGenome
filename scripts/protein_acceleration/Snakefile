@@ -75,11 +75,11 @@ rule CleanAlign:
         """
         cd {input.AlignPath}
         export AlignList=`ls *.fas`
-        HmmCleaner.pl ${{AlignList}}
+        HmmCleaner.pl ${{AlignList}} -v=0
         
         for ID in `cat {input.IDList}`
         do 
-        {PathPython} {pathScripts}/GBlocks.py ${{ID}}.aln.best_hmm.fasta --t=p --b1=51 --b2=70 --b3=10 --b4=2 --b5=a
+        {PathPython} {pathScripts}/Gblocks.py {input.AlignPath}/${{ID}}.aln.best_hmm.fasta --t=p --b1=51 --b2=70 --b3=10 --b4=2 --b5=a
         done
         touch {output.Done} 
         """
