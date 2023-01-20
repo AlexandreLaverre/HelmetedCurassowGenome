@@ -87,6 +87,7 @@ rule CleanAlign:
 rule DropShort_Fasta2Phylip:
     message: "Discard sequences with a proportion of GAP >= {minAlign}"
     input:
+        CleanDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_Clean_done",
         IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt",
         Align= directory(pathResults + "/Alignments/" + Prefix + "_part{ID_part}/")
     output:
