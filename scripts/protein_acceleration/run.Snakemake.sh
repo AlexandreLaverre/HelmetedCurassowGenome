@@ -23,6 +23,6 @@ conda activate /beegfs/data/alaverre/Tools/envs/envs/snakemake.6
 
 ##################################################################
 
-snakemake -j 100 --config Prefix=${Prefix} NbPart=${NbPart} Cluster=${Cluster} minAlign=${minAlign} --rerun-incomplete --cluster "sbatch -p normal -N 1 -o ${pathLog}/slurm.out_${Prefix} -e ${pathLog}/slurm.err_${Prefix} -c {params.threads} --mem={params.mem} -t {params.time}"
+snakemake -j 100 --config Prefix=${Prefix} NbPart=${NbPart} Cluster=${Cluster} minAlign=${minAlign} --use-singularity --rerun-incomplete --cluster "sbatch -p normal -N 1 -o ${pathLog}/slurm.out_${Prefix} -e ${pathLog}/slurm.err_${Prefix} -c {params.threads} --mem={params.mem} -t {params.time}"
 
 ##################################################################
