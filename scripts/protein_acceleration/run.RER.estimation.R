@@ -17,31 +17,74 @@ try(library(RERconverge), silent=TRUE)
 # Define path
 #args = commandArgs(trailingOnly=TRUE)
 
-sp = "Duck" #args[1]
-prefix = "scATAC" #args[2]
+sp = "all_species" #args[1] # all_species, birds or squamates
 
-path = paste("/home/laverre/IPLOSS/results/NoncodingElements_Evolution", sp, prefix, "RERconverge/", sep="/") #"/ifb/data/mydatalocal/IPLOSS/"
-
-#if (filter){prefix = paste0(prefix, "_nofilter")}
+path = paste("/Users/alaverre/Documents/HelmetedCurassowGenome/results/protein_acceleration", sp, "/", sep="/")
 
 #######################################################################################
-# Read trees for RERconverge and save output
-TreeFile = paste0(path, prefix, "_CombineTrees.txt")
+# Prepare Trees 
+PreparedTree = paste0(path, sp, "_RERconverge_Trees.rds")
 
-message(c("Input File:", TreeFile))
-message("Reading Tree File...")
-Trees=readTrees(TreeFile)
-
-print("Saving RERconverge residuals...")
-saveRDS(Trees, file=paste0(path, prefix, "_RERconverge_Trees.rds"))
+if (!file.exists(PreparedTree)){
+  TreeFile = paste0(path, sp, "_CombineTrees.txt")
+  
+  message(c("Input File:", TreeFile))
+  message("Reading Tree File...")
+  
+  Trees=readTrees(TreeFile)
+  
+  print("Saving RERconverge residuals...")
+  saveRDS(Trees, file=PreparedTree)
+  
+}else{
+  message("Tree preparation for RER already done!")
+  Trees = readRDS(PreparedTree)
+}
 
 ######################################################################################
 # Estimate RER and save output
-print("Estimating relative evolutionary rate")
-RER = getAllResiduals(Trees, transform = "sqrt", weighted = T, scale = T, plot=F)
+REREstimation = paste0(path, sp, "_RERconverge_residuals.rds")
 
-print("Saving RERconverge residuals...")
-saveRDS(RER, file=paste0(path, prefix, "_RERconverge_residuals.rds"))
+if (!file.exists(REREstimation)){
+  print("Estimating relative evolutionary rate...")
+  RER = getAllResiduals(Trees, transform = "sqrt", weighted = T, scale = T, plot=F)
+  
+  print("Saving RERconverge residuals...")
+  saveRDS(RER, file=REREstimation)
+  
+}else{
+  message("RER estimation for RER already done!")
+  RER = readRDS(REREstimation)
+}
+  
+######################################################################################
+### Defining phenotypes
+Helmeted_birds = c("Casuarius_casuarius", "Bucorvus_abyssinicus", "Buceros_rhinoceros",
+                   "Pauxi_pauxi", "Numida_meleagris",  "Anseranas_semipalmata", 
+                   "Balearica_regulorum", "Anser_cygnoides")
+Helmeted_squamates = c("Basiliscus_vittatus", "Chamaeleo_calyptratus")
+Helmeted_all_species = c(Helmeted_birds, Helmeted_squamates)
+
+Helmeted = get(paste0("Helmeted_", sp))
+message("Considered Helmeted species:")
+print(Helmeted)
+
+# Generating paths for incomplete trees
+pheno <- foreground2Paths(Helmeted, Trees, clade="terminal") #terminal, ancestral or all
+
+write(pheno, file=paste0(path, sp, "_RER_PhenoPath_Terminal.txt"))
+
+#######################################################################################
+### Correlation
+min.sp = ifelse(sp=="squamates", 5, 10)
+min.pos = ifelse(sp=="squamates", 2, 5)
+cor_all=correlateWithBinaryPhenotype(RER, pheno, min.sp=min.sp, min.pos=min.pos, weighted="auto")
+
+ordered_cor = cor_all[order(cor_all$p.adj, cor_all$P),]
+
+write.table(ordered_cor, file=paste0(path, sp, "_RER_Terminal_correlations.txt"), row.names=T, col.names=T, sep="\t",quote=F)
+
+#######################################################################################
 
 print("done!")
 
