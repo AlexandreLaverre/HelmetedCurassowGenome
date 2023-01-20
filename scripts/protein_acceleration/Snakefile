@@ -14,10 +14,10 @@ if Cluster == "cloud":
     path = "/mnt/mydatalocal/IPLOSS"
     localrules: all, SplitBed,DropShort_Fasta2Phylip, PruneTrees, phyML, CombineTrees
 else:
-    path = "/beegfs/data/alaverre/Helme"
+    path = "/beegfs/data/alaverre/HelmetedCurassowGenome"
     PathPython = "/beegfs/data/soft/bioconda/bin/python"
     PathR = "/beegfs/data/soft/R-3.5.2/bin/Rscript"
-    localrules: all, SplitBed, DropShort_Fasta2Phylip, phyML, PruneTrees, CombineTrees
+    localrules: all, SplitBed, DropShort_Fasta2Phylip, PruneTrees, CombineTrees
 
 pathScripts = path + "/scripts/protein_acceleration"
 pathResults = path + "/results/protein_acceleration/" + Prefix
@@ -40,7 +40,7 @@ rule SplitBed:
     shell:
         """
         mkdir -p {pathResults}/IDLists/
-        find {input.pathAlign} -name *fas | sed 's!.*/!!' | sed 's/.aln.best.fas//g' | head -n 20 > {pathResults}/IDLists/{Prefix}.txt
+        find {input.pathAlign} -name *fas | sed 's!.*/!!' | sed 's/.aln.best.fas//g' > {pathResults}/IDLists/{Prefix}.txt
         split -d -n l/{NbPart} --additional-suffix=.txt {pathResults}/IDLists/{Prefix}.txt {pathResults}/IDLists/{Prefix}_part1
         touch {output.IDList}
         """
@@ -79,6 +79,7 @@ rule PruneTrees:
         do
         export species=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" | tr "\n" " " `
         export len=`cut -f 1 -d " " {input.FilteredAlign}/${{ID}}.rphylip | grep "_" -c `
+	touch {output.Error}
         if (( ${{len}} < 4 ))
         then
         echo ${{ID}} >> {output.Error}
