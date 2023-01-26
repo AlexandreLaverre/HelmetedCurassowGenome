@@ -237,9 +237,10 @@ $parameters{"pathSampleInfo"}="NA";
 $parameters{"samples"}="NA";
 $parameters{"pathsCoordinates"}="NA";
 $parameters{"pathOutput"}="NA";
+$parameters{"pathOutputBED"}="NA";
 
 my %defaultvalues;
-my @defaultpars=("pathSampleInfo", "samples", "pathsCoordinates", "pathOutput");
+my @defaultpars=("pathSampleInfo", "samples", "pathsCoordinates", "pathOutput", "pathOutputBED");
 
 my %numericpars;
 
@@ -337,6 +338,7 @@ print "Done.\n";
 print "Writing output...\n";
 
 open(my $output, ">".$parameters{"pathOutput"});
+open(my $outbed, ">".$parameters{"pathOutputBED"});
 
 print $output "ID\tChr\tStart\tEnd\tSamples\tTissues\tTissAge\n";
 
@@ -375,6 +377,7 @@ foreach my $chr (keys %merged){
 	 
 
 	    print $output $id."\t".$chr."\t".$start."\t".$end."\t".$samplelist."\t".$tisslist."\t".$tissagelist."\n";
+	    print $outbed $chr."\t".$start."\t".$end."\t".$id."\n";
 
 	} else{
 	    print "Weird! ".$id." doesn't overlap with anything!\n";
@@ -384,6 +387,7 @@ foreach my $chr (keys %merged){
 }
 
 close($output);
+close($outbed);
 
 print "Done.\n";
 

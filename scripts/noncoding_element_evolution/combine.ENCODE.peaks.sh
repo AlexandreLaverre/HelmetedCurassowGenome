@@ -41,6 +41,6 @@ done
 
 ##########################################################################
 
-perl ${pathScripts}/combine.peaks.pl --pathSampleInfo=${pathDocs}/SraRunTable_ENCODE_ATAC_seq_Mus_musculus.tsv --samples=${samples} --pathsCoordinates=${paths} --pathOutput=${pathResults}/combined_peaks.txt
+perl ${pathScripts}/combine.peaks.pl --pathSampleInfo=${pathDocs}/SraRunTable_ENCODE_ATAC_seq_Mus_musculus.tsv --samples=${samples} --pathsCoordinates=${paths} --pathOutput=${pathResults}/combined_peaks_mm10.txt --pathOutputBED=${pathResults}/combined_peaks_mm10.bed
 
 ##########################################################################
