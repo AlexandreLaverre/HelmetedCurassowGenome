@@ -41,7 +41,7 @@ export annotprefix="AllTranscripts_Ensembl103.CDS" ## CDS coordinates for refere
 
 ######################################################################
 
-for chr in {1..29} Z W 
+for chr in {1..33} Z W 
 do    
     if [ -e ${pathAlignments}/${alnprefix}_${chr}.maf ]; then
 	
