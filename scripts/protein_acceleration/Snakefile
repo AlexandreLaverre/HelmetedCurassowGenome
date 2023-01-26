@@ -63,7 +63,7 @@ rule GetAlignments:
         """
 
 rule HmmCleaner:
-    message: "Clean alignments"
+    message: "Clean alignments with HMMCleaner"
     input:
         AlignDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_GetAlign_done",
         AlignPath = pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
@@ -78,17 +78,18 @@ rule HmmCleaner:
         """
 
 rule Gblocks:
-    message: "Clean alignments"
+    message: "Clean alignments with Gblocks"
     input:
         IDList=pathResults + "/IDLists/" + Prefix + "_part{ID_part}.txt",
         AlignDone=pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_done",
         AlignPath=pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_done")
+    log: pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_output"
     shell:
         """
         for ID in `cat {input.IDList}`
         do 
-        {PathPython} {pathScripts}/Gblocks.py {input.AlignPath}/${{ID}}.aln.best_hmm.fasta --t=p --b1=51 --b2=70 --b3=10 --b4=2 --b5=a
+        {PathPython} {pathScripts}/Gblocks.py {input.AlignPath}/${{ID}}.aln.best_hmm.fasta --t=p --b1=51 --b2=70 --b3=10 --b4=2 --b5=a &> {log}
         done
         """
 
