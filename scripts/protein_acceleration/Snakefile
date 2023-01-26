@@ -86,7 +86,7 @@ rule Gblocks:
         AlignPath=pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_done")
     log: pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_output"
-    params: time="3:00:00",mem="1G",threads="1"
+    params: time="6:00:00",mem="1G",threads="1"
     shell:
         """
         for ID in `cat {input.IDList}`
