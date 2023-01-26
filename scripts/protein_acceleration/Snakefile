@@ -69,7 +69,7 @@ rule HmmCleaner:
         AlignPath = pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_done")
     log: pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_output"
-    params: time="5:00:00",mem="1G",threads="1"
+    params: time="10:00:00",mem="1G",threads="1"
     singularity: "/beegfs/home/tricou/singularity_image/hmm.sif"
     shell:
         """
@@ -86,7 +86,7 @@ rule Gblocks:
         AlignPath=pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_done")
     log: pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_output"
-    params: time="6:00:00",mem="1G",threads="1"
+    params: time="10:00:00",mem="1G",threads="1"
     shell:
         """
         for ID in `cat {input.IDList}`
@@ -123,7 +123,7 @@ rule PruneTrees:
         TreeByElem = directory(pathResults + "/SpeciesTrees/" + Prefix + "_part{ID_part}/"),
         Error = pathScripts + "/log/" + Prefix + "/part{ID_part}_PruneTrees_error.txt",
         Done = pathScripts + "/log/" + Prefix + "/part{ID_part}_PruneTrees_done"
-    params: time = "1:00:00", mem = "1G", threads = "1"
+    params: time = "5:00:00", mem = "1G", threads = "1"
     shell:
         """
         mkdir -p {output.TreeByElem}
