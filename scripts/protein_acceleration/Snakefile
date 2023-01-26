@@ -31,7 +31,7 @@ workdir: pathResults
 ###################################################################################################
 rule all:
     input :
-        expand(pathScripts + "/log/" + Prefix + "/part{ID_part}_PruneTrees_done", ID_part=range(100,(100+NbPart)))
+        expand(pathScripts + "/log/" + Prefix + "/part{ID_part}_CombineTrees_done", ID_part=range(100,(100+NbPart)))
 
 #pathScripts + "/log/" + Prefix + "/part{ID_part}_CombineTrees_done"
 rule SplitBed:
