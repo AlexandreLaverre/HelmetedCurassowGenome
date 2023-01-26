@@ -68,7 +68,7 @@ rule HmmCleaner:
         AlignDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_GetAlign_done",
         AlignPath = pathResults + "/Alignments/" + Prefix + "_part{ID_part}/",
         OutPath = pathScripts + "/log/" + Prefix
-    output: Done = "/part{ID_part}_HmmCleaner_done"
+    output: Done = pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_done"
     log: pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_output"
     singularity: "/beegfs/home/tricou/singularity_image/hmm.sif"
     shell:
