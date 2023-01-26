@@ -12,9 +12,17 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathAnnot=${path}/data/ensembl_annotations/${refsp}/by_chr ## annotations for reference species
-export pathAlignments=${path}/results/whole_genome_alignments/${dataset} ## alignments in maf format
-export pathResults=${path}/results/conserved_elements/${dataset}/4d/
+if [ ${refsp} = "Gallus_gallus" ]; then
+    export synsp="Chicken"
+fi
+
+if [ ${refsp} = "Anas_platyrhynchos_platyrhynchos" ]; then
+    export synsp="Duck"
+fi
+
+export pathAnnot=${path}/data/ensembl_annotations/${synsp}/by_chr ## annotations for reference species
+export pathAlignments=${path}/results/whole_genome_alignments/${dataset}/${refsp} ## alignments in maf format
+export pathResults=${path}/results/conserved_elements/${dataset}/${refsp}/4d/
 
 ######################################################################
 
