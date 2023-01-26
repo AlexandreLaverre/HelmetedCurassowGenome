@@ -41,7 +41,7 @@ rule SplitBed:
     shell:
         """
         mkdir -p {pathResults}/IDLists/
-        find {input.pathAlign} -name *fas | head -n 20 | sed 's!.*/!!' | sed 's/.aln.best.fas//g' > {pathResults}/IDLists/{Prefix}.txt
+        find {input.pathAlign} -name *fas | sed 's!.*/!!' | sed 's/.aln.best.fas//g' > {pathResults}/IDLists/{Prefix}.txt
         split -d -n l/{NbPart} --additional-suffix=.txt {pathResults}/IDLists/{Prefix}.txt {pathResults}/IDLists/{Prefix}_part1
         touch {output.IDList}
         """
