@@ -2,9 +2,10 @@
 
 ## original script by Alexandre Laverré & Anamaria Necsulea
 
-export dataset=$1
-export coverage=$2
-export cluster=$3
+export refsp=$1
+export dataset=$2
+export coverage=$3
+export cluster=$4
 
 ######################################################################
 
@@ -12,9 +13,9 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathAln=${path}/results/whole_genome_alignments/${dataset}/ 
-export pathMod=${path}/results/conserved_elements/${dataset}/mod
-export pathResults=${path}/results/conserved_elements/${dataset}/phastCons_coverage${coverage}
+export pathAln=${path}/results/whole_genome_alignments/${dataset}/${refsp} 
+export pathMod=${path}/results/conserved_elements/${dataset}/${refsp}/mod
+export pathResults=${path}/results/conserved_elements/${dataset}/${refsp}/phastCons_coverage${coverage}
 
 if [ ! -d ${pathResults} ]; then
     mkdir -p ${pathResults}

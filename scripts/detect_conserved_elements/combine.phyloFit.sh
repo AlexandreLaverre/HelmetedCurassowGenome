@@ -2,8 +2,9 @@
 
 ## original script by Alexandre Laverré & Anamaria Necsulea
 
-export dataset=$1
-export cluster=$2
+export refsp=$1
+export dataset=$2
+export cluster=$3
 
 ######################################################################
 
@@ -11,7 +12,7 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
-export pathResults=${path}/results/conserved_elements/${dataset}/mod/
+export pathResults=${path}/results/conserved_elements/${dataset}/${refsp}/mod/
 
 ######################################################################
 
