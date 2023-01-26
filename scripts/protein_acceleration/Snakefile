@@ -82,7 +82,7 @@ rule Gblocks:
     message: "Clean alignments"
     input:
         IDList=pathResults + "/IDLists/" + Prefix + "_part{ID_part}.txt",
-        AlignDone=pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmClean_done",
+        AlignDone=pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_done",
         AlignPath=pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
     output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_done")
     shell:
