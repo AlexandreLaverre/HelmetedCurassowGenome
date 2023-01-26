@@ -1,7 +1,8 @@
 #!/bin/bash
 
 export dataset=$1
-export cluster=$2
+export refsp=$2
+export cluster=$3
 
 #########################################################################
 
@@ -13,7 +14,7 @@ if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/${USER}/HelmetedCurassowGenome
 fi
 
-export pathAln=${path}/results/whole_genome_alignments/${dataset}
+export pathAln=${path}/results/whole_genome_alignments/${dataset}/${refsp}
 export pathScripts=${path}/scripts/detect_conserved_elements
 
 #########################################################################
