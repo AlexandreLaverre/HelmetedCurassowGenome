@@ -18,7 +18,7 @@ write.table(peaks[,1:4], file="../../results/noncoding_element_evolution/ENCODE_
 accepted.chr=paste("chr", c(as.character(1:33), "Z", "W"), sep="")
 
 peaks=peaks[which(peaks$V1%in%accepted.chr),]
-peaks$V1=paste("Gallus_gallus.",unlist(lapply(peaks$V1, function(x) substr(x, 4, nchar(x)))), sep="")
+peaks$V1=unlist(lapply(peaks$V1, function(x) substr(x, 4, nchar(x))))
 
 write.table(peaks,file="../../results/noncoding_element_evolution/ENCODE_ATAC-seq/Mouse/combined_peaks_galGal6_formatted.bed",row.names=F, col.names=F, quote=F, sep="\t")
 
