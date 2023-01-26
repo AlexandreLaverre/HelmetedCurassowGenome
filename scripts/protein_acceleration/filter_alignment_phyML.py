@@ -17,6 +17,7 @@ Part = IDList.split("/")[-1].strip(".txt")
 pathFiltered = PathResults + "/FilteredAlign/" + Part + "/"
 
 ###################################################################################################
+error_align = open(pathFiltered + "noalignment.txt", "a")
 
 with open(IDList, 'r') as f:
     for ID in f.readlines():
@@ -27,16 +28,20 @@ with open(IDList, 'r') as f:
         align = AlignIO.read(PathAlign + "/" + ID + ".aln.best_hmm.fasta.fsa", "fasta")
         align_length = align.get_alignment_length()
 
-        # Keep sequences with low number of GAP
-        for seq in align:
-            if seq.seq.count("-")/align_length < float(minLength):
-                ids.append(seq.id)
-                seqs.append(seq.seq)
+        if align_length > 0:
+            # Keep sequences with low number of GAP
+            for seq in align:
+                if seq.seq.count("-")/align_length < float(minLength):
+                    ids.append(seq.id)
+                    seqs.append(seq.seq)
 
-        records = (SeqRecord(s, id=i) for (i, s) in zip(ids, seqs))
+            records = (SeqRecord(s, id=i) for (i, s) in zip(ids, seqs))
 
-        if len(ids) > 1:
-            with open(pathFiltered + ID + ".rphylip", "w") as OutFile:
-                AlignIO.write(MultipleSeqAlignment(records), OutFile, "phylip-relaxed")
+            if len(ids) > 1:
+                with open(pathFiltered + ID + ".rphylip", "w") as OutFile:
+                    AlignIO.write(MultipleSeqAlignment(records), OutFile, "phylip-relaxed")
+        else:
+            error_align.write(ID)
 
+error_align.close()
 ###################################################################################################
