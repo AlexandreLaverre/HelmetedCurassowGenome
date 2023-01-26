@@ -17,7 +17,7 @@ else:
     path = "/beegfs/data/alaverre/HelmetedCurassowGenome"
     PathPython = "/beegfs/data/soft/bioconda/bin/python"
     PathR = "/beegfs/data/soft/R-3.5.2/bin/Rscript"
-    localrules: all, SplitBed, GetAlignments, CombineTrees
+    localrules: all, SplitBed, GetAlignments, DropShort_Fasta2Phylip, CombineTrees
 
 pathScripts = path + "/scripts/protein_acceleration"
 pathResults = path + "/results/protein_acceleration/" + Prefix
