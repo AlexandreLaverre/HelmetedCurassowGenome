@@ -68,14 +68,14 @@ rule HmmCleaner:
         IDList = pathResults+ "/IDLists/" + Prefix + "_part{ID_part}.txt",
         AlignDone = pathScripts + "/log/" + Prefix + "/part{ID_part}_GetAlign_done",
         AlignPath = pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
-    output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmClean_done")
+    output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_done")
     log: pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmCleaner_output"
     singularity: "/beegfs/home/tricou/singularity_image/hmm.sif"
     shell:
         """
         cd {input.AlignPath}
         export AlignList=`ls *.fas`
-        HmmCleaner.pl ${{AlignList}} -v=0 &> {log}
+        HmmCleaner.pl ${{AlignList}} &> {log}
         """
 
 rule Gblocks:
@@ -84,15 +84,13 @@ rule Gblocks:
         IDList=pathResults + "/IDLists/" + Prefix + "_part{ID_part}.txt",
         AlignDone=pathScripts + "/log/" + Prefix + "/part{ID_part}_HmmClean_done",
         AlignPath=pathResults + "/Alignments/" + Prefix + "_part{ID_part}/"
-    output:
-        Done=pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_done"
+    output: touch(pathScripts + "/log/" + Prefix + "/part{ID_part}_Gblocks_done")
     shell:
         """
         for ID in `cat {input.IDList}`
         do 
         {PathPython} {pathScripts}/Gblocks.py {input.AlignPath}/${{ID}}.aln.best_hmm.fasta --t=p --b1=51 --b2=70 --b3=10 --b4=2 --b5=a
         done
-        touch {output.Done} 
         """
 
 rule DropShort_Fasta2Phylip:
