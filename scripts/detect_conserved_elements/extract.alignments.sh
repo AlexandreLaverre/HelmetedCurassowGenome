@@ -3,11 +3,12 @@
 ## original script by Alexandre Laverré & Anamaria Necsulea
 
 export dataset=$1
-export chr=$2
-export start=$3
-export length=$4
-export cluster=$5
-export nthreads=$6
+export refGenome=$2
+export chr=$3
+export start=$4
+export length=$5
+export cluster=$6
+export nthreads=$7
 
 #########################################################################
 
@@ -22,14 +23,10 @@ export pathResults=${path}/results/whole_genome_alignments/${dataset}
 
 if [ ${dataset} = "no_protuberance" ]; then
     export targetGenomes="Struthio_camelus,Dromaius_novaehollandiae,Gallus_gallus,Meleagris_gallopavo,Penelope_pileata,Alectura_lathami,Anas_platyrhynchos_platyrhynchos,Grus_americana,Calidris_pugnax,Upupa_epops,Rhinopomastus_cyanomelas,Strix_occidentalis,Ficedula_albicollis,Aquila_chrysaetos,Geospiza_fortis,Parus_major,Serinus_canaria,Coturnix_japonica"
-
-    export refGenome="Anas_platyrhynchos_platyrhynchos"
 fi
 
 if [ ${dataset} = "protuberance" ]; then
     export targetGenomes="Casuarius_casuarius,Numida_meleagris,Anseranas_semipalmata,Anser_cygnoid,Balearica_regulorum,Bucorvus_abyssinicus,Buceros_rhinoceros,Pauxi_pauxi"
-
-    export refGenome="Pauxi_pauxi"
 fi
 
 #########################################################################
