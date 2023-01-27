@@ -19,6 +19,18 @@ export refGenome="Gallus_gallus"
 
 #########################################################################
 
-docker run -v ${path}:/ifb/data/mydatalocal/HelmetedCurassowGenome --rm -t quay.io/comparative-genomics-toolkit/cactus:v1.3.0 hal2maf ${pathHAL}/366-avian.hal ${pathResults}/combined_peaks_galGal6_formatted.maf  --targetGenomes ${targetGenomes} --refGenome ${refGenome}  --noDupes --refTargets ${pathResults}/combined_peaks_galGal6_formatted.bed
+if [ -e ${pathResults}/combined_peaks_galGal6_formatted.maf ]; then
+    echo "already extracted MAF"
+else
+    docker run -v ${path}:/ifb/data/mydatalocal/HelmetedCurassowGenome --rm -t quay.io/comparative-genomics-toolkit/cactus:v1.3.0 hal2maf ${pathHAL}/366-avian.hal ${pathResults}/combined_peaks_galGal6_formatted.maf  --targetGenomes ${targetGenomes} --refGenome ${refGenome}  --noDupes --refTargets ${pathResults}/combined_peaks_galGal6_formatted.bed
+fi
+
+#########################################################################
+
+if [ -e ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf ]; then
+    echo "already ordered MAF"
+else
+    perl ${pathScripts}/order.maf.files.pl --pathMAFInput=${pathResults}/combined_peaks_galGal6_formatted.maf --refSpecies=Gallus_gallus --pathMAFOutput=${pathResults}/combined_peaks_galGal6_formatted_ordered.maf
+fi
 
 #########################################################################
