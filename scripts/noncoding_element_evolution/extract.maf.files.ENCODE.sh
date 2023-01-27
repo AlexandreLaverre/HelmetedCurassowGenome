@@ -10,6 +10,7 @@ fi
 
 export pathHAL=${path}/results/whole_genome_alignments/avian_366
 export pathResults=${path}/results/noncoding_element_evolution/ENCODE_ATAC-seq/Mouse
+export pathScripts=${path}/scripts/noncoding_element_evolution
 
 #########################################################################
 
