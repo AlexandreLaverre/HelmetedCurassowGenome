@@ -196,7 +196,7 @@ print "Minimum ungapped length: ".$minungaplen."\n";
 
 if($nbaln<$minsp){
     open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
-    print $outerr $nbleft." sequences.\n";
+    print $outerr $nbaln." sequences.\n";
     close($outerr);
 } else{
     if($nbdupli>($nbaln/3)){
