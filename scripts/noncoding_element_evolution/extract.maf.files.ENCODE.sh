@@ -35,3 +35,22 @@ else
 fi
 
 #########################################################################
+
+if [ -e ${pathResults}/mafs_by_element ]; then
+    export nbaln=`ls ${pathResults}/mafs_by_element | wc -l | cut -f 1 -d ' '`
+    echo ${nbaln} "alignments extracted"
+    export nbel=`wc -l ${pathResults}/combined_peaks_galGal6_formatted.bed`
+    export ${nbel} "elements originally"
+
+    if [ ${nbaln} = ${nbel} ]; then
+	echo "everything seems ok"
+    else
+	mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
+    fi
+else
+    mkdir -p ${pathResults}/mafs_by_element
+    
+    mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
+fi
+
+#########################################################################
