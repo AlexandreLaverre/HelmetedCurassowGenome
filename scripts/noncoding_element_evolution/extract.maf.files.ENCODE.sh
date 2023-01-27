@@ -3,6 +3,7 @@
 set -e 
 
 export cluster=$1
+export forceMafsInRegion=$2
 
 #########################################################################
 
@@ -39,15 +40,15 @@ fi
 #########################################################################
 
 if [ -e ${pathResults}/mafs_by_element ]; then
-    export nbaln=`ls ${pathResults}/mafs_by_element | wc -l | cut -f 1 -d ' '`
+    export nbaln=`ls ${pathResults}/mafs_by_element | grep maf | wc -l | cut -f 1 -d ' '`
     echo ${nbaln} "alignments extracted"
-    export nbel=`wc -l ${pathResults}/combined_peaks_galGal6_formatted.bed`
-    export ${nbel} "elements originally"
+    export nbel=`wc -l ${pathResults}/combined_peaks_galGal6_formatted.bed | cut -f 1 -d ' ' `
+    echo ${nbel} "elements originally"
 
-    if [ ${nbaln} = ${nbel} ]; then
-	echo "everything seems ok, not running mafsInRegion"
+    if [ ${forceMafsInRegion} = "true" ]; then
+	mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf
     else
-	mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
+	echo "not running mafsInRegion"
     fi
 else
     mkdir -p ${pathResults}/mafs_by_element
@@ -69,7 +70,7 @@ if [ -e ${pathResults}/mafs_by_element ]; then
 		echo ${prefix} "was discarded after filtering"
 	    else
 		
-		msa_view ${pathResults}/mafs_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --clean-indels -I 3 > ${pathResults}/mafs_by_element/${prefix}.fa
+		msa_view ${pathResults}/mafs_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --clean-indels 3 > ${pathResults}/mafs_by_element/${prefix}.fa
 	    
 		perl ${pathScripts}/filter.alignments.pl --minSpecies=5 --pathFastaInput=${pathResults}/mafs_by_element/${prefix}.fa --pathFastaOutput=${pathResults}/mafs_by_element/${prefix}.filtered.fa --pathOutputDiscarded=${pathResults}/mafs_by_element/${prefix}.discarded
 		
