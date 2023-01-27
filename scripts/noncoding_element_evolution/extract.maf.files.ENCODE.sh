@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e 
+
 export cluster=$1
 
 #########################################################################
@@ -43,7 +45,7 @@ if [ -e ${pathResults}/mafs_by_element ]; then
     export ${nbel} "elements originally"
 
     if [ ${nbaln} = ${nbel} ]; then
-	echo "everything seems ok"
+	echo "everything seems ok, not running mafsInRegion"
     else
 	mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
     fi
@@ -51,6 +53,32 @@ else
     mkdir -p ${pathResults}/mafs_by_element
     
     mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
+fi
+
+#########################################################################
+
+if [ -e ${pathResults}/mafs_by_element ]; then
+    for file in `ls ${pathResults}/mafs_by_element | grep maf$`
+    do
+	export prefix=`basename ${file} .maf`
+	
+	if [ -e ${pathResults}/mafs_by_element/${prefix}.filtered.phy ]; then
+	    echo "phylip format for "${prefix} "already done"
+	else
+	    if [ -e ${pathResults}/mafs_by_element/${prefix}.discarded ]; then
+		echo ${prefix} "was discarded after filtering"
+	    else
+		
+		msa_view ${pathResults}/mafs_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --clean-indels -I 3 > ${pathResults}/mafs_by_element/${prefix}.fa
+	    
+		perl ${pathScripts}/filter.alignments.pl --minSpecies=5 --pathFastaInput=${pathResults}/mafs_by_element/${prefix}.fa --pathFastaOutput=${pathResults}/mafs_by_element/${prefix}.filtered.fa --pathOutputDiscarded=${pathResults}/mafs_by_element/${prefix}.discarded
+		
+		if [ -e ${pathResults}/mafs_by_element/${prefix}.filtered.fa ]; then
+		    msa_view ${pathResults}/mafs_by_element/${prefix}.filtered.fa --in-format FASTA --out-format PHYLIP > ${pathResults}/mafs_by_element/${prefix}.filtered.phy
+		fi
+	    fi
+	fi
+    done
 fi
 
 #########################################################################
