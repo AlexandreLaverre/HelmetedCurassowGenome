@@ -108,11 +108,12 @@ my %parameters;
 $parameters{"pathFastaInput"}="NA";
 $parameters{"minSpecies"}="NA";
 $parameters{"maxGapProportion"}="NA";
+$parameters{"minUngappedLength"}="NA";
 $parameters{"pathFastaOutput"}="NA";
 $parameters{"pathOutputDiscarded"}="NA";
 
 my %defaultvalues;
-my @defaultpars=("pathFastaInput", "maxGapProportion", "minSpecies", "pathFastaOutput", "pathOutputDiscarded");
+my @defaultpars=("pathFastaInput", "maxGapProportion", "minUngappedLength", "minSpecies", "pathFastaOutput", "pathOutputDiscarded");
 
 my %numericpars;
 
@@ -187,61 +188,70 @@ my $nbaln=keys %aln;
 
 my $minsp=$parameters{"minSpecies"}+0;
 my $maxpropgap=$parameters{"maxGapProportion"}+0.0;
+my $minungaplen=$parameters{"minUngappedLength"}+0;
 
 print "Minimum ".$minsp." species.\n";
 print "Max ".$maxpropgap." gaps.\n";
+print "Minimum ungapped length: ".$minungaplen."\n";
 
-if($nbdupli>($nbaln/3)){
+if($nbaln<$minsp){
     open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
-    print $outerr $nbdupli." duplicated sequences for ".$nbaln." species\n";
+    print $outerr $nbleft." sequences.\n";
     close($outerr);
 } else{
-    foreach my $id (keys %duplicated){
-	delete $aln{$id};
-    }
-
-    my $nbleft=keys %aln;
-
-    if($nbleft>=$minsp){
-	my %toogapped;
-
-	foreach my $sp (keys %aln){
-	    my $seq=$aln{$sp};
-	    my $totlen=length $seq;
-	    my $countgap= ($seq =~ tr/-//);
-	    my $propgap=($countgap+0.0)/($totlen+0.0);
-
-	    if($propgap>$maxpropgap){
-		$toogapped{$sp}=1;
-	    }
-	}
-
-	foreach my $id (keys %toogapped){
+    if($nbdupli>($nbaln/3)){
+	open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
+	print $outerr $nbdupli." duplicated sequences for ".$nbaln." species\n";
+	close($outerr);
+    } else{
+	foreach my $id (keys %duplicated){
 	    delete $aln{$id};
 	}
-
-	 my $nbleft2=keys %aln;
-
-	if($nbleft2>=$minsp){
-	    open(my $output, ">".$parameters{"pathFastaOutput"});
+	
+	my $nbleft=keys %aln;
+	
+	if($nbleft>=$minsp){
+	    my %toogapped;
 	    
 	    foreach my $sp (keys %aln){
 		my $seq=$aln{$sp};
-		writeSequence($seq, $sp, $output);
+		my $totlen=length $seq;
+		my $countgap= ($seq =~ tr/-//);
+		my $countungap=$totlen-$countgap;
+		my $propgap=($countgap+0.0)/($totlen+0.0);
+		
+		if($propgap>$maxpropgap && $countungap<$minungaplen){
+		    $toogapped{$sp}=1;
+		}
 	    }
-	    close($output);
- 
+	    
+	    foreach my $id (keys %toogapped){
+		delete $aln{$id};
+	    }
+	    
+	    my $nbleft2=keys %aln;
+	    
+	    if($nbleft2>=$minsp){
+		open(my $output, ">".$parameters{"pathFastaOutput"});
+		
+		foreach my $sp (keys %aln){
+		    my $seq=$aln{$sp};
+		    writeSequence($seq, $sp, $output);
+		}
+		close($output);
+		
+	    } else{
+		open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
+		print $outerr $nbleft2." sequences left after removing gapped sequences.\n";
+		close($outerr);
+	    }
 	} else{
 	    open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
-	    print $outerr $nbleft." sequences left after removing gapped sequences.\n";
+	    print $outerr $nbleft." sequences left after removing duplicates.\n";
 	    close($outerr);
 	}
-    } else{
-	open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
-	print $outerr $nbleft." sequences left after removing duplicates.\n";
-	close($outerr);
+	
     }
-    
 }
 
 print "Done.\n";

@@ -69,14 +69,22 @@ if [ -e ${pathResults}/mafs_by_element ]; then
 	    if [ -e ${pathResults}/mafs_by_element/${prefix}.discarded ]; then
 		echo ${prefix} "was discarded after filtering"
 	    else
-		
-		msa_view ${pathResults}/mafs_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --clean-indels 3 > ${pathResults}/mafs_by_element/${prefix}.fa
-	    
-		perl ${pathScripts}/filter.alignments.pl --minSpecies=5 --pathFastaInput=${pathResults}/mafs_by_element/${prefix}.fa --pathFastaOutput=${pathResults}/mafs_by_element/${prefix}.filtered.fa --pathOutputDiscarded=${pathResults}/mafs_by_element/${prefix}.discarded
-		
-		if [ -e ${pathResults}/mafs_by_element/${prefix}.filtered.fa ]; then
-		    msa_view ${pathResults}/mafs_by_element/${prefix}.filtered.fa --in-format FASTA --out-format PHYLIP > ${pathResults}/mafs_by_element/${prefix}.filtered.phy
-		fi
+
+		export nbl=`wc -l ${pathResults}/mafs_by_element/${prefix}.maf | cut -f 1 -d ' '`
+
+		if [ ${nbl} -gt 1 ]; then
+		    echo ${prefix}
+		    
+		    msa_view ${pathResults}/mafs_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --clean-indels 3 --unmask > ${pathResults}/mafs_by_element/${prefix}.fa
+		    
+		    perl ${pathScripts}/filter.alignments.pl --minSpecies=5 --maxGapProportion=0.75 --minUngappedLength=50 --pathFastaInput=${pathResults}/mafs_by_element/${prefix}.fa --pathFastaOutput=${pathResults}/mafs_by_element/${prefix}.filtered.fa --pathOutputDiscarded=${pathResults}/mafs_by_element/${prefix}.discarded
+		    
+		    if [ -e ${pathResults}/mafs_by_element/${prefix}.filtered.fa ]; then
+			msa_view ${pathResults}/mafs_by_element/${prefix}.filtered.fa --in-format FASTA --out-format PHYLIP > ${pathResults}/mafs_by_element/${prefix}.filtered.phy
+		    fi
+		else
+		    echo "empty maf file" > ${pathResults}/mafs_by_element/${prefix}.discarded
+		fi 
 	    fi
 	fi
     done
