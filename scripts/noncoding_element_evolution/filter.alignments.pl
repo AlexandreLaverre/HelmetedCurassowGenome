@@ -235,7 +235,7 @@ if($nbaln<$minsp){
 		open(my $output, ">".$parameters{"pathFastaOutput"});
 		
 		foreach my $sp (keys %aln){
-		    my $seq=$aln{$sp};
+		    my $seq=uc $aln{$sp}; ## remove masking
 		    writeSequence($seq, $sp, $output);
 		}
 		close($output);
