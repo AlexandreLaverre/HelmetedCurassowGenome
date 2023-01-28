@@ -24,21 +24,21 @@ fi
 
 #########################################################################
 
-if [ -e ${pathResults}/mafs_by_element ]; then
-    for file in `ls ${pathResults}/mafs_by_element | grep filtered.phy$`
+if [ -e ${pathResults}/aln_by_element ]; then
+    for file in `ls ${pathResults}/aln_by_element | grep filtered.phy$`
     do
 	export prefix=`basename ${file} .filtered.phy`
 
 	if [ -e ${pathResults}/iqtree_results/${prefix}.start.tree ]; then
 	    echo "tree already there"
 	else
-	    Rscript --vanilla extract.species.tree.R ${pathHAL}/Birds366_tree.txt ${pathResults}/mafs_by_element/${prefix}.filtered.fa ${pathResults}/iqtree_results/${prefix}.start.tree
+	    Rscript --vanilla extract.species.tree.R ${pathHAL}/Birds366_tree.txt ${pathResults}/aln_by_element/${prefix}.filtered.fa ${pathResults}/iqtree_results/${prefix}.start.tree
 	fi
 
 	if [ -e ${pathResults}/iqtree_results/${prefix}.treefile ]; then
 	    echo "already done"
 	else
-	    iqtree -s ${pathResults}/mafs_by_element/${prefix}.filtered.fa -st DNA -te ${pathResults}/iqtree_results/${prefix}.start.tree -m GTR -pre  ${pathResults}/iqtree_results/${prefix} 
+	    iqtree -s ${pathResults}/aln_by_element/${prefix}.filtered.fa -st DNA -te ${pathResults}/iqtree_results/${prefix}.start.tree -m GTR -pre  ${pathResults}/iqtree_results/${prefix} 
 	fi
     done
 fi

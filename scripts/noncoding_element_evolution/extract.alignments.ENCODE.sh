@@ -39,59 +39,59 @@ fi
 
 #########################################################################
 
-if [ -e ${pathResults}/mafs_by_element ]; then
-    export nbaln=`ls ${pathResults}/mafs_by_element | grep maf | wc -l | cut -f 1 -d ' '`
+if [ -e ${pathResults}/aln_by_element ]; then
+    export nbaln=`ls ${pathResults}/aln_by_element | grep maf | wc -l | cut -f 1 -d ' '`
     echo ${nbaln} "alignments extracted"
     export nbel=`wc -l ${pathResults}/combined_peaks_galGal6_formatted.bed | cut -f 1 -d ' ' `
     echo ${nbel} "elements originally"
 
     if [ ${forceMafsInRegion} = "true" ]; then
-	mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf
+	mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/aln_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf
     else
 	echo "not running mafsInRegion"
     fi
 else
-    mkdir -p ${pathResults}/mafs_by_element
+    mkdir -p ${pathResults}/aln_by_element
     
-    mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/mafs_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
+    mafsInRegion -outDir ${pathResults}/combined_peaks_galGal6_formatted.bed ${pathResults}/aln_by_element ${pathResults}/combined_peaks_galGal6_formatted_ordered.maf 
 fi
 
 #########################################################################
 
-if [ -e ${pathResults}/mafs_by_element ]; then
-    for file in `ls ${pathResults}/mafs_by_element | grep maf$`
+if [ -e ${pathResults}/aln_by_element ]; then
+    for file in `ls ${pathResults}/aln_by_element | grep maf$`
     do
 	export prefix=`basename ${file} .maf`
 	
-	if [ -e ${pathResults}/mafs_by_element/${prefix}.filtered.phy ]; then
+	if [ -e ${pathResults}/aln_by_element/${prefix}.filtered.phy ]; then
 	    echo "phylip format for "${prefix} "already done"
 	else
-	    if [ -e ${pathResults}/mafs_by_element/${prefix}.discarded ]; then
+	    if [ -e ${pathResults}/aln_by_element/${prefix}.discarded ]; then
 		echo ${prefix} "was discarded after filtering"
 	    else
 
-		export nbl=`wc -l ${pathResults}/mafs_by_element/${prefix}.maf | cut -f 1 -d ' '`
+		export nbl=`wc -l ${pathResults}/aln_by_element/${prefix}.maf | cut -f 1 -d ' '`
 		
 		if [ ${nbl} -gt 1 ]; then
 
-		    export nbsp=`grep ^s ${pathResults}/mafs_by_element/${prefix}.maf | grep -v Gallus_gallus | wc -l `
+		    export nbsp=`grep ^s ${pathResults}/aln_by_element/${prefix}.maf | grep -v Gallus_gallus | wc -l `
 
 		    if [ ${nbsp} -gt 0 ]; then
 			
 			echo ${prefix}
 			
-			msa_view ${pathResults}/mafs_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --unmask > ${pathResults}/mafs_by_element/${prefix}.fa
+			msa_view ${pathResults}/aln_by_element/${prefix}.maf --out-format FASTA  --missing-as-indels --unmask > ${pathResults}/aln_by_element/${prefix}.fa
 			
-			perl ${pathScripts}/filter.alignments.pl --minSpecies=5 --maxGapProportion=0.75 --minUngappedLength=50 --pathFastaInput=${pathResults}/mafs_by_element/${prefix}.fa --pathFastaOutput=${pathResults}/mafs_by_element/${prefix}.filtered.fa --pathOutputDiscarded=${pathResults}/mafs_by_element/${prefix}.discarded
+			perl ${pathScripts}/filter.alignments.pl --minSpecies=5 --maxGapProportion=0.75 --minUngappedLength=50 --minAlignmentLength=100 --pathFastaInput=${pathResults}/aln_by_element/${prefix}.fa --pathFastaOutput=${pathResults}/aln_by_element/${prefix}.filtered.fa --pathOutputDiscarded=${pathResults}/aln_by_element/${prefix}.discarded
 			
-			if [ -e ${pathResults}/mafs_by_element/${prefix}.filtered.fa ]; then
-			    msa_view ${pathResults}/mafs_by_element/${prefix}.filtered.fa --in-format FASTA --out-format PHYLIP > ${pathResults}/mafs_by_element/${prefix}.filtered.phy
+			if [ -e ${pathResults}/aln_by_element/${prefix}.filtered.fa ]; then
+			    msa_view ${pathResults}/aln_by_element/${prefix}.filtered.fa --in-format FASTA --out-format PHYLIP > ${pathResults}/aln_by_element/${prefix}.filtered.phy
 			fi
 		    else
-			echo "only one species" > ${pathResults}/mafs_by_element/${prefix}.discarded
+			echo "only one species" > ${pathResults}/aln_by_element/${prefix}.discarded
 		    fi
 		else
-		    echo "empty maf file" > ${pathResults}/mafs_by_element/${prefix}.discarded
+		    echo "empty maf file" > ${pathResults}/aln_by_element/${prefix}.discarded
 		fi 
 	    fi
 	fi

@@ -109,11 +109,12 @@ $parameters{"pathFastaInput"}="NA";
 $parameters{"minSpecies"}="NA";
 $parameters{"maxGapProportion"}="NA";
 $parameters{"minUngappedLength"}="NA";
+$parameters{"minAlignmentLength"}="NA";
 $parameters{"pathFastaOutput"}="NA";
 $parameters{"pathOutputDiscarded"}="NA";
 
 my %defaultvalues;
-my @defaultpars=("pathFastaInput", "maxGapProportion", "minUngappedLength", "minSpecies", "pathFastaOutput", "pathOutputDiscarded");
+my @defaultpars=("pathFastaInput", "maxGapProportion", "minUngappedLength", "minAlignmentLength", "minSpecies", "pathFastaOutput", "pathOutputDiscarded");
 
 my %numericpars;
 
@@ -189,10 +190,12 @@ my $nbaln=keys %aln;
 my $minsp=$parameters{"minSpecies"}+0;
 my $maxpropgap=$parameters{"maxGapProportion"}+0.0;
 my $minungaplen=$parameters{"minUngappedLength"}+0;
+my $minalnlen=$parameters{"minAlignmentLength"}+0;
 
 print "Minimum ".$minsp." species.\n";
 print "Max ".$maxpropgap." gaps.\n";
 print "Minimum ungapped length: ".$minungaplen."\n";
+print "Minimum alignment length: ".$minalnlen."\n";
 
 if($nbaln<$minsp){
     open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
@@ -232,13 +235,24 @@ if($nbaln<$minsp){
 	    my $nbleft2=keys %aln;
 	    
 	    if($nbleft2>=$minsp){
-		open(my $output, ">".$parameters{"pathFastaOutput"});
+		my @spleft=keys %aln;
+		my $firstsp=$spleft[0];
+		my $firstseq=$aln{$firstsp};
+		my $thisalnlen=length $firstseq;
+
+		if($thisalnlen >= $minalnlen){
 		
-		foreach my $sp (keys %aln){
-		    my $seq=uc $aln{$sp}; ## remove masking
-		    writeSequence($seq, $sp, $output);
+		    open(my $output, ">".$parameters{"pathFastaOutput"});
+		    foreach my $sp (keys %aln){
+			my $seq=uc $aln{$sp}; ## remove masking
+			writeSequence($seq, $sp, $output);
+		    }
+		    close($output);
+		} else{
+		    open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
+		    print $outerr $thisalnlen." total alignment length.\n";
+		    close($outerr);
 		}
-		close($output);
 		
 	    } else{
 		open(my $outerr, ">".$parameters{"pathOutputDiscarded"});
