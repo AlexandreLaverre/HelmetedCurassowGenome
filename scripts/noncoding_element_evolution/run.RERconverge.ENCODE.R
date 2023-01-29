@@ -38,11 +38,6 @@ if(method=="phyml"){
 elements=unlist(lapply(files, function(x) unlist(strsplit(x, split="\\."))[1]))
 names(files)=elements
 
-for(el in elements){
-    this.tree=read.tree(file=paste(pathTrees,files[el],sep=""))
-    this.tree$node.label=NULL
-}
-
 est.trees=unlist(lapply(paste(pathTrees,files,sep=""), readLines))
 est.treefiles=data.frame("Gene_name"=as.character(elements), "Newick_tree"=est.trees)
 
@@ -58,12 +53,17 @@ trees=readTrees(paste(pathResults, "RERconverge_",method,"_input_trees.txt",sep=
 
 ## relative rates
 
-rerw.est=getAllResiduals(est.trees, transform = "sqrt", weighted=T, scale=T)
+rerw.est=getAllResiduals(trees, transform = "sqrt", weighted=T, scale=T)
 
 ########################################################################
 ########################################################################
 
+helmeted = c("Casuarius_casuarius", "Bucorvus_abyssinicus", "Buceros_rhinoceros",
+                   "Pauxi_pauxi", "Numida_meleagris",  "Anseranas_semipalmata", 
+                   "Balearica_regulorum", "Anser_cygnoides")
 
 
-########################################################################
+# Generating paths for incomplete trees
+pheno <- foreground2Paths(helmeted, trees, clade="all")
+
 ########################################################################
