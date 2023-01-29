@@ -21,6 +21,11 @@ sp.tree$node.label <- NULL
 aln=read.fasta(path.aln)
 
 this.tree=keep.tip(phy=sp.tree, names(aln))
+
+if(any(table(this.tree$edge[,2])>2)){
+    stop("There are multifurcations!")
+}
+
 write.tree(this.tree, file=path.output.tree)
 
 #########################################################################

@@ -2,28 +2,16 @@
 
 library(RERconverge)
 
+method="iqtree"
+
 ########################################################################
 
 abspath=unlist(strsplit(getwd(), split="\\/"))
 lenpath=length(abspath)
 path=paste(abspath[1:(lenpath-2)],collapse="/")
 pathResults=paste(path,"/results/noncoding_element_evolution/ENCODE_ATAC-seq/Mouse/",sep="")
-pathTrees=paste(pathResults, "iqtree_results/",sep="")
+pathTrees=paste(pathResults, method, "_results/",sep="")
 pathAln=paste(path, "/results/whole_genome_alignments/avian_366/",sep="")
-
-########################################################################
-
-## prepare input file for RER converge
-
-files=system(paste("ls ",pathTrees, " | grep .treefile$",sep=""),intern=T)
-
-elements=unlist(lapply(files, function(x) unlist(strsplit(x, split="\\.treefile"))[1]))
-
-trees=unlist(lapply(paste(pathTrees,files,sep=""), readLines))
-
-treefiles=data.frame("Gene_name"=as.character(elements), "Newick_tree"=trees)
-
-write.table(treefiles[1:100,], file=paste(pathResults, "RERconverge_trees.txt",sep=""), row.names=F, col.names=F, sep="\t", quote=F)
 
 ########################################################################
 
@@ -33,16 +21,49 @@ spList=c("Struthio_camelus", "Dromaius_novaehollandiae", "Gallus_gallus", "Melea
 
 masterTree=keep.tip(masterTree, spList)
 
+masterTree$node.label=NULL
+
+########################################################################
+
+## prepare input file for RER converge
+
+if(method=="iqtree"){
+    files=system(paste("ls ",pathTrees, " | grep treefile.formatted$",sep=""),intern=T)
+}
+
+if(method=="phyml"){
+    files=system(paste("ls ",pathTrees, " | grep _phyml_tree.formatted$",sep=""),intern=T)
+}
+
+elements=unlist(lapply(files, function(x) unlist(strsplit(x, split="\\."))[1]))
+names(files)=elements
+
+for(el in elements){
+    this.tree=read.tree(file=paste(pathTrees,files[el],sep=""))
+    this.tree$node.label=NULL
+}
+
+est.trees=unlist(lapply(paste(pathTrees,files,sep=""), readLines))
+est.treefiles=data.frame("Gene_name"=as.character(elements), "Newick_tree"=est.trees)
+
+write.table(est.treefiles, file=paste(pathResults, "RERconverge_",method,"_input_trees.txt",sep=""), row.names=F, col.names=F, sep="\t", quote=F)
+
 ########################################################################
 
 ## readtrees
 
-trees=readTrees(paste(pathResults, "RERconverge_trees.txt",sep=""), masterTree=masterTree, reestimateBranches=TRUE)
+trees=readTrees(paste(pathResults, "RERconverge_",method,"_input_trees.txt",sep=""))
 
 ########################################################################
 
 ## relative rates
 
-rerw=getAllResiduals(trees, transform = "sqrt", weighted = T, scale = T, plot=F)
+rerw.est=getAllResiduals(est.trees, transform = "sqrt", weighted=T, scale=T)
 
+########################################################################
+########################################################################
+
+
+
+########################################################################
 ########################################################################
