@@ -48,7 +48,7 @@ if [ -e ${pathResults}/aln_by_element ]; then
 	    if [ -e ${pathResults}/phyml_results/${prefix}.filtered.phy_phyml_tree.txt ]; then
 		echo "already done"
 	    else
-		phyml -i ${pathResults}/aln_by_element/${prefix}.filtered.phy -d nt --sequential -m GTR -o lr  -u ${pathResults}/phyml_results/${prefix}.start.tree
+		phyml -i ${pathResults}/aln_by_element/${prefix}.filtered.phy -d nt --sequential -m GTR -o lr  -u ${pathResults}/phyml_results/${prefix}.start.tree --no_memory_check --quiet
 		mv ${pathResults}/aln_by_element/${prefix}.filtered.phy*phyml*  ${pathResults}/phyml_results
 	    fi
 	fi
