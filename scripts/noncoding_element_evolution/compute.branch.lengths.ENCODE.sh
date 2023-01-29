@@ -40,7 +40,7 @@ if [ -e ${pathResults}/aln_by_element ]; then
 	    if [ -e ${pathResults}/iqtree_results/${prefix}.treefile ]; then
 		echo "already done"
 	    else
-		iqtree2 -s ${pathResults}/aln_by_element/${prefix}.filtered.fa --seqtype DNA  -te ${pathResults}/iqtree_results/${prefix}.start.tree -m GTR --prefix ${pathResults}/iqtree_results/${prefix} 
+		iqtree -s ${pathResults}/aln_by_element/${prefix}.filtered.fa -st DNA  -te ${pathResults}/iqtree_results/${prefix}.start.tree -m GTR --pre ${pathResults}/iqtree_results/${prefix} 
 	    fi
 	fi
 
