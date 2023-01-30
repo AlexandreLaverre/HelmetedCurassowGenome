@@ -33,65 +33,65 @@ get.node.desc<-function(tree,x){
 for(method in c("iqtree", "phyml")){
 
   pathTrees=paste(pathResults, method, "_results/",sep="")
-  
+
   if(method=="iqtree"){
     files=system(paste("ls ",pathTrees, " | grep treefile$",sep=""),intern=T)
   }
-  
+
   if(method=="phyml"){
     files=system(paste("ls ",pathTrees, " | grep _phyml_tree$",sep=""),intern=T)
   }
-  
+
   elements=unlist(lapply(files, function(x) unlist(strsplit(x, split="\\."))[1]))
   names(files)=elements
 
   for(el in elements){
     print(el)
-    
+
     tr1=read.tree(file=paste(pathTrees,files[el],sep=""))
     tr1$node.label=NULL
     tr1=multi2di(tr1)
     tr1=root(tr1, outgroup="Gallus_gallus")
-    
+
     tr2=keep.tip(masterTree, tr1$tip.label)
     tr2$node.label=NULL
     tr2=root(tr2, outgroup="Gallus_gallus")
 
     if(as.numeric(dist.topo(tr1, tr2)==0)){
-      
+
       newtree1=tr2
-      
+
       nbsp=length(tr1$tip.label)
-      
+
       edge1=tr1$edge
       edge2=tr2$edge
-      
+
       desc1nodes=unlist(lapply(unique(edge1[,1]), function(x) get.node.desc(tr1,x)))
       desc2nodes=unlist(lapply(unique(edge2[,1]), function(x) get.node.desc(tr2,x)))
-      
+
       names(desc1nodes)=as.character(unique(edge1[,1]))
       names(desc2nodes)=as.character(unique(edge2[,1]))
-      
+
       desc1tip=tr1$tip.label
       names(desc1tip)=as.character(1:nbsp)
-      
+
       desc2tip=tr2$tip.label
       names(desc2tip)=as.character(1:nbsp)
-      
+
       desc1=c(desc1nodes, desc1tip)
       desc2=c(desc2nodes, desc2tip)
-      
+
       br1=paste(desc1[as.character(edge1[,1])], "-",desc1[as.character(edge1[,2])])
       br2=paste(desc2[as.character(edge2[,1])], "-",desc2[as.character(edge2[,2])])
-      
+
       if(all(br1%in%br2) & all(br2%in%br1)){
-        
+
         len1=tr1$edge.length
-        
+
         names(len1)=br1
-        
+
         newtree1$edge.length=as.numeric(len1[br2])
-        
+
         write.tree(newtree1, file=paste(pathTrees, files[el], ".formatted", sep=""))
       } else{
         stop("weird, branch lengths do not correspond")
