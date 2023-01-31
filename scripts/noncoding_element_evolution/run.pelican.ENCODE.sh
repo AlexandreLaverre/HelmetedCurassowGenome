@@ -18,7 +18,7 @@ if [ ${cluster} = "pbil" ]; then
 fi
 
 export pathResults=${path}/results/noncoding_element_evolution/ENCODE_ATAC-seq/Mouse
-export pathResultsCoding==${path}/results/coding_gene_evolution/all_species/birds
+export pathResultsCoding=${path}/results/coding_gene_evolution/all_species/birds
 
 ##########################################################################
 
