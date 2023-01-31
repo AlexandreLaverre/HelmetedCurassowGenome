@@ -65,7 +65,7 @@ for(method in c("iqtree", "phyml")){
 
   ordered_cor = cor_all[order(cor_all$p.adj),]
 
-  write.table(ordered_cor, file=paste(pathResults, "RERConverge_correlations_",method,".txt"), row.names=T, col.names=T, sep="\t",quote=F)
+  write.table(ordered_cor, file=paste(pathResults, "RERConverge_correlations_",method,".txt",sep=""), row.names=T, col.names=T, sep="\t",quote=F)
 
 }
 
