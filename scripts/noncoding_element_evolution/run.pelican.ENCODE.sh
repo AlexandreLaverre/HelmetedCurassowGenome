@@ -3,7 +3,9 @@
 set -e
 
 export cluster=$1
-export phenannot=$2
+export threads=$2
+export phenannot=$3
+export multifilter=$4
 
 ##########################################################################
 
@@ -30,8 +32,16 @@ cp ${pathResultsCoding}/pelican_annotated_tree_${phenannot}.txt ${pathResults}
 
 ##########################################################################
 
-mkdir ${pathResults}/data_for_pelican
-cp ${pathResults}/aln_by_element/*filtered.fa ${pathResults}/data_for_pelican/
+if [ -e ${pathResults}/data_for_pelican ]; then
+    echo "input files already there"
+else
+    mkdir -p ${pathResults}/data_for_pelican
+    
+    for file in `ls ${pathResults}/aln_by_element/ | grep filtered.fa`
+    do
+	cp ${pathResults}/aln_by_element/${file} ${pathResults}/data_for_pelican/
+    done
+fi
 
 ##########################################################################
 
