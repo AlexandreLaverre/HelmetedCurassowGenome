@@ -30,7 +30,7 @@ for(method in c("iqtree", "phyml")){
   }
 
   if(method=="phyml"){
-    files=system(paste("ls ",pathTrees, " | grep _phyml_tree.formatted$",sep=""),intern=T)
+    files=system(paste("ls ",pathTrees, " | grep _phyml_tree.txt.formatted$",sep=""),intern=T)
   }
 
   elements=unlist(lapply(files, function(x) unlist(strsplit(x, split="\\."))[1]))
