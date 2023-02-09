@@ -53,7 +53,10 @@ for(spset in c("all_species")){ ## other option is "without_chameleons"
             og=orthogroups$OG[i]
 
             pathIn=paste(pathCDS, hog,"_",og,".aln.best.fas",sep="")
-            system(paste("cp ",pathIn, " ",pathOutput, "/",hog,"_",og,".fa",sep=""))
+
+            if(file.exists(pathIn)){
+                system(paste("cp ",pathIn, " ",pathOutput, "/",hog,"_",og,".fa",sep=""))
+            }
 
             if(i%%1000==0){
                 print(i)
