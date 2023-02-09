@@ -23,6 +23,6 @@ export pathOrthoGroups=${pathResults}/${dir}/Phylogenetic_Hierarchical_Orthogrou
 
 ##########################################################################
 
-perl ${pathScripts}/extract.orthogroup.correspondence.pl --pathN0=${pathOrthoGroups}/N0.tsv --pathN1=${pathOrthoGroups}/N1.tsv --pathN2=${pathOrthoGroups}/N2.tsv --pathOutput=${pathResults}/N0N1N2_correspondence.txt
+perl ${pathScripts}/extract.orthogroup.correspondence.pl --pathN0=${pathOrthoGroups}/N0.tsv --pathN1=${pathOrthoGroups}/N1.tsv --pathN2=${pathOrthoGroups}/N2.tsv --pathOutput=${pathOrthoGroups}/N0N1N2_correspondence.txt
 
 ##########################################################################
