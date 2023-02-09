@@ -6,8 +6,7 @@ use strict;
 sub readOrthoGroupAnnotation{
     my $pathin=$_[0];
     my $ogannot=$_[1];
-    my $annotog=$_[2];
-    
+      
     open(my $input, $pathin);
     
     my $line=<$input>;
@@ -41,15 +40,6 @@ sub readOrthoGroupAnnotation{
 	}
 
 	$ogannot->{$ogid}={"refgeneid"=>$refid, "refgenename"=>$refname, "humangeneid"=>$humid, "humangenename"=>$humname};
-
-	if(exists $annotog->{$refid}){
-	    print "Weird, already saw ".$refid."\n";
-	    exit(1);
-	}
-	
-	if($refid ne "NA"){
-	    $annotog->{$refid}=$ogid;
-	}
 	
 	$line=<$input>;
     }
@@ -198,9 +188,8 @@ print "\n";
 print "Reading orthogroup annotation...\n";
 
 my %ogannot;
-my %annotog;
 
-readOrthoGroupAnnotation($parameters{"pathOrthoGroupAnnotation"}, \%ogannot, \%annotog);
+readOrthoGroupAnnotation($parameters{"pathOrthoGroupAnnotation"}, \%ogannot);
 
 print "Done.\n";
 
@@ -231,6 +220,7 @@ if($thisog eq "N1"){
 	exit(1);
     }
 }
+
 
 print "This orthogroup is ".$thisog.", other orthogroup is ".$otherog."\n";
 
@@ -265,15 +255,7 @@ while($line){
     if(exists $ogannot{$thisid}){
 	$idog=$thisid;
     } else{
-	my @t=split("_", $thisid);
-	my $geneid=$t[0];
-
-	if(exists $annotog{$geneid}){
-	    $idog=$annotog{$geneid};
-	} else{
-	    print "Weird! cannot find orthogroup id in ".$line."\n";
-	    exit(1);
-	}
+	print "Weird! cannot find orthogroup id in ".$line."\n";
     }
 
     my $geneid=$ogannot{$idog}{"refgeneid"};
