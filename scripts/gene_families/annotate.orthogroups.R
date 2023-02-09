@@ -38,27 +38,29 @@ for(splist in c("birds", "squamates")){
   node=nodes[[splist]]
   refsp=refspecies[[splist]]
   refann=refannot[[splist]]
-  
-  og=read.table(paste(pathOrthoGroups, node,".tsv",sep=""),h=T, stringsAsFactors=F, sep="\t")
-
-  nbg.ref=unlist(lapply(og[,refsp], function(x) length(unlist(strsplit(x, split=",")))))
-  geneid.ref=rep(NA, nrow(og))
-  geneid.ref[which(nbg.ref==1)]=unlist(lapply(og[which(nbg.ref==1),refsp], function(x) unlist(strsplit(x, split="\\."))[1]))
 
   this.names=get(paste("genenames.",refann,sep=""))
-  name.ref=this.names[geneid.ref,2]
-  
   this.ortho=get(paste("ortho.human.",refann,sep=""))
 
-  geneid.human=rep(NA, nrow(og))
-  geneid.human[which(geneid.ref%in%rownames(this.ortho))]=this.ortho[geneid.ref[which(geneid.ref%in%rownames(this.ortho))], "Gene.stable.ID"]
-  name.human=rep(NA, nrow(og))
-  name.human[which(geneid.human%in%rownames(genenames.human))]=genenames.human[geneid.human[which(geneid.human%in%rownames(genenames.human))],2]
+  og=read.table(paste(pathOrthoGroups, node,".tsv",sep=""),h=T, stringsAsFactors=F, sep="\t")
 
-  results=data.frame("HOG"=og$HOG, "OG"=og$OG, "Reference.GeneID"=geneid.ref, "Reference.GeneName"=name.ref, "HumanOrthologue.GeneID"=geneid.human, "HumanOrthologue.GeneName"=name.human)
+  list.geneid.ref=lapply(og[,refsp], function(x) unlist(strsplit(x, split=", ")))
+  list.geneid.ref=lapply(list.geneid.ref, function(x) unlist(lapply(x, function(y) unlist(strsplit(y, split="\\."))[1])))
+  list.genename.ref=lapply(list.geneid.ref, function(x) this.names[intersect(x, rownames(this.names)),2])
+
+  geneid.ref=unlist(lapply(list.geneid.ref, function(x) paste(x, collapse=",")))
+  genename.ref=unlist(lapply(list.genename.ref, function(x) paste(setdiff(x,""), collapse=",")))
+
+  list.geneid.human=lapply(list.geneid.ref, function(x) this.ortho[intersect(x, rownames(this.ortho)), "Gene.stable.ID"])
+  list.genename.human=lapply(list.geneid.human,function(x) genenames.human[intersect(x, rownames(genenames.human)),2])
+
+  geneid.human=unlist(lapply(list.geneid.human, function(x) paste(x, collapse=",")))
+  genename.human=unlist(lapply(list.genename.human, function(x) paste(setdiff(x,""), collapse=",")))
+
+  results=data.frame("HOG"=og$HOG, "OG"=og$OG, "Reference.GeneID"=geneid.ref, "Reference.GeneName"=genename.ref, "HumanOrthologue.GeneID"=geneid.human, "HumanOrthologue.GeneName"=genename.human)
 
   write.table(results, paste(pathOrthoGroups, node, "_annotations.tsv",sep=""),row.names=F, col.names=T, sep="\t", quote=F)
-  
+
 }
 
 ##########################################################################
