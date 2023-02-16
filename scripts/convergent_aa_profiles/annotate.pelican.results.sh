@@ -37,7 +37,7 @@ fi
 
 for res in best_sites all_sites
 do
-    echo "perl ${pathScripts}/annotate.pelican.results.pl --pathPelicanResults=${pathResults}/${res}.tsv --orthogroup=${orthogroup} --pathOrthoGroupAnnotation=${pathOrthoGroups}/${orthogroup}_annotations.tsv --pathOrthoGroupCorrespondence=${pathOrthoGroups}/N0N1N2_correspondence.txt --pathOutput=${pathResults}/${res}_annotated.tsv"
+    perl ${pathScripts}/annotate.pelican.results.pl --pathPelicanResults=${pathResults}/${res}.tsv --orthogroup=${orthogroup} --pathOrthoGroupAnnotation=${pathOrthoGroups}/${orthogroup}_annotations.tsv --pathOrthoGroupCorrespondence=${pathOrthoGroups}/N0N1N2_correspondence.txt --pathOutput=${pathResults}/${res}_annotated.tsv
 done
 
 ##########################################################################
