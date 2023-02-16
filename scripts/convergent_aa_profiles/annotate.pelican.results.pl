@@ -191,6 +191,10 @@ my %ogannot;
 
 readOrthoGroupAnnotation($parameters{"pathOrthoGroupAnnotation"}, \%ogannot);
 
+my $nbog=keys %ogannot;
+
+print "There are ".$nbog." annotated orthogroups.\n";
+
 print "Done.\n";
 
 ##############################################################
@@ -240,7 +244,7 @@ for(my $i=0; $i<@s; $i++){
     $header{$s[$i]}=$i;
 }
 
-my $lineout=$line."\tOrthoGroupID\tReferenceGeneID\tReferenceGeneName\tHumanGeneID\tHumanGeneName\tOtherOrthoGroupID\n";
+my $lineout=$line."\tReferenceGeneID\tReferenceGeneName\tHumanGeneID\tHumanGeneName\tOtherOrthoGroupID\n";
 
 $line=<$input>;
 
@@ -261,7 +265,7 @@ while($line){
     my $geneid=$ogannot{$idog}{"refgeneid"};
     my $genename=$ogannot{$idog}{"refgenename"};
     my $humid=$ogannot{$idog}{"humangeneid"};
-    my $humname=$ogannot{$idog}{"humangeneiname"};
+    my $humname=$ogannot{$idog}{"humangenename"};
     
     my $otherog="NA";
 
@@ -269,12 +273,16 @@ while($line){
 	$otherog=$ogcorr{$oc}{$idog};
     }
     
-    my $lineout=$line."\t".$idog."\t".$geneid."\t".$genename."\t".$humid."\t".$humname."\t".$otherog."\n";
+    my $lineout=$line."\t".$geneid."\t".$genename."\t".$humid."\t".$humname."\t".$otherog."\n";
+
+    print $output $lineout;
     
     $line=<$input>;
 }
 
 close($input);
 close($output);
+
+print "Done.\n";
 
 ##############################################################
