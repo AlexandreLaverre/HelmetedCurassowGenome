@@ -245,6 +245,7 @@ for(my $i=0; $i<@s; $i++){
 }
 
 my $lineout=$line."\tReferenceGeneID\tReferenceGeneName\tHumanGeneID\tHumanGeneName\tOtherOrthoGroupID\n";
+print $output $lineout;
 
 $line=<$input>;
 

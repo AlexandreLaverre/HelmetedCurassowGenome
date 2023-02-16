@@ -11,12 +11,10 @@ export cluster=$4
 
 if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
-    export pathTools=/ifb/data/mydatalocal/Tools
 fi
 
 if [ ${cluster} = "pbil" ]; then
     export path=/beegfs/data/necsulea/HelmetedCurassowGenome
-    export pathTools=/beegfs/home/necsulea/Tools
 fi
 
 export pathResults=${path}/results/coding_gene_evolution/${spset}/${dataset}/pelican_output_${run}
@@ -39,7 +37,7 @@ fi
 
 for res in best_sites all_sites
 do
-    perl ${pathScripts}/annotate.pelican.results.pl --pathPelicanResults=${pathResults}/${res}.tsv --orthogroup=${orthogroup} --pathOrthoGroupAnnotation=${pathOrthoGroups}/${orthogroup}_annotations.tsv --pathOrthoGroupCorrespondence=${pathOrthoGroups}/N0N1N2_correspondence.txt --pathOutput=${pathResults}/${res}_annotated.tsv
+    echo "perl ${pathScripts}/annotate.pelican.results.pl --pathPelicanResults=${pathResults}/${res}.tsv --orthogroup=${orthogroup} --pathOrthoGroupAnnotation=${pathOrthoGroups}/${orthogroup}_annotations.tsv --pathOrthoGroupCorrespondence=${pathOrthoGroups}/N0N1N2_correspondence.txt --pathOutput=${pathResults}/${res}_annotated.tsv"
 done
 
 ##########################################################################
