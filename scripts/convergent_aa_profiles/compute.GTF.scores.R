@@ -34,7 +34,7 @@ for(dataset in c("birds", "squamates")){
     ## with progress bar
     handlers("progress")
     with_progress({
-        gene_pvals = gtf_predict(site_pvals, alignment, aagtr_pval, k=3, n=1000, naa > 1)
+        gene_pvals = gtf_predict(site_pvals, alignment, aagtr_pval, k=1, n=1000, naa > 1)
     })
 
     gene_pvals=as.data.frame(gene_pvals)
