@@ -39,7 +39,7 @@ fi
 
 ##########################################################################
 
-if [ "${multifilter}" -ne "1" ]; then
+if [ "${multifilter}" = "1" ]; then
     singularity exec -B ${path} ${pathTools}/pelican.sif pelican scan discrete --multinomial-filter ${multifilter} --threads ${threads} --alphabet=nuc --name=${phenannot} --tree ${pathResults}/pelican_annotated_tree_${phenannot}.txt --alignment ${pathResults}/data_for_pelican --output ${pathResults}/pelican_output_${phenannot}_multinomial_${multifilter} --progress-bar
 else
     singularity exec -B ${path} ${pathTools}/pelican.sif pelican scan discrete --threads ${threads} --alphabet=nuc --name=${phenannot} --tree ${pathResults}/pelican_annotated_tree_${phenannot}.txt --alignment ${pathResults}/data_for_pelican --output ${pathResults}/pelican_output_${phenannot} --progress-bar
