@@ -46,7 +46,7 @@ for(i in 1:length(species)){
       repeats$Class[which(repeats$Class=="LINE?")]="LINE"
       repeats$Class[which(repeats$Class=="SINE")]="SINE"
 
-      pathOutput=paste(pathUCSC, sp, "/TotalLengthByClass.txt", sep="")
+      pathOutput=paste(pathInHouse, sp, "/MEGAHIT_RAGOUT/RepeatMasker/TotalLengthByClass.txt", sep="")
     }
 
     tot.len=tapply(repeats$Length, as.factor(repeats$Class), sum)
