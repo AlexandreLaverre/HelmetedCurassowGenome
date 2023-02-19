@@ -59,13 +59,13 @@ for(i in 1:length(species)){
     ortho.info=ortho.info[order(ortho.info$Start),]
     ortho.info=ortho.info[order(ortho.info$Chr),]
 
-    if(dir.exists(paste(pathResults, sp, sep=""))){
+    if(dir.exists(paste(pathResults, this.sp, sep=""))){
         print("output dir exists")
     } else{
-        system(paste("mkdir -p ",pathResults, sp, sep=""))
+        system(paste("mkdir -p ",pathResults, this.sp, sep=""))
     }
 
-    write.table(ortho.info, file=paste(pathResults, sp, "/OrthoGeneCoordinates_",this.refsp.ortho,".txt", sep=""), row.names=F, col.names=T, sep="\t")
+    write.table(ortho.info, file=paste(pathResults, this.sp, "/OrthoGeneCoordinates_",this.refsp.ortho,".txt", sep=""), row.names=F, col.names=T, sep="\t")
 }
 
 ################################################################
