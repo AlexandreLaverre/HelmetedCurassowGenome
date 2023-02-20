@@ -6,7 +6,7 @@ pathFigures="../../results/figures/"
 ######################################################################
 
 species=c("Basiliscus_vittatus", "Pauxi_pauxi")
-otherspecies=c("Gallus_gallus", "Anolis_carolinensis")
+otherspecies=c("Anolis_carolinensis","Gallus_gallus")
 
 ######################################################################
 
