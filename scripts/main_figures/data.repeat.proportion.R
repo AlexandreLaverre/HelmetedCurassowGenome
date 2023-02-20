@@ -17,6 +17,7 @@ repfr=list()
 for(i in 1:length(species)){
     sp=species[i]
     annot=annots[i]
+    synsp=synspecies[i]
 
     if(annot=="UCSC"){
         pathInput=paste(pathUCSC, sp, "/TotalLengthByClass.txt", sep="")
@@ -26,7 +27,7 @@ for(i in 1:length(species)){
         pathInput=paste(pathInHouse, sp, "/MEGAHIT_RAGOUT/RepeatMasker/TotalLengthByClass.txt", sep="")
     }
 
-    repfr[[sp]]=read.table(pathInput, h=T, stringsAsFactors=F)
+    repfr[[synsp]]=read.table(pathInput, h=T, stringsAsFactors=F)
 
 }
 

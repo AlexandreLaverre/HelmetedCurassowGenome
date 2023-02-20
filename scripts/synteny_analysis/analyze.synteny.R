@@ -65,7 +65,7 @@ for(i in 1:length(species)){
         system(paste("mkdir -p ",pathResults, this.sp, sep=""))
     }
 
-    write.table(ortho.info, file=paste(pathResults, this.sp, "/OrthoGeneCoordinates_",this.refsp.ortho,".txt", sep=""), row.names=F, col.names=T, sep="\t")
+    write.table(ortho.info, file=paste(pathResults, this.sp, "/OrthoGeneCoordinates_",this.refsp.ortho,".txt", sep=""), row.names=F, col.names=T, sep="\t", quote=F)
 }
 
 ################################################################

@@ -34,12 +34,12 @@ for(i in 1:length(species)){
 
       pathOutput=paste(pathUCSC, sp, "/TotalLengthByClass.txt", sep="")
     }
-    
+
     if(annot=="InHouse"){
       repeats=read.table(paste(pathInHouse, sp, "/MEGAHIT_RAGOUT/RepeatMasker/", file, sep=""), h=T, stringsAsFactors=F, sep="\t", quote="\"")
       repeats$Class=unlist(lapply(repeats$Class.Family, function(x) unlist(strsplit(x, split="\\/"))[1]))
       repeats$Length=repeats$End-repeats$Start+1
-      
+
       repeats$Class[which(repeats$Class=="DNA?")]="DNA"
       repeats$Class[which(repeats$Class=="RC?")]="RC"
       repeats$Class[which(repeats$Class=="LTR?")]="LTR"
