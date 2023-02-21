@@ -40,8 +40,8 @@ fi
 
 if [ ${assembly} = "Ensembl" ]; then
     export file=`ls ${pathEnsemblGenomes} | grep ${sp} | grep dna.toplevel.fa.gz`
-    export pathAssembly=${pathEnsembl}/${file}
-    export pathResults=${pathEnsembl}
+    export pathAssembly=${pathEnsemblGenomes}/${file}
+    export pathResults=${pathEnsemblGenomes}
     export outfile=GCContent_ChromosomeSize_${sp}.txt
 fi
 
