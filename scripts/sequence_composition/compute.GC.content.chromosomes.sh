@@ -16,6 +16,7 @@ if [ ${cluster} = "cloud" ]; then
     export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
 fi
 
+export pathEnsemblGenomes=${path}/data/genome_sequences/Ensembl103
 export pathGenomeAssembly=${path}/results/genome_assembly/${sp}/${assembly}
 export pathScripts=${path}/scripts/sequence_composition
 
@@ -23,16 +24,29 @@ export pathScripts=${path}/scripts/sequence_composition
 
 if [ ${assembly} = "MEGAHIT" ]; then
     export pathAssembly=${pathGenomeAssembly}/final.contigs.fa
+    export pathResults=${pathGenomeAssembly}
+    export outfile=GCContent_ChromosomeSize.txt
 fi
 
 #########################################################################
 
 if [ ${assembly} = "MEGAHIT_RAGOUT" ]; then
     export pathAssembly=${pathGenomeAssembly}/genome_sequence_renamed.fa
+    export pathResults=${pathGenomeAssembly}
+    export outfile=GCContent_ChromosomeSize.txt
 fi
 
 #########################################################################
 
-perl ${pathScripts}/compute.GC.content.chromosomes.pl --pathGenomeSequence=${pathAssembly} --pathOutput=${pathGenomeAssembly}/GCContent_ChromosomeSize.txt
+if [ ${assembly} = "Ensembl" ]; then
+    export file=`ls ${pathEnsemblGenomes} | grep ${sp} | grep dna.toplevel.fa.gz`
+    export pathAssembly=${pathEnsembl}/${file}
+    export pathResults=${pathEnsembl}
+    export outfile=GCContent_ChromosomeSize_${sp}.txt
+fi
+
+#########################################################################
+
+perl ${pathScripts}/compute.GC.content.chromosomes.pl --pathGenomeSequence=${pathAssembly} --pathOutput=${pathResults}/${outfile}
 
 #########################################################################
