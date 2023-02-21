@@ -39,7 +39,7 @@ fi
 #########################################################################
 
 if [ ${assembly} = "Ensembl" ]; then
-    export file=`ls ${pathEnsemblGenomes} | grep ${sp} | grep dna.toplevel.fa.gz`
+    export file=`ls ${pathEnsemblGenomes} | grep ${sp} | grep dna_sm.toplevel.fa.gz`
     export pathAssembly=${pathEnsemblGenomes}/${file}
     export pathResults=${pathEnsemblGenomes}
     export outfile=GCContent_ChromosomeSize_${sp}.txt
