@@ -17,7 +17,8 @@ try(library(RERconverge), silent=TRUE)
 # Define path
 #args = commandArgs(trailingOnly=TRUE)
 
-sp = "all_species" #args[1] # all_species, birds or squamates
+sp = "birds" #args[1] # all_species, birds or squamates
+clade = "all" # considered branches for focal species : all terminal or ancestral
 
 path = paste("/Users/alaverre/Documents/HelmetedCurassowGenome/results/protein_acceleration", sp, "/", sep="/")
 
@@ -70,9 +71,9 @@ message("Considered Helmeted species:")
 print(Helmeted)
 
 # Generating paths for incomplete trees
-pheno <- foreground2Paths(Helmeted, Trees, clade="terminal") #terminal, ancestral or all
+pheno <- foreground2Paths(Helmeted, Trees, clade=clade) #terminal, ancestral or all
 
-write(pheno, file=paste0(path, sp, "_RER_PhenoPath_Terminal.txt"))
+write(pheno, file=paste0(path, sp, "_RER_PhenoPath_", clade, ".txt"))
 
 #######################################################################################
 ### Correlation
@@ -82,7 +83,7 @@ cor_all=correlateWithBinaryPhenotype(RER, pheno, min.sp=min.sp, min.pos=min.pos,
 
 ordered_cor = cor_all[order(cor_all$p.adj, cor_all$P),]
 
-write.table(ordered_cor, file=paste0(path, sp, "_RER_Terminal_correlations.txt"), row.names=T, col.names=T, sep="\t",quote=F)
+write.table(ordered_cor, file=paste0(path, sp, "_RER_correlations_clade_", clade, ".txt"), row.names=T, col.names=T, sep="\t",quote=F)
 
 #######################################################################################
 
