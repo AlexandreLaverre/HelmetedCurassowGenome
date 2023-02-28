@@ -5,7 +5,7 @@ export cluster=$1
 ###########################################################################
 
 if [ ${cluster} = "cloud" ]; then
-    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome
+    export path=/ifb/data/mydatalocal/HelmetedCurassowGenome/all_species/birds/
 fi
 
 export pathResults=${path}/results/gene_family_evolution
