@@ -18,6 +18,8 @@ anc.birds=getMRCA(sptree, tip=c("Struthio_camelus_australis", "Gallus_gallus"))
 
 sptree=extract.clade(sptree, node=anc.birds)
 
+write.tree(sptree, file=paste(pathResults, "species_tree.txt",sep=""))
+
 ###################################################################################
 
 helmeted.species=c("Numida_meleagris", "Pauxi_pauxi", "Anser_cygnoides", "Anseranas_semipalmata", "Buceros_rhinoceros", "Bucorvus_abyssinicus", "Balearica_regulorum", "Casuarius_casuarius", "Basiliscus_vittatus", "Chamaeleo_calyptratus")
