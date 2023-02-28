@@ -20,7 +20,11 @@ nbgenes=t(apply(og[,splist], 1, function(x) unlist(lapply(x, function(y) length(
 
 ###################################################################################
 
-cafe5.input=data.frame("Desc"=og.annot[rownames(og), "HumanOrthologue.GeneName"], "Family ID"=rownames(og), nbgenes)
-cafe5.input$Desc[which(cafe5$Input=="")]="NA"
+cafe5.input=data.frame("Desc"=og.annot[rownames(og), "HumanOrthologue.GeneName"], "Family ID"=rownames(og), nbgenes, check.names=F)
+cafe5.input$Desc[which(cafe5.input$Desc=="")]="NA"
+
+###################################################################################
+
+write.table(cafe5.input, file=paste(pathResults, "gene_families.txt",sep=""), row.names=F,col.names=T, sep="\t", quote=F)
 
 ###################################################################################
